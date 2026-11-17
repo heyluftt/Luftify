@@ -1,0 +1,66 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Luftify",
+  "version": "0.1.36",
+  "identifier": "local.luftify.player",
+  "build": {
+    "beforeDevCommand": "pnpm dev:web",
+    "devUrl": "http://127.0.0.1:38147",
+    "beforeBuildCommand": "pnpm prepare:bundle",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' asset: http://asset.localhost luftcover: http://luftcover.localhost data: blob:; media-src 'self' blob: https://scdn.co https://*.scdn.co https://spotifycdn.com https://*.spotifycdn.com; connect-src 'self' ipc: http://ipc.localhost; font-src 'self' data:; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'none'"
+    },
+    "windows": [
+      {
+        "label": "main",
+        "title": "Luftify",
+        "width": 1380,
+        "height": 860,
+        "minWidth": 980,
+        "minHeight": 680,
+        "decorations": false,
+        "transparent": false,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true,
+        "visible": false
+      }
+    ]
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "nsis"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "displayLanguageSelector": false
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDFFNjYxNzE3OENBNDVGMkYKUldRdlg2U01GeGRtSGpXMFJ0WE4vcUZqVlNkdGtVM3lZWC8zS3gxQWtFOVVrV1NsRGZtWlc3L0kK",
+      "endpoints": [
+        "https://luftify-server.invalid/updates/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  }
+}

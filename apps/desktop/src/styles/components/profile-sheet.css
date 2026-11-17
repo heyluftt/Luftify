@@ -1,0 +1,174 @@
+/*
+ * The profile sheet's layout (ProfileSheet.tsx), in one place: a calmer
+ * banner, the identity close together (name; badges and status on one
+ * line; bio), the person's buttons, then one column of music. Colours and
+ * materials stay in profile-surface.css and profile-appearance.css.
+ */
+
+/* ---------- Banner and identity ---------- */
+.friend-profile-cover { height: 176px; }
+
+.friend-profile-hero {
+  gap: var(--sp-2);
+  /* The picture's centre sits where the banner fades out. */
+  margin-top: -84px;
+  padding: 0 var(--sp-6) var(--sp-4);
+}
+
+.friend-profile-hero > .friends-avatar-presence { margin-bottom: var(--sp-1); }
+.friend-profile-hero > h2 { margin-top: var(--sp-1); }
+
+/* Badges and status share a line; on narrow sheets they wrap, centred. */
+.friend-profile-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+}
+
+.friend-profile-meta > .friend-profile-status {
+  min-height: 28px;
+  margin: 0;
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-full);
+  background: color-mix(in srgb, var(--profile-accent, var(--accent)) 6%, var(--fill-1));
+  box-shadow: inset 0 0 0 1px var(--line);
+  font-size: var(--fs-xs);
+}
+
+.friend-profile-hero > .friend-profile-bio {
+  max-width: 40ch;
+  margin-top: var(--sp-1);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+
+/* ---------- Buttons ---------- */
+/* Equal widths, flush with the cards below; the menu stays a small round button. */
+.friend-profile-scroll > .friend-profile-actions {
+  display: flex;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-5) var(--sp-4);
+}
+
+.friend-profile-scroll > .friend-profile-actions > :is(.primary-button, .secondary-button) {
+  min-width: 0;
+  min-height: 40px;
+  flex: 1 1 0;
+  justify-content: center;
+  padding-inline: var(--sp-3);
+  white-space: nowrap;
+}
+
+.friend-profile-scroll > .friend-profile-actions > :not(.primary-button, .secondary-button) {
+  flex: 0 0 auto;
+  align-self: center;
+}
+
+.friend-profile-scroll > .friend-profile-actions > .profile-menu-button {
+  width: 40px;
+  height: 40px;
+  background: var(--fill-1);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.friend-profile-scroll > .friend-profile-error { padding: 0 var(--sp-6) var(--sp-3); }
+
+/* ---------- One music column: profile song, now, recent ---------- */
+.friend-profile-sections {
+  display: grid;
+  gap: var(--sp-3);
+  padding: 0 var(--sp-5) var(--sp-5);
+}
+
+.friend-profile-sections:empty { display: none; }
+
+/* What plays right now comes first; the profile song follows it. */
+.friend-profile-sections > .friend-now { order: -1; }
+
+/* The profile song spans the column like the cards below it. */
+.friend-profile-sections > .profile-song {
+  width: 100%;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border-radius: var(--r-lg);
+}
+
+.friend-profile-sections > .profile-song .profile-song-art,
+.friend-profile-sections > .profile-song .profile-song-art .album-art { width: 52px; height: 52px; border-radius: var(--r-sm); }
+.friend-profile-sections > .profile-song .profile-song-copy { gap: 1px; }
+.friend-profile-sections > .profile-song .profile-song-copy > strong { font-size: var(--fs-md); }
+.friend-profile-sections > .profile-song .profile-song-play { width: 40px; height: 40px; box-shadow: 0 4px 14px color-mix(in srgb, var(--song-accent) 35%, transparent); }
+
+/* Now playing: the cover, blurred, colours the card; a veil of the sheet's
+   colour keeps the text readable on bright covers. */
+.friend-profile-sections > .friend-now {
+  position: relative;
+  grid-template-columns: 96px minmax(0, 1fr);
+  overflow: clip;
+  isolation: isolate;
+  padding: var(--sp-3);
+}
+
+.friend-profile-sections > .friend-now::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--profile-surface, var(--raised)) 30%, transparent),
+    color-mix(in srgb, var(--profile-surface, var(--raised)) 72%, transparent) 45%,
+    color-mix(in srgb, var(--profile-surface, var(--raised)) 60%, transparent));
+  pointer-events: none;
+  content: "";
+}
+
+.friend-profile-sections > .friend-now .friend-now-label {
+  color: color-mix(in srgb, var(--profile-accent, var(--accent)) 60%, var(--text));
+  font-weight: var(--fw-bold);
+}
+
+.friend-now-backdrop {
+  position: absolute;
+  z-index: -1;
+  inset: -30%;
+  opacity: .38;
+  filter: blur(34px) saturate(1.4);
+  pointer-events: none;
+}
+
+.friend-now-backdrop .album-art { width: 100%; height: 100%; border-radius: 0; }
+.friend-profile-sections > .friend-now .friend-now-art .album-art { width: 96px; height: 96px; border-radius: var(--r-md); }
+.friend-profile-sections > .friend-now .friend-now-actions { margin-top: var(--sp-2); }
+
+/* ---------- Footer: quiet facts ---------- */
+.friend-profile-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1) var(--sp-3);
+  margin: 0 var(--sp-5) var(--sp-5);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--line);
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+}
+
+.friend-profile-footer > small { display: inline-flex; align-items: center; gap: 5px; font-size: inherit; }
+.friend-profile-sections:not(:empty) + .friend-profile-footer { margin-top: calc(-1 * var(--sp-2)); }
+
+/* Recently played: a light list, no card of its own. */
+.friend-profile-sections > .friend-recent { padding: var(--sp-1) var(--sp-1) 0; }
+.friend-profile-sections > .friend-recent h3 { margin-bottom: var(--sp-1); padding-left: var(--sp-1); }
+.friend-profile-sections > .friend-recent button { padding: 5px var(--sp-1); }
+
+@media (max-width: 620px) {
+  .friend-profile-cover { height: 148px; }
+  .friend-profile-hero { margin-top: -76px; padding-inline: var(--sp-4); }
+  .friend-profile-scroll > .friend-profile-actions { flex-wrap: wrap; padding-inline: var(--sp-3); }
+  .friend-profile-sections { padding-inline: var(--sp-3); }
+  .friend-profile-sections > .friend-now { grid-template-columns: 72px minmax(0, 1fr); }
+  .friend-profile-sections > .friend-now .friend-now-art .album-art { width: 72px; height: 72px; }
+}

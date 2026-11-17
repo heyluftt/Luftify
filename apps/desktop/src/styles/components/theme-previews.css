@@ -1,0 +1,475 @@
+/* Miniature of every theme in the theme picker. Fixed colours on purpose:
+   each preview shows its own theme, not the active one. */
+
+.theme-preview {
+  position: relative;
+  display: grid;
+  grid-template-columns: 24% 1fr;
+  grid-template-rows: 1fr 17px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 9px;
+  background: #101722;
+}
+
+/* Aeris supplies preview tokens from its manifest, independently of selection. */
+.theme-option[data-theme-option="aeris"] .theme-preview-aeris {
+  border-color: color-mix(in srgb, var(--preview-accent) 17%, transparent);
+  background: var(--preview-bg);
+  border-radius: var(--r-sm);
+}
+.theme-option[data-theme-option="aeris"] .theme-preview-aeris::before { content: none; }
+.theme-option[data-theme-option="aeris"] .theme-preview-aeris::after {
+  z-index: 2;
+  background: color-mix(in srgb, var(--preview-accent) 55%, transparent);
+  box-shadow: 0 var(--sp-3) 0 color-mix(in srgb, var(--preview-accent) 12%, transparent);
+}
+.theme-option[data-theme-option="aeris"] .theme-preview-aeris i:first-child { background: var(--preview-accent); }
+.theme-option[data-theme-option="aeris"] .theme-preview-aeris i:nth-child(2) {
+  background: linear-gradient(160deg, var(--preview-canvas), var(--preview-bg));
+}
+.theme-option[data-theme-option="aeris"] .theme-preview-aeris i:last-child {
+  background: var(--preview-accent);
+  border-color: color-mix(in srgb, var(--preview-accent) 9%, transparent);
+}
+.theme-preview-aeris svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+.theme-preview::after {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 38%;
+  width: 42%;
+  height: 8px;
+  border-radius: 999px;
+  background: rgb(167 199 255 / 36%);
+  box-shadow: 0 14px 0 rgb(167 199 255 / 14%);
+}
+
+.theme-preview i:first-child {
+  grid-row: 1 / -1;
+  background: #0c111a;
+}
+
+.theme-preview i:nth-child(2) {
+  background: radial-gradient(circle at 65% 0%, #30476c, #171f2e 54%);
+}
+
+.theme-preview i:last-child {
+  background: #111827;
+  border-top: 1px solid rgb(255 255 255 / 9%);
+}
+
+.theme-option[data-theme-option="light"] .theme-preview {
+  border-color: rgb(30 33 38 / 12%);
+  background:
+    radial-gradient(ellipse 72% 86% at 86% -10%, rgb(80 98 190 / 10%), transparent 54%),
+    #ecedea;
+}
+
+.theme-option[data-theme-option="light"] .theme-preview::before {
+  position: absolute;
+  z-index: 1;
+  top: 8px;
+  right: 9px;
+  width: 23px;
+  height: 23px;
+  border: 1px solid rgb(80 98 190 / 17%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(80 98 190 / 12%) 0 18%, transparent 20%);
+  box-shadow: 0 0 0 5px rgb(80 98 190 / 3%);
+  content: "";
+  pointer-events: none;
+}
+
+.theme-option[data-theme-option="light"] .theme-preview::after {
+  z-index: 2;
+  background: rgb(80 98 190 / 42%);
+  box-shadow:
+    0 14px 0 rgb(80 98 190 / 12%),
+    0 0 13px rgb(80 98 190 / 7%);
+}
+
+.theme-option[data-theme-option="light"] .theme-preview i:first-child {
+  background:
+    linear-gradient(180deg, rgb(80 98 190 / 6%), transparent 44%),
+    #f4f5f3;
+}
+
+.theme-option[data-theme-option="light"] .theme-preview i:nth-child(2) {
+  background:
+    radial-gradient(circle at 72% 0%, rgb(80 98 190 / 12%), transparent 44%),
+    linear-gradient(160deg, #fff, #f0f1ee 62%);
+}
+
+.theme-option[data-theme-option="light"] .theme-preview i:last-child {
+  background: #fafaf7;
+  border-top-color: rgb(30 33 38 / 10%);
+}
+
+.theme-option[data-theme-option="atelier"] .theme-preview {
+  border-color: rgb(78 70 55 / 20%);
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 14px, rgb(78 70 55 / 2%) 14px 15px),
+    #efe9dd;
+}
+
+.theme-option[data-theme-option="atelier"] .theme-preview::before {
+  position: absolute;
+  z-index: 1;
+  top: 7px;
+  right: 8px;
+  width: 9px;
+  height: 9px;
+  border: 0;
+  border-top: 1px solid rgb(196 84 60 / 70%);
+  border-right: 1px solid rgb(196 84 60 / 70%);
+  content: "";
+  pointer-events: none;
+  background: none;
+}
+
+.theme-option[data-theme-option="atelier"] .theme-preview::after {
+  z-index: 2;
+  width: 39%;
+  height: 6px;
+  border-radius: 2px;
+  background: rgb(20 95 87 / 82%);
+  box-shadow:
+    0 13px 0 rgb(20 95 87 / 19%),
+    35px 13px 0 rgb(196 84 60 / 64%);
+}
+
+.theme-option[data-theme-option="atelier"] .theme-preview i:first-child {
+  background: #e2d9ca;
+}
+
+.theme-option[data-theme-option="atelier"] .theme-preview i:nth-child(2) {
+  background: linear-gradient(145deg, #fffdf7, #eee7d9 68%);
+}
+
+.theme-option[data-theme-option="atelier"] .theme-preview i:last-child {
+  background: #fffaf0;
+  border-top-color: rgb(78 70 55 / 18%);
+}
+
+.theme-option[data-theme-option="luft"] .theme-preview {
+  border-color: rgb(185 172 255 / 16%);
+  background:
+    linear-gradient(172deg, transparent 18%, rgb(143 123 247 / 26%) 30%, rgb(229 154 233 / 12%) 40%, transparent 52%),
+    radial-gradient(ellipse 60% 70% at 92% -10%, rgb(232 228 255 / 18%), transparent 56%),
+    radial-gradient(ellipse 56% 48% at 6% 112%, rgb(143 123 247 / 20%), transparent 60%),
+    #0d0a1c;
+}
+
+.theme-option[data-theme-option="luft"] .theme-preview::after {
+  background: linear-gradient(135deg, #b9acff, #8f7bf7);
+  box-shadow:
+    0 14px 0 rgb(143 123 247 / 30%),
+    0 0 16px rgb(185 172 255 / 30%);
+}
+
+.theme-option[data-theme-option="luft"] .theme-preview i:first-child {
+  background:
+    linear-gradient(180deg, rgb(143 123 247 / 14%), transparent 42%),
+    #06040f;
+}
+
+.theme-option[data-theme-option="luft"] .theme-preview i:nth-child(2) {
+  background:
+    radial-gradient(circle at 80% 0%, rgb(232 228 255 / 16%), transparent 44%),
+    linear-gradient(160deg, #1a1532, #0d0a1c 62%);
+}
+
+.theme-option[data-theme-option="luft"] .theme-preview i:last-child {
+  background: #06040f;
+  border-top-color: rgb(185 172 255 / 16%);
+}
+
+.theme-option[data-theme-option="redline"] .theme-preview {
+  border-color: rgb(255 91 78 / 42%);
+  border-radius: 5px;
+  background:
+    radial-gradient(ellipse 64% 72% at 84% 112%, rgb(255 126 65 / 20%), transparent 67%),
+    radial-gradient(ellipse 48% 50% at 10% 108%, rgb(215 47 61 / 15%), transparent 70%),
+    #080809;
+}
+
+.theme-option[data-theme-option="redline"] .theme-preview::before {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 19% 62% at 82% 111%, rgb(255 220 163 / 24%), rgb(255 91 78 / 13%) 38%, transparent 74%),
+    linear-gradient(135deg, transparent 0 72%, rgb(255 91 78 / 10%) 72% 74%, transparent 74%),
+    linear-gradient(90deg, rgb(255 255 255 / 1.4%) 1px, transparent 1px),
+    linear-gradient(rgb(255 255 255 / 1%) 1px, transparent 1px);
+  background-size: auto, 14px 14px, 14px 14px;
+}
+
+.theme-option[data-theme-option="redline"] .theme-preview::after {
+  width: 45%;
+  height: 6px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, rgb(215 47 61 / 92%), rgb(255 126 65 / 96%));
+  box-shadow:
+    0 13px 0 rgb(255 91 78 / 24%),
+    0 0 12px rgb(255 91 78 / 18%),
+    38px 13px 0 rgb(255 255 255 / 7%);
+}
+
+.theme-option[data-theme-option="redline"] .theme-preview i:first-child {
+  background:
+    radial-gradient(ellipse at 50% 105%, rgb(255 126 65 / 22%), transparent 64%),
+    linear-gradient(180deg, rgb(215 47 61 / 18%), transparent 42%),
+    #0a0b0c;
+}
+
+.theme-option[data-theme-option="redline"] .theme-preview i:nth-child(2) {
+  background:
+    linear-gradient(145deg, #202226, #111214 58%),
+    #111214;
+}
+
+.theme-option[data-theme-option="redline"] .theme-preview i:last-child {
+  background:
+    radial-gradient(ellipse at 50% 130%, rgb(255 126 65 / 15%), transparent 66%),
+    #151619;
+  border-top-color: rgb(255 91 78 / 42%);
+}
+
+.theme-option[data-theme-option="abyss"] .theme-preview {
+  border-color: rgb(92 232 218 / 18%);
+  background:
+    repeating-linear-gradient(100deg, transparent 0 9px, rgb(160 255 245 / 7%) 9px 10px),
+    radial-gradient(60% 45% at 62% 0%, rgb(92 232 218 / 34%), transparent 70%),
+    radial-gradient(1.5px 1.5px at 40% 62%, #5ce8da, transparent),
+    radial-gradient(1.5px 1.5px at 71% 48%, #e46bff, transparent),
+    radial-gradient(1.2px 1.2px at 58% 72%, #9ff5ec, transparent),
+    radial-gradient(1.5px 1.5px at 88% 66%, #5ce8da, transparent),
+    linear-gradient(180deg, #0c3340, #04161f 55%, #01070a);
+  box-shadow: inset 0 1px rgb(92 232 218 / 14%), 0 4px 12px rgb(0 0 0 / 36%);
+}
+
+/* A jellyfish: its bell glowing, faint tentacles below. */
+.theme-option[data-theme-option="abyss"] .theme-preview::after {
+  top: 26%;
+  left: 64%;
+  width: 16%;
+  height: 20%;
+  border-radius: 50% 50% 22% 22%;
+  background: radial-gradient(ellipse at 50% 30%, rgb(255 190 255 / 85%), rgb(228 107 255 / 45%) 45%, rgb(92 232 218 / 15%) 75%, transparent);
+  box-shadow: 0 0 16px rgb(228 107 255 / 40%), 0 14px 0 -5px rgb(228 107 255 / 0%);
+}
+.theme-option[data-theme-option="abyss"] .theme-preview::before {
+  position: absolute;
+  z-index: 1;
+  top: 44%;
+  left: 66.5%;
+  width: 11%;
+  height: 22%;
+  background: repeating-linear-gradient(90deg, rgb(228 107 255 / 45%) 0 1px, transparent 1px 4px);
+  -webkit-mask: linear-gradient(180deg, #000, transparent);
+  mask: linear-gradient(180deg, #000, transparent);
+  content: "";
+  pointer-events: none;
+}
+
+.theme-option[data-theme-option="abyss"] .theme-preview i:first-child {
+  background: #02080c;
+  box-shadow: inset -1px 0 rgb(92 232 218 / 8%);
+}
+
+.theme-option[data-theme-option="abyss"] .theme-preview i:nth-child(2) {
+  background: transparent;
+}
+
+.theme-option[data-theme-option="abyss"] .theme-preview i:last-child {
+  background: #03121a;
+  border-top-color: rgb(92 232 218 / 22%);
+  box-shadow: inset 0 1px 0 rgb(92 232 218 / 18%);
+}
+
+.theme-option[data-theme-option="rose"] .theme-preview {
+  border-color: rgb(244 214 224 / 18%);
+  background:
+    radial-gradient(ellipse 46% 38% at 88% 4%, rgb(244 214 224 / 22%), transparent 58%),
+    radial-gradient(ellipse 28% 22% at 92% 10%, rgb(230 196 168 / 14%), transparent 52%),
+    radial-gradient(ellipse 58% 48% at 8% 112%, rgb(122 49 72 / 32%), transparent 60%),
+    #0e070c;
+  box-shadow:
+    inset 0 1px rgb(255 248 250 / 14%),
+    0 8px 18px rgb(8 3 7 / 36%);
+}
+
+.theme-option[data-theme-option="rose"] .theme-preview::after {
+  background: linear-gradient(90deg, #7a3148, #e3a3b8, #e6c4a8);
+  box-shadow:
+    0 12px 0 rgb(227 163 184 / 22%),
+    0 0 16px rgb(244 214 224 / 20%);
+}
+
+.theme-option[data-theme-option="rose"] .theme-preview i:first-child {
+  background:
+    linear-gradient(180deg, rgb(227 163 184 / 16%), transparent 46%),
+    #140b11;
+  box-shadow: inset -1px 0 rgb(244 214 224 / 10%);
+}
+
+.theme-option[data-theme-option="rose"] .theme-preview i:nth-child(2) {
+  background:
+    radial-gradient(circle at 78% 0%, rgb(244 214 224 / 20%), transparent 40%),
+    linear-gradient(158deg, #2b1b24, #1a1016 64%);
+}
+
+.theme-option[data-theme-option="rose"] .theme-preview i:last-child {
+  background: linear-gradient(180deg, #1e1218, #12090f);
+  border-top-color: rgb(244 214 224 / 14%);
+}
+
+.theme-option[data-theme-option="polaris"] .theme-preview {
+  border-color: rgb(169 210 255 / 16%);
+  background:
+    radial-gradient(circle at 78% 18%, #fff 0 1px, rgb(242 220 162 / 45%) 2.5px, transparent 8px),
+    radial-gradient(circle at 22% 30%, rgb(255 255 255 / 70%) 0 .8px, transparent 1.6px),
+    radial-gradient(circle at 46% 20%, rgb(214 232 255 / 60%) 0 .8px, transparent 1.6px),
+    radial-gradient(circle at 60% 44%, rgb(255 255 255 / 55%) 0 .8px, transparent 1.6px),
+    radial-gradient(circle at 88% 52%, rgb(214 232 255 / 50%) 0 .8px, transparent 1.6px),
+    linear-gradient(150deg, transparent 22%, rgb(200 214 255 / 16%) 42%, rgb(160 150 235 / 12%) 56%, transparent 74%),
+    linear-gradient(180deg, #0b1633, #070d1f 60%, #081326);
+  box-shadow:
+    inset 0 1px rgb(169 210 255 / 12%),
+    0 4px 12px rgb(0 0 0 / 36%);
+}
+
+/* Mountain ridge on the horizon. */
+.theme-option[data-theme-option="polaris"] .theme-preview::before {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  height: 26%;
+  background: #030710;
+  clip-path: polygon(0 60%, 12% 30%, 22% 52%, 36% 12%, 48% 46%, 62% 22%, 76% 50%, 88% 26%, 100% 44%, 100% 100%, 0 100%);
+  content: "";
+  pointer-events: none;
+}
+
+.theme-option[data-theme-option="polaris"] .theme-preview::after {
+  background: linear-gradient(90deg, #c9c4ff, #a9d2ff 70%, #f2dca2);
+  box-shadow: 0 0 14px rgb(169 210 255 / 30%);
+}
+
+.theme-option[data-theme-option="polaris"] .theme-preview i:first-child {
+  background: #04070f;
+  box-shadow: inset -1px 0 rgb(169 210 255 / 8%);
+}
+
+.theme-option[data-theme-option="polaris"] .theme-preview i:nth-child(2) {
+  background: linear-gradient(180deg, rgb(11 22 51 / 80%), rgb(7 12 24 / 90%));
+}
+
+.theme-option[data-theme-option="polaris"] .theme-preview i:last-child {
+  background: #04070f;
+  border-top-color: rgb(169 210 255 / 10%);
+}
+
+.theme-option[data-theme-option="calamus"] .theme-preview {
+  border: 1px solid rgb(238 233 223 / 18%);
+  border-radius: 2px;
+  background: #0f0e0d;
+  box-shadow: none;
+}
+
+/* An ink stroke on a plain page. */
+.theme-option[data-theme-option="calamus"] .theme-preview::after {
+  width: 42%;
+  height: 3px;
+  border-radius: 0;
+  background: #6a8fea;
+  box-shadow: 0 11px 0 rgb(238 233 223 / 22%), 0 22px 0 rgb(238 233 223 / 12%);
+}
+
+.theme-option[data-theme-option="calamus"] .theme-preview i:first-child {
+  background: #0f0e0d;
+  box-shadow: inset -1px 0 rgb(238 233 223 / 12%);
+}
+
+.theme-option[data-theme-option="calamus"] .theme-preview i:nth-child(2) {
+  background: #171614;
+  box-shadow: inset 2px 0 0 #e0613f;
+}
+
+.theme-option[data-theme-option="calamus"] .theme-preview i:last-child {
+  background: #0f0e0d;
+  border-top: 1px solid rgb(238 233 223 / 14%);
+}
+
+/* Theme picker previews of Dark and Prisma. They sat in those themes' own
+   styles, which now load only while the theme is active; the picker shows
+   every preview at all times. */
+.theme-option[data-theme-option="dark"] .theme-preview {
+  border-color: #303740;
+  background: #020304;
+}
+.theme-option[data-theme-option="dark"] .theme-preview::before { content: none; }
+.theme-option[data-theme-option="dark"] .theme-preview::after {
+  background: #bcc7d4;
+  box-shadow: 0 14px 0 #626d7a;
+}
+.theme-option[data-theme-option="dark"] .theme-preview i:first-child { background: #080a0c; }
+.theme-option[data-theme-option="dark"] .theme-preview i:nth-child(2) {
+  background: #101316;
+  border-color: #303740;
+}
+.theme-option[data-theme-option="dark"] .theme-preview i:last-child {
+  border-top-color: #303740;
+  background: #080a0c;
+}
+
+.theme-option[data-theme-option="prisma"] .theme-preview {
+  border-color: rgb(185 215 224 / 24%);
+  background:
+    radial-gradient(ellipse at 88% 12%, rgb(126 176 186 / 26%), transparent 68%),
+    radial-gradient(ellipse at 30% 100%, rgb(168 146 158 / 14%), transparent 74%),
+    #13161b;
+  box-shadow: 0 5px 14px rgb(0 0 0 / 32%), 0 1px 0 rgb(230 245 250 / 8%) inset;
+}
+
+.theme-option[data-theme-option="prisma"] .theme-preview::before {
+  position: absolute;
+  z-index: 2;
+  top: -24px;
+  right: -28px;
+  width: 80px;
+  height: 85px;
+  border: 1px solid rgb(185 215 224 / 18%);
+  border-radius: 50%;
+  background: linear-gradient(145deg, transparent 15%, rgb(126 176 186 / 12%), rgb(168 146 158 / 10%) 75%, transparent);
+  box-shadow: 9px 0 0 rgb(185 215 224 / 3%) inset;
+  content: "";
+  transform: rotate(-28deg);
+}
+
+.theme-option[data-theme-option="prisma"] .theme-preview::after {
+  z-index: 3;
+  background: linear-gradient(90deg, #8a7480, #568e98 58%, #d0cac2);
+  box-shadow: none;
+}
+
+.theme-option[data-theme-option="prisma"] .theme-preview i:first-child {
+  background: linear-gradient(180deg, rgb(86 142 152 / 8%), transparent 48%), #0a0c10;
+}
+
+.theme-option[data-theme-option="prisma"] .theme-preview i:nth-child(2) {
+  background: linear-gradient(145deg, rgb(86 142 152 / 10%), transparent 70%);
+}
+
+.theme-option[data-theme-option="prisma"] .theme-preview i:last-child {
+  border-top-color: rgb(185 215 224 / 14%);
+  background: #0a0c10;
+}

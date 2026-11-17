@@ -1,0 +1,14 @@
+packages:
+  - apps/*
+  - packages/*
+
+overrides:
+  "@babel/helper-compilation-targets>lru-cache": "5.1.1"
+
+onlyBuiltDependencies:
+  - esbuild
+
+allowBuilds:
+  esbuild: true
+
+confirmModulesPurge: false

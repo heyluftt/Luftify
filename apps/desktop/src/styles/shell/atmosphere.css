@@ -1,0 +1,26 @@
+/*
+ * Theme atmospheres sit in the same grid
+ * cell as the content canvas and paint its background, so the effect only
+ * shows behind the page, never over the sidebar or the player bar.
+ */
+
+.app-frame {
+  position: relative;
+}
+
+.app-frame > :is(.rose-chamber, .redline-atmosphere, .prisma-atmosphere, .polaris-sky, .abyss-scene, .aeris-scene, .violet-night) {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  grid-area: main;
+  margin: var(--canvas-margin);
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background-color: var(--canvas);
+  pointer-events: none;
+}
+
+.app-frame:has(> :is(.rose-chamber, .redline-atmosphere, .prisma-atmosphere, .polaris-sky, .abyss-scene, .aeris-scene, .violet-night)) > .content-shell {
+  z-index: 1;
+  background: transparent;
+}

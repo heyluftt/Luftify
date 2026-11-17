@@ -1,0 +1,43 @@
+.aeris-scene {
+  container-type: size;
+  contain: strict;
+  isolation: isolate;
+}
+
+.aeris-daylight,
+.aeris-cloud,
+.aeris-wind,
+.aeris-reading-veil { position: absolute; inset: 0; }
+
+.aeris-daylight {
+  background:
+    radial-gradient(ellipse 65% 70% at 4% 20%, color-mix(in srgb, var(--canvas) 80%, transparent), transparent 85%),
+    radial-gradient(ellipse 58% 74% at 84% 34%, color-mix(in srgb, var(--aeris-sky) 70%, transparent), transparent 74%),
+    linear-gradient(150deg, var(--aeris-sun), var(--aeris-cloud) 64%, var(--aeris-steel));
+}
+
+.aeris-cloud {
+  inset: -12%;
+  background:
+    radial-gradient(ellipse 43% 14% at 26% 47%, var(--aeris-white), transparent 78%),
+    radial-gradient(ellipse 36% 10% at 52% 43%, var(--aeris-white), transparent 80%),
+    radial-gradient(ellipse 44% 16% at 83% 45%, var(--aeris-white), transparent 76%);
+  opacity: .18;
+  animation: aeris-cloud-pass 48s ease-in-out infinite alternate;
+}
+
+.aeris-cloud-far {
+  opacity: .12;
+  transform: translateY(26%) scale(1.2);
+  animation-name: aeris-cloud-return;
+  animation-duration: 65s;
+  animation-delay: -21s;
+}
+
+.aeris-reading-veil {
+  background: linear-gradient(90deg, var(--canvas), color-mix(in srgb, var(--canvas) 88%, transparent) 36%, transparent 76%);
+  pointer-events: none;
+}
+
+/* Text may occupy the right edge too; reading views get a quiet, continuous floor. */
+.app-frame:not([data-theme-art="home"]) .aeris-reading-veil { background: color-mix(in srgb, var(--canvas) 84%, transparent); }

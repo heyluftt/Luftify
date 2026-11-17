@@ -1,0 +1,76 @@
+@import "./prisma-glass.css";
+@import "./prisma-motion.css";
+
+/* Cover light sits beneath the entire content shell, including the topbar. */
+.prisma-atmosphere {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+}
+.prisma-scene, .prisma-scene-light { position: absolute; inset: 0; }
+.prisma-scene { --scene-light: color-mix(in srgb, var(--scene-highlight) 60%, #f4f6fa); }
+.prisma-scene.is-entering { z-index: 1; }
+.prisma-scene.is-leaving { z-index: 0; }
+.prisma-scene-light { opacity: 1; transition: opacity 1.2s ease; }
+.prisma-light-wash, .prisma-atmosphere-vignette {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+/* The cover's own colors as four broad lights. Smooth gradients rather than
+   large, continuously blurred layers. */
+.prisma-light-wash {
+  opacity: calc(var(--scene-field-strength) * var(--prisma-light-opacity, 1));
+}
+.prisma-light-wash-primary {
+  inset: -32% -26% 4% 6%;
+  background: radial-gradient(ellipse 54% 60% at 76% 32%,
+    color-mix(in srgb, var(--scene-pigment-1) 90%, transparent),
+    color-mix(in srgb, var(--scene-pigment-1) 40%, transparent) 40%, transparent 74%);
+}
+.prisma-light-wash-secondary {
+  inset: 6% -18% -44% -22%;
+  background: radial-gradient(ellipse 56% 54% at 42% 70%,
+    color-mix(in srgb, var(--scene-pigment-2) 76%, transparent),
+    color-mix(in srgb, var(--scene-pigment-2) 26%, transparent) 46%, transparent 76%);
+}
+.prisma-light-wash-tertiary {
+  inset: -38% 18% 30% -30%;
+  background: radial-gradient(ellipse 50% 52% at 34% 30%,
+    color-mix(in srgb, var(--scene-pigment-3) 62%, transparent), transparent 72%);
+}
+.prisma-light-wash-quaternary {
+  inset: 18% -34% -26% 34%;
+  background: radial-gradient(ellipse 46% 50% at 62% 58%,
+    color-mix(in srgb, var(--scene-pigment-4) 54%, transparent), transparent 72%);
+}
+/* Darkens only where text starts, so the color reaches across the page. */
+.prisma-atmosphere-vignette {
+  z-index: 3;
+  inset: 0;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--canvas) 50%, transparent), transparent 52%),
+    linear-gradient(0deg, color-mix(in srgb, var(--canvas) 46%, transparent), transparent 36%);
+}
+.prisma-atmosphere.is-paused .prisma-scene-light { opacity: .78; }
+/* Reading/detail views keep cover light but let the content take focus. */
+:root[data-theme="luft.prisma"] .app-frame:is([data-theme-art="lyrics"], [data-theme-art="none"], [data-theme-art="solo"]) {
+  --prisma-art-opacity: .25;
+  --prisma-light-opacity: .75;
+}
+:root[data-theme="luft.prisma"] .app-frame[data-theme-art="lyrics"] {
+  --prisma-art-opacity: .12;
+  --prisma-light-opacity: .55;
+}
+:root[data-theme="luft.prisma"] .app-frame:is([data-theme-art="discovery"], [data-theme-art="radio"]) {
+  --prisma-art-opacity: .65;
+  --prisma-light-opacity: .85;
+}
+@media (max-width: 1100px) {
+  .prisma-glass-position { right: -40%; }
+}
+@media (max-width: 760px) {
+  .prisma-glass-position { --prisma-responsive-opacity: .55; right: -54%; }
+}

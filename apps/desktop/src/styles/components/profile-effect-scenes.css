@@ -1,0 +1,26 @@
+/* The drawn effect scenes (EffectScenes.tsx): waves and the aurora veil. Geometry stays still; whole layers move. */
+.fx-wave-lines, .fx-aurora-scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* Waves: each line flows at its own pace and bobs a little. */
+.fx-wave-lines { overflow: hidden; filter: drop-shadow(0 0 var(--sp-1) color-mix(in srgb, var(--banner-accent) 60%, transparent)); }
+.fx-wave-line {
+  position: absolute; top: 0; left: 0; width: 200%; height: 100%;
+  animation: fx-wave-flow var(--speed) linear infinite var(--d), fx-wave-bob calc(var(--speed) / 3) ease-in-out infinite alternate var(--d);
+}
+.fx-wave-line:nth-child(even) { animation-direction: reverse, alternate; }
+@keyframes fx-wave-flow { to { transform: translateX(-50%); } }
+@keyframes fx-wave-bob { from { translate: 0 4%; } to { translate: 0 -4%; } }
+
+/* Aurora veil: soft curtains folding slowly, brighter where they overlap. */
+.fx-aurora-scene { mix-blend-mode: screen; }
+.fx-aurora-ribbon { transform-origin: center; filter: blur(1.5px); animation: fx-aurora-fold 18s ease-in-out infinite alternate; }
+.fx-aurora-ribbon[data-layer="1"] { animation-duration: 23s; animation-delay: -7s; opacity: .85; }
+.fx-aurora-ribbon[data-layer="2"] { animation-duration: 29s; animation-delay: -15s; opacity: .75; }
+@keyframes fx-aurora-fold { from { transform: translate(-2%, 2%) skewY(-3deg); opacity: .6; } to { transform: translate(3%, -3%) skewY(3deg); opacity: 1; } }
+
+/* Hover previews run; the chosen scene runs alongside the large live preview. */
+.look-choice:not([aria-checked="true"]):not(:hover):not(:focus-visible) .banner-effect *,
+.look-choice:not([aria-checked="true"]):not(:hover):not(:focus-visible) .banner-effect *::before { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .fx-wave-line, .fx-aurora-ribbon { animation: none; }
+}

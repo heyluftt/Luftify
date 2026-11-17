@@ -1,0 +1,433 @@
+/*
+ * Friend profiles: the profile dialog, the "listening now" strip, friend
+ * rows, the own profile, the Luft corner and the room invite list.
+ */
+
+/* ---------- Dialog ---------- */
+.friend-profile-layer {
+  position: fixed;
+  z-index: 110;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-8) var(--sp-6);
+  background: var(--overlay);
+  animation: friend-profile-fade var(--duration-normal) var(--ease-out);
+}
+
+.friend-profile {
+  position: relative;
+  display: grid;
+  width: min(520px, 100%);
+  max-height: min(820px, 100%);
+  overflow: hidden auto;
+  isolation: isolate;
+  border-radius: var(--r-xl);
+  background: var(--raised);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line);
+  color: var(--text);
+  outline: none;
+  animation: friend-profile-rise var(--duration-slow) var(--ease-spring);
+}
+
+/* The banner across the top; the picture overlaps its lower edge. */
+.friend-profile-cover {
+  position: relative;
+  height: 150px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  background: var(--fill-1);
+}
+
+.friend-profile-cover::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 60px;
+  background: linear-gradient(transparent, var(--raised));
+  content: "";
+}
+
+/* Without a chosen background: the role colours, or the cover being heard. */
+.friend-profile-glow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(90% 140% at 20% 0%, color-mix(in srgb, var(--role-a, var(--accent)) 34%, transparent), transparent 70%),
+    radial-gradient(80% 140% at 85% 10%, color-mix(in srgb, var(--role-c, var(--accent)) 22%, transparent), transparent 70%),
+    var(--fill-1);
+}
+
+.friend-profile-glow .album-art {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  filter: blur(42px) saturate(1.3);
+  opacity: .5;
+  transform: scale(1.3);
+}
+
+.friend-profile-close {
+  position: absolute;
+  z-index: 2;
+  top: var(--sp-3);
+  right: var(--sp-3);
+  background: color-mix(in srgb, var(--canvas) 55%, transparent);
+  color: var(--text);
+}
+
+.friend-profile-hero {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-2);
+  margin-top: -76px;
+  padding: 0 var(--sp-8) var(--sp-4);
+  text-align: center;
+}
+
+.friend-profile-hero > .friends-avatar-presence { margin-bottom: var(--sp-2); }
+/* A ring of the dialog colour cuts the picture out of the banner. */
+.friend-profile-hero > .friends-avatar-presence .listen-avatar { box-shadow: 0 0 0 6px var(--raised); }
+/* A frame or role ring separates the picture itself; the cut-out would cover it. */
+.friend-profile-hero > .friends-avatar-presence .role-avatar:is([data-frame], [data-role]):not([data-frame="none"]) .listen-avatar { box-shadow: none; }
+.friend-profile-hero > .friends-avatar-presence > i { right: 7px; bottom: 7px; width: 20px; height: 20px; border-width: 4px; border-color: var(--raised); }
+
+.friend-profile-hero h2 {
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.friend-profile-hero .role-badges { justify-content: center; }
+
+.friend-profile-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px var(--sp-3);
+  margin-top: 2px;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.friend-profile-status > small { color: var(--text-3); font-size: var(--fs-xs); }
+.friend-profile-status > small.friend-profile-hidden { display: inline-flex; align-items: center; gap: 5px; }
+
+/* Editing replaces the profile view; the editor brings its own spacing. */
+.friend-profile[data-editing] > .own-profile-editor { padding: var(--sp-6); }
+
+.friend-profile-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-8) var(--sp-5);
+}
+
+.friend-profile-error { padding: 0 var(--sp-8) var(--sp-3); text-align: center; }
+.friend-profile > .friends-confirm { margin: 0 var(--sp-6) var(--sp-4); }
+
+/* Now playing */
+.friend-now {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-3);
+  border-radius: var(--r-lg);
+  background: var(--fill-1);
+}
+
+.friend-now-art .album-art { width: 112px; height: 112px; box-shadow: var(--shadow-cover); }
+
+.friend-now-copy { display: grid; min-width: 0; gap: 3px; }
+.friend-now-copy > strong,
+.friend-now-copy > small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.friend-now-copy > strong { font-size: var(--fs-lg); font-weight: var(--fw-semibold); }
+.friend-now-copy > small { color: var(--text-2); font-size: var(--fs-sm); }
+
+.friend-now-label {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: var(--sp-1);
+  color: var(--accent);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-caps, .08em);
+  text-transform: uppercase;
+}
+
+.friend-now-label > i:last-of-type { margin-right: 5px; }
+
+.friend-now-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-3); }
+.friend-now-actions > button { min-height: 32px; padding-inline: var(--sp-3); font-size: var(--fs-sm); }
+
+/* Equaliser bars, shared by the label, rows and the strip. */
+.friend-now-label > i,
+.friends-now-playing > i {
+  width: 3px;
+  height: 12px;
+  border-radius: 2px;
+  background: currentColor;
+  transform-origin: bottom;
+  animation: friend-eq 1.1s ease-in-out infinite;
+}
+
+.friend-now-label > i:nth-child(2),
+.friends-now-playing > i:nth-child(2) { animation-delay: -.45s; }
+.friend-now-label > i:nth-child(3),
+.friends-now-playing > i:nth-child(3) { animation-delay: -.8s; }
+
+/* Recently played */
+.friend-recent h3,
+.friends-owner-team h3 {
+  margin-bottom: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-caps, .08em);
+  text-transform: uppercase;
+}
+
+.friend-recent ol { display: grid; margin: 0; padding: 0; list-style: none; }
+
+.friend-recent button {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 6px var(--sp-2);
+  border-radius: var(--r-sm);
+  text-align: left;
+  transition: background var(--duration-fast) ease;
+}
+
+.friend-recent button:hover:not(:disabled) { background: var(--fill-1); }
+
+.friend-recent-art {
+  position: relative;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: var(--r-xs);
+  background: var(--fill-2);
+  color: var(--text-2);
+}
+
+.friend-recent-art .album-art { width: 40px; height: 40px; border-radius: inherit; }
+
+.friend-recent-art > svg:last-child {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  color: #fff;
+  filter: drop-shadow(0 1px 3px rgb(0 0 0 / 60%));
+  opacity: 0;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.friend-recent button:hover:not(:disabled) .friend-recent-art > svg:last-child,
+.friend-recent button:focus-visible .friend-recent-art > svg:last-child { opacity: 1; }
+
+.friend-recent-copy { display: grid; min-width: 0; }
+.friend-recent-copy strong,
+.friend-recent-copy small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.friend-recent-copy strong { font-size: var(--fs-sm); font-weight: var(--fw-medium); }
+.friend-recent-copy small { color: var(--text-2); font-size: var(--fs-xs); }
+.friend-recent time { color: var(--text-3); font-size: var(--fs-xs); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.friend-listening-empty {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--fill-1);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+
+.friend-listening-empty > svg { flex: 0 0 auto; }
+
+/* ---------- Listening now strip ---------- */
+.friends-now > h2 {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--sp-3);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-semibold);
+}
+.friends-now > h2 > .friends-now-playing { margin-right: var(--sp-2); color: var(--accent); }
+
+.friends-now > ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--sp-3); margin: 0; padding: 0; list-style: none; }
+
+.friends-now-card {
+  --card-accent: var(--profile-accent, var(--role-a, var(--accent)));
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  /* clip, not hidden: the blurred cover overflows and must not become scrollable */
+  overflow: clip;
+  isolation: isolate;
+  padding: var(--sp-3) var(--sp-3) calc(var(--sp-3) + 3px);
+  border-radius: var(--r-lg);
+  background: var(--fill-1);
+  box-shadow: inset 0 0 0 1px var(--line);
+  animation: friends-card-in var(--duration-slow) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+  transition: box-shadow var(--duration-normal) ease, transform var(--duration-normal) var(--ease-spring);
+}
+.friends-now-card:hover { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--card-accent) 40%, transparent); transform: translateY(-2px); }
+
+/* The cover, blurred and faint, tints the card. */
+.friends-now-backdrop { position: absolute; z-index: -1; inset: -20%; opacity: .32; filter: blur(28px) saturate(1.3); pointer-events: none; }
+.friends-now-backdrop .album-art { width: 100%; height: 100%; border-radius: 0; }
+
+.friends-now-main { display: flex; min-width: 0; flex: 1; align-items: center; gap: var(--sp-3); padding: 0; border-radius: var(--r-md); text-align: left; }
+.friends-now-art { position: relative; flex: 0 0 auto; }
+.friends-now-art .album-art { width: 64px; height: 64px; border-radius: var(--r-cover); box-shadow: var(--shadow-cover); }
+.friends-now-copy { display: grid; min-width: 0; gap: 2px; }
+.friends-now-copy > strong,
+.friends-now-copy > small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.friends-now-copy > strong { font-size: var(--fs-md); font-weight: var(--fw-semibold); }
+.friends-now-copy > small { color: var(--text-2); font-size: var(--fs-xs); }
+/* The ring around the small picture sits outside it; the name keeps clear of it. */
+.friends-now-who { display: inline-flex; min-width: 0; align-items: center; gap: 10px; margin-top: var(--sp-1); padding-left: 2px; color: var(--card-accent); font-size: var(--fs-xs); font-weight: var(--fw-medium); }
+.friends-now-card > .listen-along-button { background: color-mix(in srgb, var(--canvas) 50%, transparent); }
+.friends-now-card > .listen-along-button:hover:not(:disabled) { background: var(--accent-soft); color: var(--accent); }
+
+/* How far the song is, along the bottom edge. */
+.friends-now-progress { position: absolute; inset: auto 0 0; height: 3px; background: color-mix(in srgb, var(--text) 8%, transparent); }
+.friends-now-progress > b { display: block; height: 100%; border-radius: 0 2px 2px 0; background: var(--card-accent); transition: width 1s linear; }
+
+/* ---------- Friend list ---------- */
+.friends-list .friends-section-heading { align-items: flex-start; }
+.friends-list .friends-filters { margin: 0; }
+
+.friends-row-track { display: flex; min-width: 0; align-items: center; gap: 6px; color: var(--accent); }
+.friends-row-track-art .album-art { width: 18px; height: 18px; border-radius: 3px; }
+.friends-row-track > small { min-width: 0; overflow: hidden; margin: 0; color: var(--text-2); text-overflow: ellipsis; white-space: nowrap; }
+.friends-row-track .friends-now-playing { height: 12px; }
+.friends-row-track .friends-now-playing > i { width: 2px; height: 10px; }
+
+.friends-code small { display: flex; align-items: center; gap: 4px; }
+
+.friends-code[data-custom] {
+  background: linear-gradient(100deg, color-mix(in srgb, #8fd3ff 10%, var(--fill-2)), color-mix(in srgb, #ff9fd6 10%, var(--fill-2)));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #c3a6ff 30%, transparent);
+}
+
+.friends-code[data-custom] strong { font-size: var(--fs-h3); letter-spacing: .08em; }
+.friends-code[data-custom] small { color: color-mix(in srgb, #c3a6ff 60%, var(--text)); }
+
+/* ---------- Luft corner ---------- */
+.friends-owner {
+  background:
+    radial-gradient(120% 70% at 100% 0%, color-mix(in srgb, var(--role-b) 12%, transparent), transparent 70%),
+    var(--fill-1);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--role-b) 22%, transparent);
+}
+
+.friends-owner .friends-section-heading > svg { color: color-mix(in srgb, var(--role-b) 70%, var(--text)); }
+
+.friends-owner-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-2); margin: 0 0 var(--sp-4); }
+.friends-owner-stats > div { padding: var(--sp-3); border-radius: var(--r-md); background: var(--fill-1); }
+.friends-owner-stats dt { color: var(--text-2); font-size: var(--fs-2xs); }
+.friends-owner-stats dd { margin: 2px 0 0; font-size: var(--fs-h3); font-weight: var(--fw-semibold); font-variant-numeric: tabular-nums; }
+
+.friends-owner-code { display: grid; gap: var(--sp-2); }
+.friends-owner-code > small { color: var(--text-2); font-size: var(--fs-2xs); line-height: 1.5; }
+
+.friends-owner-code-field {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  padding-left: var(--sp-3);
+  border-radius: var(--r-sm);
+  background: var(--fill-2);
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+}
+
+.friends-page .friends-owner-code-field > input { padding-left: 2px; background: transparent; letter-spacing: .06em; }
+.friends-owner-code-field:focus-within { background: var(--fill-3); }
+
+.friends-owner-team { margin-top: var(--sp-5); }
+.friends-owner-team ul { display: grid; margin: 0; padding: 0; list-style: none; }
+.friends-owner-team li > :is(button, div) { display: flex; width: 100%; align-items: center; gap: var(--sp-3); padding: 6px; border-radius: var(--r-sm); text-align: left; }
+.friends-owner-team li > button:hover { background: var(--fill-1); }
+.friends-owner-team .friends-person-copy { display: grid; gap: 3px; }
+.friends-owner-team .friends-person-copy strong { font-size: var(--fs-sm); }
+.friends-owner-team > small { display: block; margin-top: var(--sp-2); color: var(--text-2); font-size: var(--fs-2xs); }
+
+
+/* ---------- Room invite list ---------- */
+.friends-room-people { display: grid; margin: 0 0 var(--sp-2); padding: 0; list-style: none; }
+.friends-room-people > li { display: flex; align-items: center; gap: var(--sp-3); padding: 6px 0; }
+.friends-room-people .friends-person-copy strong { font-size: var(--fs-sm); }
+.friends-room-people .friends-avatar-presence > i { border-color: var(--raised); }
+.friends-room-people button[data-sent] { color: var(--success); }
+.friends-room-invite .text-button + .text-button { margin-top: 0; }
+
+@keyframes friend-profile-fade {
+  from { opacity: 0; }
+}
+
+@keyframes friend-profile-rise {
+  from { opacity: 0; transform: translate3d(0, 14px, 0) scale(.98); }
+}
+
+@keyframes friend-eq {
+  0%, 100% { transform: scaleY(.35); }
+  50% { transform: scaleY(1); }
+}
+
+@media (max-width: 620px) {
+  .friend-profile-layer { padding: var(--sp-4); }
+  .friend-profile-hero { padding: 0 var(--sp-4) var(--sp-4); }
+  .friend-now { grid-template-columns: 80px minmax(0, 1fr); }
+  .friend-now-art .album-art { width: 80px; height: 80px; }
+}
+
+/* ---------- Status line ---------- */
+.friend-profile-bio { max-width: 38ch; margin-top: var(--sp-1); color: var(--text); font-size: var(--fs-md); line-height: 1.5; overflow-wrap: anywhere; }
+
+/* ---------- Badge editor (Luft corner) ---------- */
+
+.badge-editor { margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px solid var(--line); }
+.badge-editor > h3 { margin-bottom: var(--sp-1); color: var(--text-2); font-size: var(--fs-2xs); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-caps, .08em); text-transform: uppercase; }
+.badge-editor > p { margin-bottom: var(--sp-3); color: var(--text-2); font-size: var(--fs-xs); line-height: 1.5; }
+.badge-editor-list { display: grid; gap: 2px; margin: 0 0 var(--sp-3); padding: 0; list-style: none; }
+.badge-editor-list > li { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 36px; }
+.badge-editor-list > li > span:last-child { display: flex; gap: 2px; }
+.badge-editor-confirm .text-button { min-height: 28px; font-size: var(--fs-xs); }
+.badge-editor-new { width: 100%; justify-content: center; }
+
+.badge-editor-form { display: grid; gap: var(--sp-2); padding: var(--sp-3); border-radius: var(--r-md); background: var(--fill-1); }
+.badge-editor-preview { display: grid; place-items: center; min-height: 56px; margin-bottom: var(--sp-1); border-radius: var(--r-sm); background: var(--fill-1); }
+.badge-editor-caption { margin-top: var(--sp-1); color: var(--text-2); font-size: var(--fs-xs); }
+
+.badge-editor-icons { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; }
+.badge-editor-icons > button { display: grid; aspect-ratio: 1; place-items: center; border-radius: var(--r-xs); background: var(--fill-1); color: var(--text-2); transition: background var(--duration-fast) ease, color var(--duration-fast) ease; }
+.badge-editor-icons > button:hover { background: var(--fill-2); color: var(--text); }
+.badge-editor-icons > button[aria-checked="true"] { background: var(--accent-soft); color: var(--accent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent); }
+
+.badge-editor-colors { display: flex; flex-wrap: wrap; gap: 6px; }
+.badge-editor-colors > button { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; }
+.badge-editor-colors > button > i { width: 18px; height: 18px; border-radius: 50%; background: var(--role-a); transition: transform var(--duration-fast) var(--ease-spring); }
+.badge-editor-colors > button:hover > i { transform: scale(1.12); }
+.badge-editor-colors > button[aria-checked="true"] { box-shadow: 0 0 0 2px var(--role-a); }
+
+.badge-editor-actions { display: flex; justify-content: flex-end; gap: var(--sp-2); margin-top: var(--sp-2); }

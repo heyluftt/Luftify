@@ -1,0 +1,29 @@
+@import "./prisma-atmosphere.css";
+@import "./prisma-surfaces.css";
+@import "./prisma-controls.css";
+
+/* Prisma 3: a room dyed and lit by the current cover's own colors, optical glass. */
+:root[data-theme="luft.prisma"] {
+  color-scheme: dark;
+  --canvas: var(--prisma-panel, #13161b);
+  --raised: var(--prisma-raised, #20252b);
+  --sidebar-bg: var(--prisma-ink, #0a0c10);
+  --on-accent: var(--prisma-on-accent, #0a1015);
+  --prisma-glass: color-mix(in srgb, var(--accent) 26%, var(--text));
+  --prisma-rim: color-mix(in srgb, var(--prisma-glass) 18%, transparent);
+  --prisma-glass-top: color-mix(in srgb, var(--prisma-glass) 7%, transparent);
+  --accent-soft: color-mix(in srgb, var(--accent) 22%, transparent);
+  --fill-1: color-mix(in srgb, var(--prisma-glass) 6%, transparent);
+  --fill-2: color-mix(in srgb, var(--prisma-glass) 10%, transparent);
+  --fill-3: color-mix(in srgb, var(--prisma-glass) 15%, transparent);
+  --line: color-mix(in srgb, var(--prisma-glass) 12%, transparent);
+  --line-strong: color-mix(in srgb, var(--prisma-glass) 22%, transparent);
+  --canvas-edge: color-mix(in srgb, var(--prisma-glass) 15%, transparent);
+  --shadow-1: 0 12px 32px #0005, 0 1px 0 var(--prisma-glass-top) inset;
+  --shadow-2: 0 24px 70px #0008, 0 1px 0 var(--prisma-glass-top) inset;
+  --shadow-cover: 0 14px 32px #0006, 0 0 0 1px var(--line);
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --font-display: "Segoe UI Variable Display", "Segoe UI", sans-serif;
+}

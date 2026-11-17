@@ -1,0 +1,585 @@
+/* Queue: side panel (also used by the history) and the full queue page. */
+
+/* ---------- Side panel ---------- */
+.queue-panel-backdrop {
+  position: fixed;
+  z-index: 900;
+  inset: 0;
+  background: color-mix(in srgb, #000 22%, transparent);
+  animation: ds-fade var(--duration-normal) ease both;
+}
+
+.queue-panel-backdrop.is-closing {
+  animation: queue-fade-out var(--duration-fast) ease both;
+}
+
+.queue-panel {
+  position: fixed;
+  z-index: 901;
+  top: calc(var(--titlebar-height) + var(--shell-gap));
+  right: var(--shell-gap);
+  bottom: calc(var(--player-row) + var(--shell-gap));
+  display: flex;
+  width: min(400px, calc(100vw - 2 * var(--shell-gap)));
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--raised);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line);
+  color: var(--text);
+  animation: queue-panel-in var(--duration-normal) var(--ease-out) both;
+}
+
+.queue-panel.is-closing {
+  animation: queue-panel-out var(--duration-fast) var(--ease-exit) both;
+}
+
+.queue-panel-header {
+  display: flex;
+  min-height: 60px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-3) var(--sp-2) var(--sp-5);
+}
+
+.queue-panel-title h2 {
+  font-size: var(--fs-h3);
+}
+
+.queue-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.queue-panel-close {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text-2);
+}
+
+.queue-panel-close:hover {
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+.queue-panel-scroll {
+  min-height: 0;
+  flex: 1;
+  padding: 0 var(--sp-2) var(--sp-4);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.queue-panel-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin: var(--sp-4) var(--sp-3) var(--sp-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.queue-panel-section-head > span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.queue-panel-section-meta {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+}
+
+/* ---------- Now playing card ---------- */
+.queue-current {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2);
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+}
+
+.queue-current .album-art.tiny {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--r-sm);
+}
+
+.queue-current-copy {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.queue-current-label {
+  color: var(--accent-text);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+}
+
+.queue-current-title,
+.queue-current-artist {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.queue-current-title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+}
+
+.queue-current-artist {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.queue-row-play {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text-2);
+}
+
+.queue-row-play:hover {
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+/* ---------- Track rows ---------- */
+.queue-track-list {
+  display: grid;
+  gap: 1px;
+}
+
+.queue-track-virtual {
+  position: relative;
+}
+
+.queue-track-virtual > .queue-track-row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.queue-track-row {
+  position: relative;
+  display: grid;
+  min-height: 56px;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 4px var(--sp-2);
+  border-radius: var(--r-sm);
+}
+
+.queue-track-row:hover,
+.queue-track-row:focus-within {
+  background: var(--fill-1);
+}
+
+.queue-track-row.is-clickable {
+  cursor: pointer;
+}
+
+.queue-track-leading {
+  position: relative;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+}
+
+.queue-track-order {
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.queue-track-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text);
+  opacity: 0;
+}
+
+.queue-track-row:hover .queue-track-order,
+.queue-track-row:focus-within .queue-track-order {
+  opacity: 0;
+}
+
+.queue-track-row:hover .queue-track-play,
+.queue-track-row:focus-within .queue-track-play {
+  opacity: 1;
+}
+
+.queue-track-main {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.queue-track-copy {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.queue-track-title,
+.queue-track-artists {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.queue-track-title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+}
+
+.queue-track-artists {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.queue-track-skeleton {
+  display: grid;
+  gap: 7px;
+}
+
+.queue-track-skeleton > span {
+  display: block;
+  height: 10px;
+  border-radius: 5px;
+  background:
+    linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--text) 6%, transparent) 50%, transparent 70%) 0 0 / 300% 100%,
+    var(--fill-2);
+  animation: ds-shimmer 1.6s ease-in-out infinite;
+}
+
+.queue-track-skeleton > span:first-child {
+  width: 70%;
+}
+
+.queue-track-skeleton > span:last-child {
+  width: 42%;
+}
+
+.queue-track-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+}
+
+.queue-track-row:hover .queue-track-actions,
+.queue-track-row:focus-within .queue-track-actions {
+  opacity: 1;
+}
+
+.queue-track-action {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text-2);
+}
+
+.queue-track-action:hover:not(:disabled) {
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+.queue-track-remove:hover:not(:disabled) {
+  color: var(--danger);
+}
+
+.queue-track-drag-handle {
+  cursor: grab;
+  touch-action: none;
+}
+
+.queue-track-drag-handle:active {
+  cursor: grabbing;
+}
+
+.queue-track-row.is-removing {
+  opacity: .45;
+}
+
+/* ---------- Drag to reorder ----------
+   The dragged row lifts and follows the pointer; the rows it passes slide
+   aside to open the gap where it will land (useQueueDragReorder.ts). */
+body.queue-reorder-active {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.queue-track-list.is-reordering .queue-track-row {
+  transition: translate 220ms var(--ease-out);
+}
+
+/* Only the dragged row looks hovered while the others move under the pointer. */
+.queue-track-list.is-reordering .queue-track-row:not(.is-dragging, .is-dropping) {
+  background: transparent;
+}
+
+.queue-track-list.is-reordering .queue-track-row:not(.is-dragging, .is-dropping) :is(.queue-track-actions, .queue-track-play) {
+  opacity: 0;
+}
+
+.queue-track-list.is-reordering .queue-track-row:not(.is-dragging, .is-dropping) .queue-track-order {
+  opacity: 1;
+}
+
+.queue-track-row.is-shift-up {
+  translate: 0 calc(var(--queue-pitch) * -1);
+}
+
+.queue-track-row.is-shift-down {
+  translate: 0 var(--queue-pitch);
+}
+
+.queue-track-row:is(.is-dragging, .is-dropping) {
+  z-index: 2;
+  translate: 0 var(--queue-drag-y, 0);
+  background: var(--raised);
+  box-shadow: var(--shadow-2), 0 0 0 1px color-mix(in srgb, var(--accent) 34%, transparent);
+  scale: 1.015;
+}
+
+/* Follows the pointer without lag. */
+.queue-track-list.is-reordering .queue-track-row.is-dragging {
+  transition: scale 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+}
+
+/* Glides into the gap and comes down. */
+.queue-track-list.is-reordering .queue-track-row.is-dropping {
+  transition: translate 200ms var(--ease-out), scale 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+  box-shadow: none;
+  scale: 1;
+}
+
+/* The number shows where the title lands. */
+.queue-track-row.is-dragging .queue-track-order {
+  color: var(--accent);
+  font-weight: var(--fw-semibold);
+  opacity: 1;
+}
+
+.queue-track-row.is-dragging .queue-track-play {
+  opacity: 0;
+}
+
+.queue-track-row.is-dragging .queue-track-drag-handle {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.queue-track-row.is-dragging .album-art {
+  box-shadow: var(--shadow-1);
+}
+
+/* The reordered queue arrived: rows already stand in place. */
+.queue-track-list.is-settling .queue-track-row {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .queue-track-list.is-reordering .queue-track-row,
+  .queue-track-list.is-reordering .queue-track-row:is(.is-dragging, .is-dropping) {
+    transition: none;
+  }
+}
+
+.queue-track-spinner {
+  animation: ds-spin 1s linear infinite;
+}
+
+.queue-track-empty {
+  padding: var(--sp-6) var(--sp-3);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+.queue-reorder-error {
+  margin: var(--sp-2) var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
+  font-size: var(--fs-sm);
+}
+
+/* ---------- Feedback ---------- */
+.queue-feedback {
+  display: flex;
+  min-height: 260px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-8) var(--sp-5);
+  text-align: center;
+}
+
+.queue-feedback-icon {
+  color: var(--text-3);
+}
+
+.queue-feedback-title {
+  font-size: var(--fs-h3);
+}
+
+.queue-feedback-copy {
+  max-width: 320px;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.queue-refresh-button {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-full);
+  background: var(--fill-2);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.queue-refresh-button:hover:not(:disabled) {
+  background: var(--fill-3);
+}
+
+.queue-clear-button {
+  min-height: 28px;
+  background: transparent;
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+
+.queue-clear-button:hover:not(:disabled) {
+  background: var(--fill-1);
+  color: var(--danger);
+}
+
+.queue-count-badge {
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.queue-reorder-hint {
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+}
+
+/* ---------- Queue page ---------- */
+.queue-page {
+  max-width: 1080px;
+}
+
+.queue-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-8);
+}
+
+.queue-page-heading h1 {
+  font-size: var(--fs-h1);
+  letter-spacing: var(--tracking-title);
+}
+
+.queue-section {
+  margin-bottom: var(--sp-8);
+}
+
+.queue-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.queue-section-head h2 {
+  overflow: hidden;
+  font-size: var(--fs-h2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.queue-section-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.queue-page .queue-current {
+  max-width: 560px;
+}
+
+.queue-page .queue-track-row {
+  min-height: 60px;
+}
+
+@keyframes queue-panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+@keyframes queue-panel-out {
+  to {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+@keyframes queue-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .queue-panel {
+    top: auto;
+    left: var(--shell-gap);
+    width: auto;
+    max-height: 70vh;
+  }
+}

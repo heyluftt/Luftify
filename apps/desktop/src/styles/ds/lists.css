@@ -1,0 +1,294 @@
+/* Track lists: no box around them, rows breathe, the playing one is marked. */
+
+.track-list {
+  position: relative;
+  min-width: 0;
+}
+
+.virtual-track-rows {
+  position: relative;
+  width: 100%;
+}
+
+.virtual-track-row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.track-row {
+  display: grid;
+  grid-template-columns: 34px minmax(200px, 1.5fr) minmax(120px, 1fr) 66px 100px;
+  height: var(--track-row-height);
+  align-items: center;
+  gap: var(--sp-4);
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-sm);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.track-row:not(.track-header):hover,
+.track-row:not(.track-header):focus-within {
+  background: var(--fill-1);
+}
+
+/* Column labels: quiet text on the page with a hairline. Only while the
+   header sticks (TrackListHeader sets .is-stuck) does it get a frosted
+   background over the rows scrolling underneath. */
+.track-header-sentinel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.track-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: 38px;
+  margin-bottom: var(--sp-2);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: inset 0 -1px 0 var(--line);
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  transition:
+    background-color var(--duration-normal) ease,
+    box-shadow var(--duration-normal) ease;
+}
+
+.track-header.is-stuck {
+  background: color-mix(in srgb, var(--canvas) 90%, transparent);
+  box-shadow:
+    inset 0 -1px 0 var(--line),
+    0 12px 24px -20px rgb(0 0 0 / 70%);
+  backdrop-filter: blur(18px) saturate(1.15);
+}
+
+.track-header > :first-child {
+  text-align: center;
+}
+
+.track-sort-header {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 4px;
+  margin-left: -6px;
+  padding: 3px 6px;
+  border-radius: var(--r-xs);
+  color: var(--text-2);
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.track-sort-header:hover {
+  background: var(--fill-1);
+  color: var(--text);
+}
+
+.track-duration-header {
+  justify-self: end;
+  margin-right: 2px;
+}
+
+.play-count-header,
+.play-count-cell {
+  justify-self: end;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.row-play {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: var(--r-full);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.row-play svg {
+  display: none;
+  color: var(--text);
+}
+
+.track-row:hover .row-play:not(:disabled) span,
+.track-row:focus-within .row-play:not(:disabled) span {
+  display: none;
+}
+
+.track-row:hover .row-play:not(:disabled) svg,
+.track-row:focus-within .row-play:not(:disabled) svg {
+  display: block;
+}
+
+.track-main {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.track-main-copy {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.track-main-copy strong {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  color: var(--text);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.track-main-copy > :not(strong) {
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.track-explicit {
+  display: inline-grid;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 3px;
+  background: var(--fill-3);
+  color: var(--text-2);
+  font-size: 9.5px;
+  font-weight: var(--fw-bold);
+}
+
+.muted-cell,
+.added-date {
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.track-duration-cell {
+  justify-self: end;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.row-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 2px;
+  opacity: 0;
+}
+
+.track-row:hover .row-actions,
+.track-row:focus-within .row-actions {
+  opacity: 1;
+}
+
+.row-actions button {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: var(--r-full);
+  color: var(--text-2);
+}
+
+.row-actions button:hover {
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+/* The song that is playing right now. */
+.track-row.is-current-track .track-main-copy strong,
+.track-row.is-current-track .row-play span {
+  color: var(--accent-text);
+}
+
+.track-row.is-focus-flash {
+  animation: ds-row-flash 1.6s var(--ease-out);
+}
+
+.track-row.is-unavailable {
+  opacity: .45;
+}
+
+.track-row.is-unavailable:hover {
+  background: transparent;
+}
+
+@keyframes ds-row-flash {
+  0%,
+  40% {
+    background: var(--accent-soft);
+  }
+}
+
+.track-list-compact .track-row {
+  gap: var(--sp-3);
+}
+
+/* Empty and loading inline states used by lists. */
+.empty-inline {
+  display: flex;
+  min-height: 96px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.library-loading {
+  display: flex;
+  min-height: 96px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.library-loading svg,
+.library-status svg {
+  animation: ds-spin calc(1.1s * var(--motion-scale, 1)) linear infinite;
+}
+
+.library-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.load-more {
+  display: flex;
+  margin: var(--sp-4) auto 0;
+}

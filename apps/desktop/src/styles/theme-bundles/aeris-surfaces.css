@@ -1,0 +1,112 @@
+/* Translucency for the canvas; opaque surfaces for menus and controls. */
+:root[data-theme="luft.aeris"] .content-shell {
+  box-shadow: inset 0 0 0 1px var(--canvas-edge), var(--shadow-1);
+}
+
+:root[data-theme="luft.aeris"] .topbar {
+  background: transparent;
+  box-shadow: none;
+}
+
+:root[data-theme="luft.aeris"] .nav-item.active {
+  color: var(--aeris-paper);
+  background: linear-gradient(100deg, color-mix(in srgb, var(--aeris-glint) 23%, transparent), transparent);
+  box-shadow: inset 0 0 0 1px var(--line);
+  border-radius: var(--r-md);
+}
+
+:root[data-theme="luft.aeris"] :is(.listen-panel, .module-card, .audio-panel) {
+  background: linear-gradient(145deg, var(--aeris-panel), color-mix(in srgb, var(--color-surface) 65%, transparent));
+  box-shadow: var(--aeris-panel-shadow);
+  border-color: var(--canvas-edge);
+}
+
+/* Settings cards: a lighter layer than the canvas, so rows and groups read as cards. */
+:root[data-theme="luft.aeris"] :is(.setting-row, .settings-list, .spotify-mode-option, .settings-actions-panel, .theme-option) {
+  background: var(--aeris-card);
+  box-shadow: var(--aeris-panel-shadow);
+}
+:root[data-theme="luft.aeris"] :is(.spotify-mode-option, .theme-option).active {
+  box-shadow: inset 0 0 0 2px var(--accent), var(--shadow-1);
+}
+:root[data-theme="luft.aeris"] .settings-list .setting-row { background: transparent; box-shadow: none; }
+:root[data-theme="luft.aeris"] .settings-list .setting-row + .setting-row { box-shadow: inset 0 1px 0 var(--line-strong); }
+:root[data-theme="luft.aeris"] .settings-section-nav button[aria-current="location"] {
+  background: var(--aeris-card);
+  box-shadow: var(--aeris-panel-shadow);
+}
+
+:root[data-theme="luft.aeris"] :is(.ds-tile, .ds-row-tile) {
+  transition: background var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out), transform var(--duration-normal) var(--ease-out);
+}
+
+:root[data-theme="luft.aeris"] :is(.ds-tile, .ds-row-tile):hover {
+  background: var(--aeris-panel-hover);
+  box-shadow: var(--aeris-panel-shadow);
+}
+
+:root[data-theme="luft.aeris"] :is(.track-row:hover, .shared-queue-list li:hover, .shared-queue-results li:hover) {
+  background: var(--fill-2);
+}
+
+:root[data-theme="luft.aeris"] .track-row.is-current-track {
+  color: var(--accent);
+  background: linear-gradient(90deg, var(--fill-3), var(--fill-1));
+}
+
+:root[data-theme="luft.aeris"] .secondary-button {
+  background: var(--aeris-panel);
+  border-color: var(--line-strong);
+  box-shadow: inset 0 1px 0 var(--aeris-edge);
+}
+
+:root[data-theme="luft.aeris"] .secondary-button:hover {
+  background: var(--raised);
+  border-color: var(--accent);
+}
+
+:root[data-theme="luft.aeris"] :is(.primary-button, .play-button, .play-fab, .search-top-play) {
+  color: var(--on-accent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 84%, var(--aeris-shadow)), var(--accent));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--aeris-white) 20%, transparent), var(--shadow-1);
+}
+
+:root[data-theme="luft.aeris"] :is(.track-actions-menu, .command-palette, .audio-popover, .queue-panel, .settings-select-menu) {
+  color: var(--text);
+  background: var(--raised);
+  backdrop-filter: none;
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-2);
+}
+
+:root[data-theme="luft.aeris"] .entity-hero {
+  background: linear-gradient(180deg, var(--aeris-panel), transparent);
+}
+
+:root[data-theme="luft.aeris"] .lyrics-page {
+  --lyrics-line-active: var(--text);
+  --lyrics-line-near: var(--text);
+  --lyrics-line-mid: var(--text-2);
+  --lyrics-line-far: var(--text-2);
+  --lyrics-line-past: var(--text-3);
+  --lyrics-ambient-theme-opacity: .24;
+}
+:root[data-theme="luft.aeris"] :is(.lyrics-view-switch, .lyrics-follow-button) { backdrop-filter: none; }
+
+:root[data-theme="luft.aeris"] :is(.player-progress-fill, .volume-fill, .smooth-progress-fill) {
+  background: linear-gradient(90deg, var(--aeris-foil), var(--accent));
+}
+
+:root[data-theme="luft.aeris"] .theme-selected-label { color: var(--on-accent); }
+
+:root[data-theme="luft.aeris"] .sidebar-brand-orbit {
+  --brand-light: var(--aeris-paper);
+  --brand-depth: var(--aeris-shadow);
+  --brand-secondary: var(--aeris-glint);
+}
+
+:root[data-theme="luft.aeris"] .brand-aeris-sails {
+  transform-box: view-box;
+  transform-origin: center;
+  animation: aeris-sail-turn 28s linear infinite;
+}

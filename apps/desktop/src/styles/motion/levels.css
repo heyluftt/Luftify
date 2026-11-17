@@ -1,0 +1,57 @@
+/*
+ * Setting "Animationen" (features/motion/motionLevel.ts). Without a choice
+ * the app follows Windows: reduced motion there means "off" here.
+ */
+:root[data-motion="full"] {
+  --motion-scale: var(--theme-motion-scale, 1);
+}
+
+/* Subtle: everything shorter, no tilting or spinning. */
+:root[data-motion="subtle"] {
+  --motion-scale: calc(var(--theme-motion-scale, 1) * .5);
+}
+
+:root[data-motion="subtle"] .ds-tile:hover {
+  rotate: none;
+}
+
+:root[data-motion="subtle"] .player-cover-link .album-art {
+  animation-name: lively-fade-in;
+}
+
+@keyframes lively-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Off: nothing moves, not even the parts of themes and pages that do not
+   use --motion-scale. 1 ms instead of 0 so animationend and transitionend
+   still fire for code that waits for them. */
+:root[data-motion="off"] {
+  --motion-scale: 0;
+}
+
+:root[data-motion="off"] *,
+:root[data-motion="off"] *::before,
+:root[data-motion="off"] *::after {
+  animation-duration: 1ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 1ms !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion]) *,
+  :root:not([data-motion]) *::before,
+  :root:not([data-motion]) *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}

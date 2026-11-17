@@ -1,0 +1,85 @@
+/* Rückblick charts: listening over the period and over the day. The bars
+   grow in with a stagger (scaleY only), the busiest one is lit. */
+
+.recap-chart {
+  display: grid;
+  width: 100%;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.recap-chart-bars {
+  display: flex;
+  height: 92px;
+  align-items: flex-end;
+  gap: var(--recap-bar-gap, 5px);
+  /* A quiet baseline, so empty stretches still read as time. */
+  box-shadow: inset 0 -1px 0 rgb(255 255 255 / 18%);
+}
+
+.recap-chart-bars > span {
+  height: 100%;
+  min-width: 0;
+  flex: 1;
+  border-radius: 4px 4px 2px 2px;
+  background: rgb(255 255 255 / 30%);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  animation: recap-bar-grow 760ms cubic-bezier(.2, .8, .2, 1) var(--recap-delay, 0ms) forwards;
+}
+
+.recap-chart-bars > span.is-peak {
+  background: var(--recap-ink);
+  box-shadow: 0 0 18px rgb(255 255 255 / 40%);
+}
+
+.recap-chart-axis {
+  display: flex;
+  gap: var(--recap-bar-gap, 5px);
+  color: var(--recap-ink-soft);
+  font-size: 11px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.recap-chart-axis > span {
+  min-width: 0;
+  flex: 1;
+  overflow: visible;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Many buckets: thinner bars, left-aligned sparse labels. */
+.recap-chart-day:not(:has(.recap-chart-bars > span:nth-child(8))) {
+  --recap-bar-gap: 8px;
+}
+
+.recap-chart-day:has(.recap-chart-bars > span:nth-child(8)),
+.recap-chart-hours {
+  --recap-bar-gap: 2px;
+}
+
+.recap-chart-day:has(.recap-chart-bars > span:nth-child(8)) .recap-chart-axis > span,
+.recap-chart-hours .recap-chart-axis > span {
+  text-align: left;
+}
+
+.recap-chart-hours .recap-chart-bars {
+  height: 64px;
+}
+
+.recap-chart-hours .recap-chart-bars > span {
+  border-radius: 2px;
+}
+
+@keyframes recap-bar-grow {
+  to { transform: scaleY(var(--bar)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recap-chart-bars > span {
+    animation: none;
+    transform: scaleY(var(--bar));
+  }
+}

@@ -1,0 +1,110 @@
+/* Smoked frame, silver canvas and machined edges form Aeris's material hierarchy. */
+:root[data-theme="luft.aeris"] .app-frame {
+  background: linear-gradient(155deg, var(--aeris-steel), var(--aeris-shadow));
+}
+
+:root[data-theme="luft.aeris"] :is(.sidebar, .titlebar, .playerbar, .home-feature, .friends-hero) {
+  --text: var(--aeris-paper);
+  --text-2: var(--aeris-caption);
+  --text-3: var(--aeris-caption);
+  --accent: var(--aeris-glint);
+  /* Aliases otherwise inherit the root's already-resolved dark accent. */
+  --accent-text: var(--aeris-paper);
+  --color-accent: var(--accent);
+  --on-accent: var(--aeris-shadow);
+  --success: var(--aeris-success-light);
+  --warning: var(--aeris-warning-light);
+  --danger: var(--aeris-error-light);
+  --raised: var(--aeris-steel);
+  --fill-1: color-mix(in srgb, var(--aeris-paper) 8%, transparent);
+  --fill-2: color-mix(in srgb, var(--aeris-paper) 12%, transparent);
+  --line: color-mix(in srgb, var(--aeris-glint) 17%, transparent);
+  --line-strong: color-mix(in srgb, var(--aeris-glint) 30%, transparent);
+  color: var(--text);
+}
+
+:root[data-theme="luft.aeris"] .sidebar {
+  background: transparent;
+  box-shadow: none;
+}
+
+:root[data-theme="luft.aeris"] .sidebar-entry.active {
+  background: var(--fill-1);
+}
+
+:root[data-theme="luft.aeris"] :is(.content-shell, .app-frame > .aeris-scene) { border-radius: var(--r-xl); }
+
+:root[data-theme="luft.aeris"] .sidebar .secondary-button {
+  background: var(--fill-1);
+  color: var(--text);
+}
+
+:root[data-theme="luft.aeris"] .playerbar {
+  background: linear-gradient(100deg, var(--aeris-shadow), var(--aeris-steel) 65%, var(--aeris-shadow));
+  box-shadow: inset 0 1px 0 var(--aeris-edge), 0 calc(-1 * var(--sp-2)) var(--sp-8) color-mix(in srgb, var(--aeris-shadow) 20%, transparent);
+}
+
+:root[data-theme="luft.aeris"] .titlebar { color: var(--aeris-paper); }
+
+:root[data-theme="luft.aeris"] .global-search {
+  background: var(--aeris-panel);
+  border-radius: var(--r-full);
+  box-shadow: inset 0 1px 0 var(--aeris-edge), var(--shadow-1);
+}
+:root[data-theme="luft.aeris"] .global-search:hover { background: var(--aeris-panel-hover); }
+:root[data-theme="luft.aeris"] .topbar-history button { box-shadow: inset 0 1px 0 var(--aeris-edge); }
+
+:root[data-theme="luft.aeris"] .home-feature {
+  padding: var(--sp-8);
+  background:
+    radial-gradient(ellipse at 90% 0%, color-mix(in srgb, var(--aeris-foil) 36%, transparent), transparent 60%),
+    linear-gradient(115deg, var(--aeris-shadow), var(--aeris-steel));
+  border-radius: var(--r-xl);
+  box-shadow: inset 0 1px 0 var(--aeris-edge), inset 0 -1px 0 var(--aeris-shadow), var(--shadow-2);
+}
+
+:root[data-theme="luft.aeris"] .home-feature::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 0 0 45%;
+  background: linear-gradient(136deg, transparent 33%, var(--fill-1) 33.1%, transparent 34%, transparent 53%, var(--line) 53.1%, transparent 54%);
+  pointer-events: none;
+}
+
+:root[data-theme="luft.aeris"] .home-feature-backdrop { display: none; }
+:root[data-theme="luft.aeris"] .home-feature-copy h2 {
+  font-size: var(--fs-hero);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tracking-title);
+}
+
+:root[data-theme="luft.aeris"] .ds-tile {
+  background: var(--aeris-panel);
+  padding: var(--sp-3);
+  border-radius: var(--r-lg) var(--r-xs) var(--r-lg) var(--r-xs);
+  box-shadow: inset 0 1px 0 var(--aeris-edge), var(--shadow-1);
+}
+:root[data-theme="luft.aeris"] .ds-tile-copy { padding: var(--sp-1) 0; }
+:root[data-theme="luft.aeris"] .ds-tile:hover { transform: translateY(calc(-1 * var(--sp-1))); }
+:root[data-theme="luft.aeris"] .ds-tile-art .album-art { box-shadow: var(--shadow-cover); }
+
+:root[data-theme="luft.aeris"] .ds-row-tile {
+  background: color-mix(in srgb, var(--canvas) 88%, transparent);
+  box-shadow: inset 0 1px 0 var(--aeris-edge), var(--shadow-1);
+  border-radius: var(--r-md);
+}
+
+:root[data-theme="luft.aeris"] .section-title {
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--line-strong);
+}
+:root[data-theme="luft.aeris"] .section-title h2 { font-weight: var(--fw-medium); }
+
+@media (max-width: 1100px) {
+  :root[data-theme="luft.aeris"] .home-feature { padding: var(--sp-6); }
+  :root[data-theme="luft.aeris"] .home-feature-copy h2 { font-size: var(--fs-h1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme="luft.aeris"] .ds-tile:hover { transform: none; }
+}

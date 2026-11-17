@@ -1,0 +1,55 @@
+/*
+ * The backgrounds' own quiet motion: drifting clouds, swaying curtains,
+ * glittering water. Only large banners move; small ones (`data-still`),
+ * minimised windows and reduced motion keep a still picture.
+ */
+.profile-banner-artwork :is(.banner-curtains, .banner-clouds, .banner-rays, .banner-folds, .banner-contours, .banner-dust) {
+  transform-box: fill-box; transform-origin: center;
+}
+
+.banner-stars > circle { animation: banner-twinkle 4s ease-in-out infinite alternate var(--d); }
+@keyframes banner-twinkle { from { opacity: .25; } to { opacity: 1; } }
+
+.banner-curtains { animation: banner-curtains 16s ease-in-out infinite alternate; }
+.banner-curtain-second { animation: banner-curtains 11s ease-in-out infinite alternate-reverse; transform-box: fill-box; transform-origin: center; }
+@keyframes banner-curtains { from { transform: translateX(-3%) skewX(-6deg); opacity: .75; } to { transform: translateX(3%) skewX(6deg); opacity: 1; } }
+
+.banner-clouds { animation: banner-clouds 40s ease-in-out infinite alternate; }
+@keyframes banner-clouds { from { transform: translateX(-4%); } to { transform: translateX(4%); } }
+
+.banner-sun-glow, .banner-moon-halo { transform-box: fill-box; transform-origin: center; animation: banner-breathe 7s ease-in-out infinite alternate; }
+@keyframes banner-breathe { from { opacity: .7; transform: scale(.94); } to { opacity: 1; transform: scale(1.04); } }
+
+.banner-glitter > line { animation: banner-glitter 2.6s ease-in-out infinite alternate var(--d); }
+@keyframes banner-glitter { from { opacity: .15; } to { opacity: .9; } }
+
+.banner-rays { animation: banner-rays 14s ease-in-out infinite alternate; }
+@keyframes banner-rays { from { transform: skewX(-5deg); opacity: .7; } to { transform: skewX(5deg); opacity: 1; } }
+.banner-surface { animation: banner-surface 8s ease-in-out infinite alternate; }
+@keyframes banner-surface { from { transform: translateX(-20px); } to { transform: translateX(20px); } }
+.banner-weeds > path { transform-box: fill-box; transform-origin: 50% 100%; animation: banner-weed 5s ease-in-out infinite alternate var(--d); }
+@keyframes banner-weed { from { transform: skewX(-7deg); } to { transform: skewX(7deg); } }
+.banner-motes { animation: banner-motes 30s linear infinite; }
+@keyframes banner-motes { from { transform: translateY(20px); } to { transform: translateY(-40px); } }
+
+.banner-galaxy { transform-box: fill-box; transform-origin: center; animation: banner-spin 140s linear infinite; }
+@keyframes banner-spin { to { transform: rotate(360deg); } }
+.banner-dust { animation: banner-breathe 18s ease-in-out infinite alternate; }
+
+.banner-folds { animation: banner-folds 22s ease-in-out infinite alternate; }
+@keyframes banner-folds { from { transform: translate(-2%, 2%); } to { transform: translate(2%, -2%); } }
+.profile-banner[data-banner="candy"]::after { animation: banner-sheen 12s var(--ease-out) infinite; }
+@keyframes banner-sheen { 0%, 55% { transform: translateX(-100%); } 85%, 100% { transform: translateX(100%); } }
+
+.banner-contours { animation: banner-contours 30s ease-in-out infinite alternate; }
+@keyframes banner-contours { from { transform: translate(-1.5%, 0) scale(1); } to { transform: translate(1.5%, 2%) scale(1.04); } }
+
+.banner-window { animation: banner-window 9s steps(1) infinite var(--d); }
+@keyframes banner-window { 0%, 40% { opacity: .85; } 41%, 70% { opacity: .1; } 71%, 100% { opacity: .85; } }
+.banner-beacon { animation: banner-beacon 2.4s ease-in-out infinite var(--d); }
+@keyframes banner-beacon { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+
+.profile-banner[data-still] *, .profile-banner[data-still]::after { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .profile-banner *, .profile-banner::after { animation: none !important; }
+}

@@ -1,0 +1,119 @@
+/*
+ * Calamus signature: a calm, plain page. Cards are drawn with hairlines
+ * instead of filled, lists are ruled by their rows, the rubric marks what
+ * is current.
+ */
+
+/* Section titles sit on a rule, like a heading in a notebook. */
+:root[data-theme="luft.calamus"] .section-title {
+  padding-bottom: var(--sp-2);
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+
+/* ---------- Surfaces drawn, not filled ---------- */
+:root[data-theme="luft.calamus"] :is(
+  .settings-list,
+  .setting-row,
+  .ds-row-tile,
+  .audio-panel,
+  .audio-volume-card,
+  .listen-panel,
+  .diagnostic-card,
+  .diagnostic-actions,
+  .capability-section,
+  .module-card,
+  .recap-week-row,
+  .recap-timeline-chart,
+  .home-feature
+) {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+:root[data-theme="luft.calamus"] .settings-list .setting-row {
+  box-shadow: none;
+}
+
+:root[data-theme="luft.calamus"] .settings-list .setting-row + .setting-row {
+  box-shadow: inset 0 1px 0 var(--line);
+}
+
+:root[data-theme="luft.calamus"] :is(.ds-row-tile, .module-card, .recap-week-row):hover {
+  background: color-mix(in srgb, var(--calamus-paper) 3.5%, var(--canvas));
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+
+/* Track lists are ruled: one hairline under every row. */
+:root[data-theme="luft.calamus"] .track-row:not(.track-header) {
+  border-radius: 0;
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+
+/* ---------- The rubric: what is current ---------- */
+:root[data-theme="luft.calamus"] .nav-item.active {
+  background: transparent;
+  box-shadow: inset 2px 0 0 var(--calamus-rubric);
+  color: var(--text);
+}
+
+:root[data-theme="luft.calamus"] .nav-item.active svg {
+  color: var(--calamus-rubric);
+}
+
+:root[data-theme="luft.calamus"] .sidebar-entry.active {
+  background: transparent;
+  box-shadow: inset 2px 0 0 var(--calamus-rubric);
+}
+
+:root[data-theme="luft.calamus"] :is(.track-row.is-current-track, .track-row[aria-current="true"]) {
+  background: var(--fill-1);
+  box-shadow: inset 2px 0 0 var(--calamus-rubric), inset 0 -1px 0 var(--line);
+}
+
+:root[data-theme="luft.calamus"] :is(.nav-fresh-dot, .playerbar-collapsed-state.is-playing) {
+  border-radius: 0;
+  background: var(--calamus-rubric);
+}
+
+:root[data-theme="luft.calamus"] .recap-new-badge {
+  background: var(--calamus-rubric);
+  color: #1a0d08;
+}
+
+/* ---------- Controls, squared ---------- */
+:root[data-theme="luft.calamus"] :is(.play-button, .play-fab, .ds-tile-play) {
+  border-radius: var(--r-sm);
+}
+
+:root[data-theme="luft.calamus"] .switch > span::after {
+  border-radius: 1px;
+}
+
+:root[data-theme="luft.calamus"] .smooth-progress-rail,
+:root[data-theme="luft.calamus"] .smooth-progress-fill {
+  height: 2px;
+  border-radius: 0;
+}
+
+:root[data-theme="luft.calamus"] .volume-slider-control input[type="range"]::-webkit-slider-runnable-track {
+  height: 2px;
+  border-radius: 0;
+}
+
+/* Track 2 px: the 12 px stroke sits 5 px above it. */
+:root[data-theme="luft.calamus"] :is(.volume-slider-control, .smooth-progress) input[type="range"]::-webkit-slider-thumb {
+  width: 4px;
+  height: 12px;
+  margin-top: -5px;
+  border-radius: 0;
+}
+
+/* The thumbs are a small pen stroke, centred on their track. */
+:root[data-theme="luft.calamus"] .smooth-progress input[type="range"]::-webkit-slider-thumb {
+  margin-top: -4px;
+}
+
+/* Covers are cut square like pasted-in prints. */
+:root[data-theme="luft.calamus"] .ds-tile-art .album-art {
+  box-shadow: 0 0 0 1px var(--line), var(--shadow-cover);
+}

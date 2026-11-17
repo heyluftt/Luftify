@@ -1,0 +1,31 @@
+/* Slow transform/opacity motion, no animated blur or JavaScript frame loop. */
+.prisma-scene.is-entering { animation: prisma-scene-in 1.5s ease both; }
+.prisma-scene.is-leaving { animation: prisma-scene-out 1.5s ease both; }
+.prisma-light-wash-primary { animation: prisma-light-drift 36s ease-in-out infinite alternate; }
+.prisma-light-wash-secondary { animation: prisma-light-sway 44s ease-in-out infinite alternate; }
+.prisma-light-wash-tertiary { animation: prisma-light-drift 52s ease-in-out -18s infinite alternate-reverse; }
+.prisma-light-wash-quaternary { animation: prisma-light-sway 40s ease-in-out -9s infinite alternate-reverse; }
+.prisma-glass-field { animation: prisma-glass-drift 42s ease-in-out infinite alternate; }
+.prisma-atmosphere.is-paused :is(.prisma-light-wash, .prisma-glass-field),
+.prisma-scene.is-leaving :is(.prisma-light-wash, .prisma-glass-field) { animation-play-state: paused; }
+@keyframes prisma-scene-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes prisma-scene-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes prisma-light-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-3%, 4%, 0) scale(1.06); }
+}
+@keyframes prisma-light-sway {
+  from { transform: translate3d(0, 0, 0) scale(1.04); }
+  to { transform: translate3d(5%, -3%, 0) scale(.97); }
+}
+@keyframes prisma-glass-drift {
+  from { transform: translate3d(0, -8px, 0); }
+  to { transform: translate3d(-12px, 10px, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .prisma-scene.is-leaving { display: none; }
+  .prisma-atmosphere *, .prisma-atmosphere {
+    animation: none !important;
+    transition: none !important;
+  }
+}

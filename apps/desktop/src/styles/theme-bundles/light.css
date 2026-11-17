@@ -1,0 +1,17 @@
+/* Theme „Hell“: palette on top of styles/ds/tokens.css. */
+
+:root[data-theme="luft.light"] {
+  color-scheme: light;
+  --canvas: #fbfbf9;
+  --raised: #ffffff;
+  --sidebar-bg: var(--color-bg);
+  --on-accent: #ffffff;
+  --canvas-edge: color-mix(in srgb, #1f2a44 7%, transparent);
+  --overlay: color-mix(in srgb, #1c2130 38%, transparent);
+  --shadow-1: 0 8px 24px color-mix(in srgb, #1f2a44 12%, transparent);
+  --shadow-2: 0 18px 48px color-mix(in srgb, #1f2a44 18%, transparent);
+  --shadow-cover: 0 10px 28px color-mix(in srgb, #1f2a44 18%, transparent);
+  --color-success: #14764d;
+  --color-warning: #8d6714;
+  --color-error: #b4233a;
+}

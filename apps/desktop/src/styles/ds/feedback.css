@@ -1,0 +1,313 @@
+/* Loading, empty and error states; dialogs and floating menus. */
+
+.skeleton {
+  border-radius: var(--r-md);
+  background:
+    linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--text) 5%, transparent) 50%, transparent 70%) 0 0 / 300% 100%,
+    var(--fill-1);
+  animation: ds-shimmer 1.6s ease-in-out infinite;
+}
+
+.list-skeleton {
+  height: 260px;
+  border-radius: var(--r-md);
+  background:
+    linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--text) 5%, transparent) 50%, transparent 70%) 0 0 / 300% 100%,
+    var(--fill-1);
+  animation: ds-shimmer 1.6s ease-in-out infinite;
+}
+
+.page-loading-state {
+  display: grid;
+  align-content: start;
+  gap: var(--sp-6);
+}
+
+.page-loading-heading {
+  width: min(320px, 60%);
+  height: 34px;
+}
+
+.page-loading-hero {
+  width: 100%;
+  height: 200px;
+  border-radius: var(--r-lg);
+}
+
+.page-loading-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(164px, 1fr));
+  gap: var(--sp-4);
+}
+
+.page-loading-grid .skeleton {
+  aspect-ratio: 1;
+}
+
+/* Centered empty or error state for a whole page area. */
+.empty-state,
+.content-error-state,
+.ds-state {
+  display: flex;
+  min-height: 320px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-10) var(--sp-6);
+  text-align: center;
+}
+
+.empty-state > svg,
+.content-error-state > svg,
+.ds-state > svg {
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--sp-2);
+  color: var(--text-3);
+}
+
+.empty-state h2,
+.content-error-state h2,
+.ds-state h2 {
+  font-size: var(--fs-h3);
+}
+
+.empty-state p,
+.content-error-state p,
+.ds-state p {
+  max-width: 440px;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+
+.message-card {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-6);
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+}
+
+.message-card.error > svg {
+  flex: 0 0 auto;
+  color: var(--danger);
+}
+
+.message-card strong {
+  display: block;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+}
+
+.message-card p {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.message-card button {
+  margin-left: auto;
+}
+
+.search-loading {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: var(--sp-16) auto;
+}
+
+.search-loading span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-2);
+  animation: pulse 900ms infinite alternate;
+}
+
+.search-loading span:nth-child(2) {
+  animation-delay: 150ms;
+}
+
+.search-loading span:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+.fatal-state {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-10);
+  background: var(--bg);
+  color: var(--text);
+  text-align: center;
+}
+
+.fatal-state p {
+  max-width: 520px;
+  margin-bottom: var(--sp-4);
+  color: var(--text-2);
+}
+
+/* ---------- Floating surfaces ---------- */
+.ds-popover {
+  border-radius: var(--r-md);
+  background: var(--raised);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line);
+}
+
+.ds-menu {
+  display: grid;
+  min-width: 220px;
+  gap: 1px;
+  padding: 6px;
+  border-radius: var(--r-md);
+  background: var(--raised);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line);
+}
+
+.ds-menu-item {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-xs);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  text-align: left;
+}
+
+.ds-menu-item:hover,
+.ds-menu-item:focus-visible {
+  background: var(--fill-2);
+}
+
+.ds-menu-item > svg {
+  flex: 0 0 auto;
+  color: var(--text-2);
+}
+
+.ds-menu-separator {
+  height: 1px;
+  margin: 4px 6px;
+  background: var(--line);
+}
+
+/* ---------- Dialogs ---------- */
+.close-confirm-backdrop,
+.ds-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-6);
+  background: var(--overlay);
+  animation: ds-fade var(--duration-normal) ease both;
+}
+
+.close-confirm,
+.ds-dialog {
+  width: min(420px, 100%);
+  padding: var(--sp-6);
+  border-radius: var(--r-xl);
+  background: var(--raised);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line);
+  animation: ds-fade-up var(--duration-normal) var(--ease-out) both;
+}
+
+.close-confirm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.close-confirm-header h2 {
+  font-size: var(--fs-h3);
+}
+
+.close-confirm-cancel {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: var(--r-full);
+  color: var(--text-2);
+}
+
+.close-confirm-cancel:hover {
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+.close-confirm-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2);
+}
+
+.close-confirm-option {
+  display: grid;
+  min-height: 96px;
+  place-items: center;
+  align-content: center;
+  gap: var(--sp-2);
+  border-radius: var(--r-lg);
+  background: var(--fill-1);
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+.close-confirm-option:hover {
+  background: var(--fill-2);
+}
+
+.close-confirm-option.is-exit:hover {
+  color: var(--danger);
+}
+
+.close-confirm-option strong {
+  font-weight: var(--fw-semibold);
+}
+
+.close-confirm-remember {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.close-confirm-remember input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+/* A feature that is switched off for now (ServerNotice.tsx). */
+.server-notice {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.server-notice > svg {
+  flex-shrink: 0;
+}

@@ -1,0 +1,41 @@
+.playlist-people {
+  display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-2); min-width: 0;
+  padding-left: var(--sp-3); border-left: 1px solid var(--line);
+}
+.playlist-person-chip { display: flex; min-width: 0; max-width: 160px; padding: var(--sp-1) var(--sp-2); border-radius: var(--r-full); background: var(--fill-1); }
+.playlist-person-chip .playlist-person { gap: var(--sp-3); padding: var(--sp-1); }
+.playlist-people-more { min-width: var(--sp-10); min-height: var(--sp-10); padding: var(--sp-2); border: 1px solid var(--line); border-radius: var(--r-full); background: var(--fill-2); color: var(--text); font-size: var(--fs-sm); font-weight: var(--fw-semibold); cursor: pointer; }
+.playlist-people-more:hover { background: var(--fill-3); border-color: var(--line-strong); }
+.playlist-people-popover { position: fixed; z-index: 1200; display: grid; gap: var(--sp-3); width: min(300px, calc(100vw - var(--sp-8))); overflow-y: auto; overscroll-behavior: contain; padding: var(--sp-4); border-radius: var(--r-lg); background: var(--raised); color: var(--text); box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line-strong); font-size: var(--fs-sm); }
+.playlist-person-detail { display: grid; gap: var(--sp-2); padding: var(--sp-2); border-bottom: 1px solid var(--line); }
+.playlist-people-popover small { color: var(--text-2); font-size: var(--fs-xs); line-height: 1.5; }
+.playlist-person { display: inline-flex; align-items: center; gap: var(--sp-2); min-width: 0; max-width: 100%; color: var(--text); font-size: var(--fs-sm); }
+.playlist-person > span:last-child { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.playlist-person > svg, .playlist-person > .listen-avatar { flex-shrink: 0; }
+.track-contributor { min-width: 0; }
+.track-contributor .playlist-person { vertical-align: middle; width: 100%; padding: var(--sp-1); }
+.track-list.with-contributors { container-type: inline-size; }
+@container (max-width: 1000px) {
+  .with-contributors .track-row { grid-template-columns: 34px minmax(0, 1.5fr) 110px minmax(120px, .7fr) 66px 100px !important; }
+  .with-contributors .track-album, .with-contributors .play-count-cell, .with-contributors .play-count-header { display: none; }
+}
+@container (max-width: 740px) {
+  .with-contributors .track-row { grid-template-columns: 34px minmax(0, 1fr) minmax(100px, .55fr) 66px 100px !important; }
+  .with-contributors .added-date, .with-contributors .track-sort-header { display: none; }
+}
+@container (max-width: 560px) {
+  .with-contributors .track-row { grid-template-columns: 28px minmax(0, 1fr) minmax(80px, .6fr) 100px !important; gap: var(--sp-2); }
+  .with-contributors .track-duration-cell, .with-contributors .track-duration-header { display: none; }
+}
+
+/* Songs others added since the last visit. */
+.playlist-news {
+  align-self: center; padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--r-full); background: var(--accent-soft); color: var(--accent);
+  font-size: var(--fs-xs); font-weight: var(--fw-semibold);
+}
+.playlist-new-mark {
+  margin-left: var(--sp-2); padding: 1px var(--sp-2);
+  border-radius: var(--r-full); background: var(--accent); color: var(--on-accent);
+  font-size: var(--fs-2xs); font-style: normal; font-weight: var(--fw-semibold);
+}

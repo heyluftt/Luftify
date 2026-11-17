@@ -1,0 +1,312 @@
+/*
+ * Role badges and avatar rings. Each role has its own colours (--role-a/-b);
+ * text and fills are mixed with the theme's tokens, so badges read on dark
+ * and light themes alike. Every animation moves transform or opacity only,
+ * runs on a long, calm cycle and stops with reduced motion (ds/base.css).
+ */
+
+[data-role="luft"] { --role-a: #8fd3ff; --role-b: #c3a6ff; --role-c: #ff9fd6; }
+[data-role="dev"] { --role-a: #3ee0a8; --role-b: #37c8f0; --role-c: #3ee0a8; }
+[data-role="heart"] { --role-a: #ff7aa8; --role-b: #ff4f74; --role-c: #ffb1c8; }
+[data-role="crew"] { --role-a: #ffd166; --role-b: #ff9f43; --role-c: #ffe39a; }
+[data-role="tester"] { --role-a: #b39bff; --role-b: #7f8cff; --role-c: #d4c6ff; }
+
+/* ---------- Badge ---------- */
+.role-badges {
+  display: inline-flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  vertical-align: middle;
+}
+
+.role-badge {
+  --role-ink: color-mix(in srgb, var(--role-a) 72%, var(--text));
+  position: relative;
+  display: inline-flex;
+  height: 20px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px 0 6px;
+  overflow: hidden;
+  isolation: isolate;
+  /* A gradient edge around a softly lit fill. */
+  border: 1px solid transparent;
+  border-radius: var(--r-full);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--role-a) 22%, var(--canvas)), color-mix(in srgb, var(--role-a) 10%, var(--canvas))) padding-box,
+    linear-gradient(135deg, color-mix(in srgb, var(--role-a) 70%, transparent), color-mix(in srgb, var(--role-b, var(--role-a)) 30%, transparent) 55%, color-mix(in srgb, var(--role-a) 55%, transparent)) border-box;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 10%), 0 2px 10px -6px color-mix(in srgb, var(--role-a) 80%, transparent);
+  color: var(--role-ink);
+  font-size: 11px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: .02em;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: default;
+  transition: transform var(--duration-normal) var(--ease-spring), box-shadow var(--duration-normal) ease;
+}
+
+.role-badge:hover {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 14%), 0 4px 16px -6px color-mix(in srgb, var(--role-a) 90%, transparent);
+  transform: translateY(-1px);
+}
+
+.role-badge > svg {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--role-a) 70%, transparent));
+}
+.role-badge[data-icon-only] { width: 20px; padding: 0; justify-content: center; }
+
+.role-badge[data-size="md"] { height: 24px; gap: 5px; padding: 0 10px 0 8px; font-size: var(--fs-xs); }
+.role-badge[data-size="md"] > svg { width: 14px; height: 14px; }
+.role-badge[data-size="lg"] { height: 30px; gap: 6px; padding: 0 13px 0 10px; font-size: var(--fs-sm); }
+.role-badge[data-size="lg"] > svg { width: 16px; height: 16px; }
+
+.role-badge-more {
+  color: var(--text-2);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A sheen passing through: Luft often, Crew in gold now and then. */
+.role-badge:is([data-role="luft"], [data-role="crew"])::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0 auto 0 0;
+  width: 60%;
+  background: linear-gradient(100deg, transparent, rgb(255 255 255 / 36%), transparent);
+  content: "";
+  transform: translateX(-120%);
+  animation: role-sheen 5.2s ease-in-out infinite;
+}
+.role-badge[data-role="crew"]::after { background: linear-gradient(100deg, transparent, color-mix(in srgb, #fff3c4 60%, transparent), transparent); animation-duration: 7s; }
+
+/* Luft: iridescent fill and edge, a glint that sparkles at the end. */
+.role-badge[data-role="luft"] {
+  background:
+    linear-gradient(100deg,
+      color-mix(in srgb, var(--role-a) 26%, var(--canvas)),
+      color-mix(in srgb, var(--role-b) 26%, var(--canvas)) 55%,
+      color-mix(in srgb, var(--role-c) 24%, var(--canvas))) padding-box,
+    linear-gradient(100deg, var(--role-a), var(--role-b), var(--role-c), var(--role-a)) border-box;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 14%), 0 0 16px -4px color-mix(in srgb, var(--role-b) 70%, transparent);
+  color: color-mix(in srgb, var(--role-b) 40%, var(--text));
+}
+.role-badge[data-role="luft"] > svg { animation: role-drift 5.2s ease-in-out infinite; }
+.role-badge[data-role="luft"]::before {
+  position: absolute;
+  top: 2px;
+  right: 3px;
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  content: "";
+  opacity: 0;
+  animation: role-glint 5.2s ease-in-out infinite;
+}
+
+/* Dev: a terminal: monospace label, green glow, a blinking caret. */
+.role-badge[data-role="dev"] { font-family: var(--font-mono); letter-spacing: 0; }
+.role-badge[data-role="dev"] > span::after {
+  display: inline-block;
+  width: .5em;
+  height: 1.5px;
+  margin-left: 2px;
+  background: currentColor;
+  content: "";
+  vertical-align: -1px;
+  animation: role-caret 1.2s steps(1) infinite;
+}
+
+/* Heart: a heartbeat, twice, then rest, with a warm glow on the beat. */
+.role-badge[data-role="heart"] > svg {
+  fill: currentColor;
+  animation: role-beat 2.6s ease-in-out infinite;
+}
+
+/* Crew: a gold edge, the star lights up now and then. */
+.role-badge[data-role="crew"] {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--role-a) 24%, var(--canvas)), color-mix(in srgb, var(--role-b) 12%, var(--canvas))) padding-box,
+    linear-gradient(135deg, #ffe39a, #ff9f43 50%, #ffe39a) border-box;
+}
+.role-badge[data-role="crew"] > svg {
+  fill: color-mix(in srgb, currentColor 35%, transparent);
+  animation: role-twinkle 4.6s ease-in-out infinite;
+}
+
+/* Tester: the flask tips a little and two bubbles rise. */
+.role-badge[data-role="tester"] > svg {
+  transform-origin: 50% 90%;
+  animation: role-wobble 4s ease-in-out infinite;
+}
+.role-badge[data-role="tester"]::before,
+.role-badge[data-role="tester"]::after {
+  position: absolute;
+  bottom: 4px;
+  left: 9px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--role-a) 60%, #fff);
+  content: "";
+  opacity: 0;
+  animation: role-bubble 4s ease-in infinite;
+}
+.role-badge[data-role="tester"]::after { left: 12px; width: 2px; height: 2px; animation-delay: -1.6s; }
+.role-badge[data-role="tester"][data-size="md"]::before { left: 11px; }
+.role-badge[data-role="tester"][data-size="md"]::after { left: 14px; }
+.role-badge[data-role="tester"][data-size="lg"]::before { left: 14px; }
+.role-badge[data-role="tester"][data-size="lg"]::after { left: 18px; }
+
+/* ---------- Avatar ring ---------- */
+.role-avatar {
+  position: relative;
+  display: inline-grid;
+  isolation: isolate;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.role-avatar[data-size="sm"] .listen-avatar { width: 28px; height: 28px; font-size: var(--fs-xs); }
+.role-avatar[data-size="lg"] .listen-avatar { width: 64px; height: 64px; font-size: 24px; }
+.role-avatar[data-size="xl"] .listen-avatar { width: 104px; height: 104px; font-size: 38px; }
+
+/* The ring sits 3 px outside the picture; the gap stays see-through. */
+/* :where keeps this as weak as one attribute, so profile-frames.css can colour it. */
+.role-avatar:is([data-role], [data-frame]):where(:not([data-frame="none"]))::before {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--role-a), var(--role-b), var(--role-c), var(--role-a));
+  content: "";
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+}
+
+.role-avatar:is([data-size="xl"], [data-size="lg"]):is([data-role], [data-frame]):where(:not([data-frame="none"]))::before {
+  inset: -6px;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+}
+
+.role-avatar[data-role="luft"]::before { animation: role-spin 9s linear infinite; }
+
+/* The profile's own frames: profile-frames.css. */
+
+/* A soft halo behind large Luft and heart avatars. */
+.role-avatar[data-size="xl"]:is([data-role="luft"], [data-role="heart"])::after {
+  position: absolute;
+  z-index: -1;
+  inset: -18px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--role-b) 38%, transparent), transparent);
+  content: "";
+  animation: role-halo 5s ease-in-out infinite;
+}
+
+.role-avatar[data-role="heart"]::before { animation: role-pulse 2.6s ease-in-out infinite; }
+
+/* ---------- Custom friend code ---------- */
+.role-code {
+  /* Mixed with the text colour: lighter on dark themes, deeper on light ones. */
+  background: linear-gradient(100deg,
+    color-mix(in srgb, #8fd3ff 62%, var(--text)),
+    color-mix(in srgb, #c3a6ff 62%, var(--text)) 45%,
+    color-mix(in srgb, #ff9fd6 62%, var(--text)) 70%,
+    color-mix(in srgb, #8fd3ff 62%, var(--text)));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: role-code 8s ease-in-out infinite;
+}
+
+@keyframes role-sheen {
+  0%, 55% { transform: translateX(-120%); }
+  85%, 100% { transform: translateX(260%); }
+}
+
+@keyframes role-drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(1.5px); }
+}
+
+@keyframes role-glint {
+  0%, 62%, 100% { opacity: 0; transform: scale(.3) rotate(0deg); }
+  72% { opacity: 1; transform: scale(1.2) rotate(45deg); }
+  84% { opacity: 0; transform: scale(.4) rotate(90deg); }
+}
+
+@keyframes role-bubble {
+  0% { opacity: 0; transform: translateY(0); }
+  20% { opacity: .9; }
+  80%, 100% { opacity: 0; transform: translateY(-11px); }
+}
+
+@keyframes role-caret {
+  50% { opacity: 0; }
+}
+
+@keyframes role-beat {
+  0%, 38%, 100% { transform: scale(1); }
+  10% { transform: scale(1.22); }
+  20% { transform: scale(1); }
+  28% { transform: scale(1.14); }
+}
+
+@keyframes role-twinkle {
+  0%, 70%, 100% { transform: scale(1) rotate(0deg); }
+  80% { transform: scale(1.2) rotate(18deg); }
+  90% { transform: scale(.94) rotate(0deg); }
+}
+
+@keyframes role-wobble {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  70% { transform: rotate(-12deg); }
+  82% { transform: rotate(9deg); }
+  92% { transform: rotate(-3deg); }
+}
+
+@keyframes role-spin {
+  to { transform: rotate(1turn); }
+}
+
+@keyframes role-pulse {
+  0%, 38%, 100% { opacity: .75; transform: scale(1); }
+  12% { opacity: 1; transform: scale(1.05); }
+  26% { opacity: .9; transform: scale(1.03); }
+}
+
+@keyframes role-halo {
+  0%, 100% { opacity: .55; transform: scale(.94); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+/* background-position here is only for the custom code, a single element. */
+@keyframes role-code {
+  0%, 100% { background-position: 0% 0; }
+  50% { background-position: 100% 0; }
+}
+
+/* ---------- Luft's own badges ---------- */
+/* One colour each; the edge gradient must not pick up a surrounding role. */
+[data-badge-color] { --role-b: var(--role-a); }
+[data-badge-color="sky"] { --role-a: #7cc8ff; }
+[data-badge-color="violet"] { --role-a: #b39bff; }
+[data-badge-color="rose"] { --role-a: #ff7aa8; }
+[data-badge-color="amber"] { --role-a: #ffc15c; }
+[data-badge-color="mint"] { --role-a: #4fe0b0; }
+[data-badge-color="coral"] { --role-a: #ff8a65; }
+[data-badge-color="gold"] { --role-a: #ffd166; }
+[data-badge-color="slate"] { --role-a: #9aa7bd; }
+
+.role-badge[data-badge-color] > svg { transition: transform var(--duration-normal) var(--ease-spring); }
+.role-badge[data-badge-color]:hover > svg { transform: scale(1.18) rotate(-8deg); }

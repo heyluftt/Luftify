@@ -1,0 +1,62 @@
+/* "A new version is ready": the newest card in the notice stack. */
+.update-notice {
+  display: grid;
+  gap: var(--sp-3);
+  width: 100%;
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--raised);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line-strong);
+  color: var(--text);
+  animation: update-notice-in var(--duration-slow) var(--ease-spring);
+}
+
+.update-notice > header { display: flex; align-items: center; gap: var(--sp-3); }
+.update-notice > header > .friends-icon-button { align-self: start; margin: -6px -6px 0 0; }
+
+.update-notice-icon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.update-notice-copy { display: grid; min-width: 0; flex: 1; gap: 2px; }
+.update-notice-copy strong { font-size: var(--fs-sm); }
+.update-notice-copy small { color: var(--text-2); font-size: var(--fs-xs); line-height: 1.4; font-variant-numeric: tabular-nums; }
+.update-notice-copy small[data-error] { color: var(--danger); }
+
+/* What is new: short points, scrolls when a release says a lot. */
+.update-notes {
+  display: grid;
+  max-height: 220px;
+  gap: 6px;
+  margin: 0;
+  padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-6);
+  overflow-y: auto;
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  line-height: 1.45;
+}
+
+.update-notes > li::marker { color: var(--accent); }
+
+.update-notice-actions { display: flex; justify-content: flex-end; gap: var(--sp-2); }
+.update-notice-actions > button { min-height: 32px; padding-inline: var(--sp-3); font-size: var(--fs-sm); white-space: nowrap; }
+
+.update-notice-bar { height: 4px; overflow: hidden; border-radius: 2px; background: var(--fill-2); }
+.update-notice-bar > i { display: block; height: 100%; border-radius: inherit; background: var(--accent); transition: width var(--duration-normal) var(--ease-out); }
+
+.update-setting > button { flex: 0 0 auto; white-space: nowrap; }
+
+@keyframes update-notice-in {
+  from { opacity: 0; transform: translate3d(0, 12px, 0); }
+}
+
+

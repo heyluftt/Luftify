@@ -1,0 +1,27 @@
+[package]
+name = "luft-infrastructure"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+base64.workspace = true
+chrono.workspace = true
+futures-util.workspace = true
+luft-audio = { path = "../luft-audio" }
+luft-listen-together = { path = "../luft-listen-together" }
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+sqlx.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-appender.workspace = true
+tracing-subscriber.workspace = true
+url.workspace = true
+
+[dev-dependencies]
+tempfile = "3"

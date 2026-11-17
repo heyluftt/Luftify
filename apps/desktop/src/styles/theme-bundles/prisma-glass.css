@@ -1,0 +1,15 @@
+/* The glass is an edge-to-edge field, not a floating ornament over the page. */
+.prisma-glass-position {
+  position: absolute;
+  top: -20%;
+  right: -28%;
+  width: 115%;
+  height: 145%;
+  opacity: calc(var(--scene-glass-strength) * var(--prisma-art-opacity, 1) * var(--prisma-responsive-opacity, 1));
+  mask-image: radial-gradient(ellipse 72% 76% at 74% 47%, #000 24%, transparent 78%);
+}
+.prisma-glass-field {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

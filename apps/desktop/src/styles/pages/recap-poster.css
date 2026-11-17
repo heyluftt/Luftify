@@ -1,0 +1,301 @@
+/*
+ * The recap end card as a 4:5 poster. Sizes are in cqw (1cqw = 1 % of the
+ * poster width), mirroring recapShareImage.ts, where the same layout is
+ * drawn at 1080 × 1350 (1cqw = 10.8 px): card and saved image match.
+ */
+
+.recap-poster-frame {
+  width: min(100%, 50vh);
+  margin-inline: auto;
+  container-type: inline-size;
+}
+
+.recap-poster {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 3.6cqw;
+  aspect-ratio: 4 / 5;
+  padding: 6cqw;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 5cqw;
+  background:
+    radial-gradient(circle at 88% 6%, rgb(255 255 255 / 26%), transparent 46%),
+    linear-gradient(150deg, var(--recap-primary), var(--recap-secondary) 55%, var(--recap-shadow));
+  box-shadow: 0 30px 70px -24px rgb(0 0 0 / 70%), inset 0 0 0 1px rgb(255 255 255 / 14%);
+  color: #fff;
+  text-align: left;
+}
+
+/* The top cover, blurred into a texture; a veil keeps the ink readable. */
+.recap-poster-bg {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+}
+
+.recap-poster-bg img {
+  position: absolute;
+  inset: -20%;
+  width: 140%;
+  height: 140%;
+  object-fit: cover;
+  filter: blur(9cqw) saturate(1.4);
+  opacity: .55;
+}
+
+.recap-poster-bg::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(0 0 0 / 18%), rgb(0 0 0 / 46%) 60%, rgb(0 0 0 / 62%));
+  content: "";
+}
+
+/* ---------- Head ---------- */
+.recap-poster-head {
+  display: grid;
+  gap: 1cqw;
+}
+
+.recap-poster-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.6cqw;
+  color: rgb(255 255 255 / 78%);
+  font-size: 2.6cqw;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.recap-poster-brand i {
+  width: 2.2cqw;
+  height: 2.2cqw;
+  border: .5cqw solid currentColor;
+  border-radius: 50%;
+}
+
+.recap-poster-head h3 {
+  margin: 0;
+  overflow: hidden;
+  font-size: 6.6cqw;
+  font-weight: 850;
+  letter-spacing: -.03em;
+  line-height: 1.05;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recap-poster-head small {
+  color: rgb(255 255 255 / 76%);
+  font-size: 2.6cqw;
+  font-weight: 550;
+}
+
+/* ---------- Hero ---------- */
+.recap-poster-hero {
+  display: grid;
+  grid-template-columns: 30cqw minmax(0, 1fr);
+  align-items: center;
+  gap: 3.6cqw;
+}
+
+.recap-poster-cover {
+  display: block;
+  width: 30cqw;
+  border-radius: 3cqw;
+  box-shadow: 0 3cqw 7cqw -2cqw rgb(0 0 0 / 60%);
+}
+
+.recap-poster .recap-poster-cover .album-art {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 3cqw;
+}
+
+.recap-poster-amount {
+  display: grid;
+  min-width: 0;
+}
+
+.recap-poster-amount > strong {
+  font-size: 14cqw;
+  font-weight: 900;
+  letter-spacing: -.05em;
+  line-height: .9;
+  font-variant-numeric: tabular-nums;
+}
+
+.recap-poster-amount > span {
+  margin-top: .6cqw;
+  font-size: 3.7cqw;
+  font-weight: 750;
+}
+
+.recap-poster-amount dl {
+  display: flex;
+  gap: 4.4cqw;
+  margin: 3cqw 0 0;
+}
+
+.recap-poster-amount dt {
+  color: rgb(255 255 255 / 70%);
+  font-size: 2cqw;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.recap-poster-amount dd {
+  margin: .4cqw 0 0;
+  font-size: 3.7cqw;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Lists ---------- */
+.recap-poster-lists {
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 3.6cqw;
+}
+
+.recap-poster-lists section {
+  min-width: 0;
+}
+
+.recap-poster-lists h4 {
+  margin: 0 0 1.6cqw;
+  line-height: 1.2;
+  color: rgb(255 255 255 / 70%);
+  font-size: 2.2cqw;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.recap-poster-lists ol {
+  display: grid;
+  gap: 1.3cqw;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recap-poster-lists li {
+  display: grid;
+  height: 5.9cqw;
+  grid-template-columns: 3.4cqw 5.4cqw minmax(0, 1fr);
+  align-items: center;
+  gap: 1.8cqw;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.recap-poster-lists li b {
+  font-size: 3cqw;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+.recap-poster .recap-poster-lists .album-art {
+  width: 5.4cqw;
+  height: 5.4cqw;
+  border-radius: 1cqw;
+}
+
+.recap-poster-lists li > span {
+  display: grid;
+  min-width: 0;
+}
+
+.recap-poster-lists strong,
+.recap-poster-lists small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recap-poster-lists strong {
+  font-size: 2.8cqw;
+  font-weight: 750;
+}
+
+.recap-poster-lists small {
+  color: rgb(255 255 255 / 70%);
+  font-size: 2.1cqw;
+}
+
+/* Artists: rank and name, the number one a size up. */
+.recap-poster-artists li {
+  grid-template-columns: 3.4cqw minmax(0, 1fr);
+}
+
+.recap-poster-artists li:first-child strong {
+  font-size: 3.4cqw;
+  font-weight: 850;
+}
+
+/* ---------- Foot ---------- */
+.recap-poster-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 4cqw;
+  padding: 3.2cqw 3.6cqw;
+  border-radius: 3cqw;
+  background: rgb(255 255 255 / 13%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 12%);
+}
+
+.recap-poster-foot > span:first-child {
+  display: grid;
+  min-width: 0;
+  gap: .6cqw;
+}
+
+.recap-poster-foot small {
+  color: rgb(255 255 255 / 72%);
+  font-size: 2cqw;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.recap-poster-foot strong {
+  overflow: hidden;
+  font-size: 4.1cqw;
+  font-weight: 850;
+  letter-spacing: -.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The period as a tiny bar line: the poster's signature. */
+.recap-poster-spark {
+  display: flex;
+  width: 28cqw;
+  height: 7.4cqw;
+  flex: 0 0 auto;
+  align-items: flex-end;
+  gap: .5cqw;
+}
+
+.recap-poster-spark i {
+  height: 100%;
+  min-width: 0;
+  flex: 1;
+  border-radius: .5cqw;
+  background: rgb(255 255 255 / 40%);
+  transform: scaleY(var(--bar));
+  transform-origin: bottom;
+}
+
+.recap-poster-spark i.is-peak {
+  background: #fff;
+}

@@ -1,0 +1,9 @@
+.profile-settings [role="status"] { color: var(--text-2); line-height: 1.5; font-size: var(--fs-sm); }
+.profile-image-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 20px 0; }
+.profile-settings .listen-avatar { display: inline-flex; width: 72px; height: 72px; flex: 0 0 72px; align-items: center; justify-content: center; border-radius: 50%; overflow: hidden; background: var(--fill-2); color: var(--accent); font-size: 26px; }
+.listen-avatar img { width: 100%; height: 100%; border-radius: inherit; object-fit: cover; }
+.profile-settings label { display: block; margin-bottom: 8px; }
+.profile-settings input:not([type="file"]) { display: block; box-sizing: border-box; width: min(100%, 360px); height: 40px; padding: 0 var(--sp-3); border: 0; border-radius: var(--r-sm); background: var(--fill-2); color: var(--text); font: inherit; margin-bottom: 14px; outline: 0; }
+.profile-settings button:disabled { opacity: .5; cursor: not-allowed; }
+.profile-settings input:not([type="file"]):focus { background: var(--fill-3); }
+.profile-settings [role="status"] { min-height: 20px; }

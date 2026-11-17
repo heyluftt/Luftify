@@ -1,0 +1,447 @@
+/* DSP panels of the audio page: shared frame, volume boost and equalizer. */
+
+/* ---------- Shared frame ---------- */
+.audio-panel {
+  display: grid;
+  gap: var(--sp-5);
+  padding: var(--sp-6);
+  border-radius: var(--r-xl);
+  background: var(--fill-1);
+}
+
+.audio-panel.is-disabled > :not(.audio-panel-header) {
+  opacity: .62;
+}
+
+.audio-panel-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+
+.audio-panel-title {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: var(--sp-4);
+}
+
+.audio-panel-title h2 {
+  font-size: var(--fs-h2);
+  letter-spacing: var(--tracking-tight);
+}
+
+.audio-panel-title p {
+  margin-top: 2px;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.audio-panel-icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--r-md);
+  background: var(--fill-2);
+  color: var(--text-2);
+}
+
+.audio-panel.is-enabled .audio-panel-icon {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+.audio-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.audio-engine-pill {
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-full);
+  background: var(--fill-2);
+  color: var(--text-2);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+}
+
+.audio-engine-pill > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-3);
+}
+
+.audio-engine-pill.is-live {
+  color: var(--text);
+}
+
+.audio-engine-pill.is-live > span {
+  background: var(--success);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--success) 20%, transparent);
+}
+
+.audio-panel-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+/* Horizontal sliders inside the panels share one quiet style. */
+.audio-panel input[type="range"] {
+  --range-fill: 0%;
+  width: 100%;
+  height: 4px;
+  appearance: none;
+  border-radius: var(--r-full);
+  background: linear-gradient(to right, var(--accent) 0 var(--range-fill), var(--fill-3) var(--range-fill) 100%);
+}
+
+.audio-panel input[type="range"]::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  appearance: none;
+  border-radius: 50%;
+  background: var(--text);
+  box-shadow: 0 1px 4px color-mix(in srgb, #000 40%, transparent);
+  transition: transform var(--duration-fast) var(--ease-interactive);
+}
+
+.audio-panel input[type="range"]:hover::-webkit-slider-thumb,
+.audio-panel input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.18);
+}
+
+.audio-panel input[type="range"]:disabled {
+  cursor: default;
+}
+
+.audio-panel output {
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Volume boost ---------- */
+.boost-workbench {
+  display: grid;
+  grid-template-columns: minmax(150px, auto) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-8);
+}
+
+.boost-readout {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+}
+
+.boost-readout-icon {
+  display: none;
+}
+
+.boost-readout small {
+  display: block;
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+
+.boost-readout strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-title);
+  line-height: 1.1;
+}
+
+.boost-readout output {
+  color: var(--accent-text);
+  font-weight: var(--fw-semibold);
+}
+
+.boost-control input[type="range"] {
+  --range-fill: var(--boost-fill);
+}
+
+.boost-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--sp-2);
+  color: var(--text-3);
+  font-size: var(--fs-2xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.boost-presets {
+  display: flex;
+  gap: var(--sp-1);
+}
+
+.boost-safety {
+  display: grid;
+  grid-template-columns: auto minmax(0, auto) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+  cursor: pointer;
+}
+
+.boost-safety > span:first-child {
+  display: grid;
+  color: var(--text-2);
+}
+
+.boost-safety strong,
+.eq-guard-toggle strong {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.boost-safety small,
+.eq-guard-toggle small {
+  display: block;
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+
+/* ---------- Equalizer ---------- */
+.eq-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+}
+
+.eq-curve-shell {
+  position: relative;
+  height: 168px;
+  padding-left: 30px;
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+}
+
+.eq-curve-scale {
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
+  left: var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: var(--text-3);
+  font-size: var(--fs-2xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.eq-curve {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.eq-grid-line {
+  stroke: var(--line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.eq-grid-line.is-zero {
+  stroke: var(--line-strong);
+}
+
+.eq-grid-line.is-vertical {
+  stroke-dasharray: 2 5;
+}
+
+.eq-curve-fill {
+  fill: url(#eq-fill);
+}
+
+.eq-curve-line {
+  fill: none;
+  stroke: var(--text-2);
+  stroke-width: 2;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.eq-curve-point {
+  fill: var(--canvas);
+  stroke: var(--text-2);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.eq-curve-shell.is-active .eq-curve-line,
+.eq-curve-shell.is-active .eq-curve-point {
+  stroke: var(--accent);
+}
+
+.eq-band-grid {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: var(--sp-2);
+}
+
+.eq-band {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-2);
+  min-width: 0;
+  padding: var(--sp-3) 0 var(--sp-2);
+  border-radius: var(--r-md);
+}
+
+.eq-band:hover {
+  background: var(--fill-1);
+}
+
+.eq-band output {
+  min-height: 14px;
+  font-size: var(--fs-2xs);
+}
+
+.audio-panel .eq-band input[type="range"] {
+  width: 4px;
+  height: 136px;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  background: linear-gradient(to top, var(--accent) 0 var(--eq-fill), var(--fill-3) var(--eq-fill) 100%);
+  cursor: ns-resize;
+}
+
+.eq-band strong {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.eq-band small {
+  margin-top: -6px;
+  color: var(--text-3);
+  font-size: var(--fs-2xs);
+}
+
+.eq-bottom-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.3fr) repeat(2, minmax(0, 1fr)) auto;
+  align-items: stretch;
+  gap: var(--sp-2);
+}
+
+.eq-preamp-control,
+.eq-guard-toggle {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+}
+
+.eq-preamp-control > span {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.eq-preamp-control > span strong {
+  color: var(--text);
+  font-weight: var(--fw-semibold);
+}
+
+.eq-preamp-control output {
+  flex: 0 0 auto;
+  min-width: 48px;
+  text-align: right;
+}
+
+.eq-guard-toggle {
+  cursor: pointer;
+}
+
+.eq-guard-toggle > span:nth-child(2) {
+  min-width: 0;
+  flex: 1;
+}
+
+.eq-guard-icon {
+  display: grid;
+  color: var(--text-2);
+}
+
+.eq-reset-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 var(--sp-4);
+  border-radius: var(--r-md);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.eq-reset-button:hover:not(:disabled) {
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+@media (max-width: 1180px) {
+  .boost-workbench {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .boost-presets {
+    grid-column: 1 / -1;
+  }
+
+  .eq-bottom-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .audio-panel {
+    padding: var(--sp-4);
+  }
+
+  .boost-workbench,
+  .eq-bottom-row {
+    grid-template-columns: 1fr;
+  }
+
+  .boost-safety {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .boost-safety > small {
+    display: none;
+  }
+
+  .eq-band-grid {
+    overflow-x: auto;
+    grid-template-columns: repeat(10, 52px);
+  }
+}

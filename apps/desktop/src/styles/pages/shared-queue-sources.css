@@ -1,0 +1,139 @@
+/* Adding to the room: source tabs, collections, queue toolbar, hero button. */
+.shared-queue-sources { margin-top: var(--sp-6); }
+.shared-queue-sources .shared-queue-search { margin-top: var(--sp-4); }
+.shared-selection-hint { margin-bottom: var(--sp-3); color: var(--text-2); font-size: var(--fs-xs); line-height: 1.5; }
+.shared-search-song-actions { display: flex; align-items: center; flex-shrink: 0; gap: 4px; }
+.shared-search-song-actions .secondary-button { padding-inline: var(--sp-3); font-size: var(--fs-xs); }
+@media (max-width: 620px) {
+  .shared-queue-results > .shared-search-song { flex-wrap: wrap; }
+  .shared-search-song-actions { margin-left: 60px; }
+}
+.queue-panel .shared-queue-results > .shared-search-song { flex-wrap: wrap; }
+.queue-panel .shared-search-song-actions { margin-left: 60px; }
+
+.shared-queue-tabs {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--r-full);
+  background: var(--fill-1);
+}
+
+.shared-queue-tabs > button {
+  min-height: 28px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-full);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  transition: background var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+
+.shared-queue-tabs > button:hover { color: var(--text); }
+.shared-queue-tabs > button[aria-selected="true"] { background: var(--fill-3); color: var(--text); }
+
+.shared-queue-group {
+  margin: var(--sp-4) 0 0;
+  color: var(--text-2);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-caps, .08em);
+  text-transform: uppercase;
+}
+
+.shared-queue-group + .shared-queue-results { margin-top: var(--sp-1); }
+.shared-queue-collections .shared-track-cover { width: 44px; height: 44px; flex-basis: 44px; }
+.shared-queue-results li > .shared-queue-track { min-width: 0; flex: 1; }
+.shared-queue-results li > .icon-button { flex: 0 0 auto; }
+
+.shared-queue-library { margin-top: var(--sp-4); }
+.shared-queue-library > p { margin-top: var(--sp-3); color: var(--text-2); font-size: var(--fs-sm); }
+.shared-queue-library-pages { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); margin-top: var(--sp-3); color: var(--text-2); font-size: var(--fs-xs); }
+.shared-queue-library-pages > div { display: flex; gap: var(--sp-2); }
+
+.shared-queue-filter {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 38px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-sm);
+  background: var(--fill-2);
+  color: var(--text-2);
+}
+
+.shared-queue-filter input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+.shared-queue-filter input:focus-visible { outline: none; }
+.shared-queue-filter:focus-within { background: var(--fill-3); }
+
+.room-add-status {
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+}
+
+.shared-queue-sources > .room-add-status { margin-top: var(--sp-2); }
+.room-add-status[data-error] { color: var(--danger); }
+
+.shared-queue-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-3);
+  margin-top: var(--sp-4);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+
+.shared-queue-toolbar > span { margin-right: auto; font-variant-numeric: tabular-nums; }
+.shared-queue-toolbar .text-button { gap: 6px; min-height: 28px; font-size: var(--fs-xs); }
+
+.shared-queue-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--fill-2);
+}
+
+.shared-queue-confirm > p { margin-right: auto; font-size: var(--fs-sm); line-height: 1.5; }
+
+/* Hero button on playlist and album pages while in a room. */
+.room-add { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+
+/* ---------- Playlist blocks in the queue ---------- */
+.shared-queue-list > li.shared-queue-group-block {
+  display: block;
+  margin: var(--sp-2) 0;
+  padding: var(--sp-2);
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+}
+
+.shared-queue-list > li.shared-queue-group-block:hover { background: var(--fill-1); }
+.shared-queue-group-block .shared-queue-list { margin-top: var(--sp-1); }
+
+.shared-queue-group-head { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-1) var(--sp-2) var(--sp-2); }
+.shared-queue-group-copy { display: grid; min-width: 0; flex: 1; gap: 1px; }
+.shared-queue-group-copy > span { display: flex; align-items: center; gap: 5px; color: var(--accent); font-size: var(--fs-2xs); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-caps, .08em); text-transform: uppercase; }
+.shared-queue-group-copy > strong { overflow: hidden; font-size: var(--fs-md); font-weight: var(--fw-semibold); text-overflow: ellipsis; white-space: nowrap; }
+.shared-queue-group-copy > small { color: var(--text-2); font-size: var(--fs-xs); font-variant-numeric: tabular-nums; }
+.shared-queue-group-block > .shared-queue-confirm { margin: 0 var(--sp-2) var(--sp-2); }
+
+.shared-queue-group-toggle { gap: 6px; margin: var(--sp-1) 0 0 var(--sp-2); min-height: 28px; font-size: var(--fs-xs); }
+.shared-queue-group-toggle > svg { transition: transform var(--duration-fast) var(--ease-out); }
+.shared-queue-group-toggle[aria-expanded="true"] > svg { transform: rotate(180deg); }
+
+/* Someone else's song while the room allows only your own. */
+.shared-queue-list li[data-locked] .shared-queue-actions { opacity: .45; }

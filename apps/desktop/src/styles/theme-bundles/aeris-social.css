@@ -1,0 +1,51 @@
+/* Profile artwork keeps its colours, with a stable dark floor behind the text. */
+:root[data-theme="luft.aeris"] .friends-hero {
+  --aeris-name-ink: var(--aeris-paper);
+  background: var(--aeris-steel);
+}
+:root[data-theme="luft.aeris"] .friends-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(110deg, color-mix(in srgb, var(--aeris-shadow) 92%, transparent), color-mix(in srgb, var(--aeris-steel) 87%, transparent));
+  pointer-events: none;
+}
+:root[data-theme="luft.aeris"] .friends-hero .secondary-button {
+  color: var(--text);
+  background: var(--fill-2);
+}
+
+/* Small labels need ink contrast; role colours remain in their fill and rim. */
+:root[data-theme="luft.aeris"] .role-badge {
+  --role-ink: color-mix(in srgb, var(--role-a) 12%, var(--color-text));
+  color: var(--role-ink);
+}
+:root[data-theme="luft.aeris"] .role-badge > svg { filter: none; }
+
+/* Gradient preferences remain visible, with readable stops on either surface. */
+:root[data-theme="luft.aeris"] .profile-name[data-gradient] {
+  background-image: linear-gradient(100deg,
+    color-mix(in srgb, var(--name-from) 30%, var(--aeris-name-ink)),
+    color-mix(in srgb, var(--name-to, var(--name-auto)) 40%, var(--aeris-name-ink)) 50%,
+    color-mix(in srgb, var(--name-from) 30%, var(--aeris-name-ink)));
+}
+
+:root[data-theme="luft.aeris"] .friends-code {
+  --text: var(--color-text);
+  --text-2: var(--color-muted);
+  background: var(--raised);
+  color: var(--text);
+}
+:root[data-theme="luft.aeris"] .friends-hero .friends-code {
+  --raised: var(--aeris-white);
+}
+:root[data-theme="luft.aeris"] .friends-code[data-custom] small { color: var(--text-2); }
+:root[data-theme="luft.aeris"] .role-code {
+  background-image: linear-gradient(100deg,
+    color-mix(in srgb, var(--role-a, var(--aeris-glint)) 12%, var(--color-text)),
+    color-mix(in srgb, var(--role-b, var(--aeris-glint)) 16%, var(--color-text)) 45%,
+    color-mix(in srgb, var(--role-c, var(--aeris-glint)) 12%, var(--color-text)) 70%,
+    color-mix(in srgb, var(--role-a, var(--aeris-glint)) 12%, var(--color-text)));
+}

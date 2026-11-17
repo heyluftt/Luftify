@@ -1,0 +1,342 @@
+/*
+ * Tiefsee: the deep-sea scene behind the content canvas (AbyssScene.tsx,
+ * anchored by shell/atmosphere.css). Every layer moves transform or opacity
+ * only; plankton lives on a canvas (abyssParticles.ts). --abyss-pulse /
+ * --abyss-energy (0–1, useAbyssPulse) swell the jellies' glow with the music;
+ * they sit on wrappers, never on an animated property.
+ * Minimised windows pause it (ds/base.css), reduced motion stops it.
+ */
+
+.abyss-scene {
+  --abyss-pulse: 0;
+  --abyss-energy: 0;
+  background:
+    radial-gradient(90% 55% at 50% -8%, rgb(40 150 160 / 30%), transparent 70%),
+    linear-gradient(180deg, #0b3540 0%, #072631 16%, #04161f 40%, #020c12 70%, #01060a 100%);
+  container-type: size;
+  /* Nothing in the scene can affect the page's layout or paint. */
+  contain: layout paint;
+  animation: abyss-enter 1.8s var(--ease-out) both;
+}
+
+.abyss-scene :is(i, svg) { position: absolute; display: block; pointer-events: none; }
+
+/* ---------- Light through the surface ---------- */
+/* Turbulence noise is near zero along thin lines; inverted, that leaves a
+   bright web like real caustics. Two tiles drift apart, so it shimmers. */
+.abyss-caustics {
+  --tile: 520px;
+  top: 0;
+  left: 0;
+  width: calc(100% + var(--tile));
+  height: 24%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='turbulence' baseFrequency='.014 .022' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .66 0 0 0 0 1 0 0 0 0 .96 -7 0 0 0 1.25'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E") 0 0 / var(--tile) var(--tile);
+  -webkit-mask: linear-gradient(180deg, #000 0%, rgb(0 0 0 / 50%) 40%, transparent);
+  mask: linear-gradient(180deg, #000 0%, rgb(0 0 0 / 50%) 40%, transparent);
+  /* Plain transparency: a blend mode over a moving layer is recomposed every frame. */
+  opacity: .17;
+  animation: abyss-caustics 46s linear infinite;
+  will-change: transform;
+}
+.abyss-caustics-b {
+  --tile: 380px;
+  opacity: .11;
+  animation-duration: 33s;
+  animation-direction: reverse;
+}
+
+.abyss-ray {
+  top: -14%;
+  left: 14%;
+  width: 9%;
+  height: 92%;
+  background: linear-gradient(90deg, transparent, rgb(150 255 240 / 16%) 45%, rgb(190 255 248 / 22%) 50%, rgb(150 255 240 / 16%) 55%, transparent);
+  -webkit-mask: linear-gradient(180deg, #000 10%, transparent 85%);
+  mask: linear-gradient(180deg, #000 10%, transparent 85%);
+  transform-origin: 50% 0;
+  transform: rotate(16deg);
+  opacity: .5;
+  animation: abyss-ray 13s ease-in-out infinite alternate;
+}
+.abyss-ray[data-ray="1"] { left: 33%; width: 5%; animation-duration: 9s; animation-delay: -3s; }
+.abyss-ray[data-ray="2"] { left: 50%; width: 12%; opacity: .38; animation-duration: 16s; animation-delay: -7s; }
+.abyss-ray[data-ray="3"] { left: 68%; width: 6%; animation-duration: 11s; animation-delay: -1s; }
+.abyss-ray[data-ray="4"] { left: 84%; width: 8%; opacity: .32; animation-duration: 14s; animation-delay: -9s; }
+
+/* ---------- Plankton and marine snow (abyssParticles.ts) ---------- */
+.abyss-scene > .abyss-particles {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ---------- Jellyfish ---------- */
+.abyss-jelly {
+  bottom: 0;
+  left: var(--x);
+  width: var(--size);
+  height: calc(var(--size) * 2.2);
+  margin-left: calc(var(--size) / -2);
+  animation: abyss-rise var(--drift) linear infinite var(--delay);
+  will-change: transform;
+}
+/* Further away: smaller, fainter, behind the light; near ones carry the glow. */
+.abyss-jelly[data-depth="far"] { z-index: 0; opacity: .38; }
+.abyss-jelly[data-depth="mid"] { z-index: 1; opacity: .62; }
+.abyss-jelly[data-depth="near"] { z-index: 2; opacity: .9; }
+
+.abyss-jelly-sway {
+  inset: 0;
+  animation: abyss-sway calc(var(--drift) / 6) ease-in-out infinite alternate var(--delay);
+}
+
+.abyss-jelly-halo {
+  top: -26%;
+  left: -55%;
+  width: 210%;
+  height: 80%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(var(--glow) / 34%), rgb(var(--glow) / 10%) 55%, transparent);
+  opacity: calc(.5 + var(--abyss-pulse) * .5);
+  transform: scale(calc(1 + var(--abyss-pulse) * .2));
+  /* Its own layer: music changes then move it instead of repainting the glow. */
+  will-change: transform, opacity;
+}
+.abyss-jelly[data-depth="far"] .abyss-jelly-halo { display: none; }
+
+.abyss-jelly-body {
+  inset: 0;
+  transform-origin: 50% 12%;
+  animation: abyss-pulse-body var(--pulse) ease-in-out infinite;
+}
+.abyss-jelly-bell {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.abyss-jelly-tentacles {
+  top: 22%;
+  left: 8%;
+  width: 84%;
+  height: 76%;
+  transform-origin: 50% 0;
+  animation: abyss-tentacles var(--pulse) ease-in-out infinite;
+  animation-delay: calc(var(--pulse) * -.25);
+}
+
+/* The bell is 60/220 of the jelly's height; the rim glow sits on its lower edge. */
+.abyss-jelly-rim {
+  top: 22%;
+  left: 2%;
+  width: 96%;
+  height: 8%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(var(--glow) / 55%), rgb(var(--glow) / 12%) 60%, transparent);
+  animation: abyss-jelly-flash var(--pulse) ease-in-out infinite;
+}
+.abyss-jelly-core {
+  top: 7%;
+  left: 30%;
+  width: 40%;
+  height: 14%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 255 255 / 55%), rgb(var(--glow) / 30%) 50%, transparent);
+  animation: abyss-jelly-flash var(--pulse) ease-in-out infinite;
+  animation-delay: calc(var(--pulse) * -.1);
+}
+.abyss-jelly[data-depth="far"] :is(.abyss-jelly-rim, .abyss-jelly-core) { display: none; }
+
+/* ---------- Lighter version (abyssParticles.ts sets data-lite on slow machines) ---------- */
+.abyss-scene[data-lite] :is(.abyss-caustics-b, .abyss-jelly[data-depth="far"], .abyss-bubble[data-extra], .abyss-kelp-d, .abyss-jelly-core) { display: none; }
+.abyss-scene[data-lite] .abyss-ray:is([data-ray="1"], [data-ray="3"]) { display: none; }
+
+/* ---------- Manta: from above, head first, wings beating ---------- */
+/* The crossing (outer), a gentle rising and falling path with banking
+   (glide), then the parts: wings beat together with the tips lagging,
+   which reads as a wave running back through the wing; the body lifts on
+   each stroke; the tail trails. One stroke = --stroke. */
+.abyss-manta {
+  --stroke: 5.6s;
+  z-index: 0;
+  top: 26%;
+  left: 0;
+  width: 240px;
+  height: 200px;
+  opacity: 0;
+  animation: abyss-manta-cross 100s linear infinite -24s;
+  will-change: transform, opacity;
+}
+
+.abyss-manta-glide {
+  inset: 0;
+  animation: abyss-manta-glide 19s ease-in-out infinite alternate;
+}
+
+.abyss-manta-body {
+  top: 80px;
+  left: 78px;
+  width: 160px;
+  height: 40px;
+  animation: abyss-manta-body var(--stroke) ease-in-out infinite;
+}
+.abyss-manta-body svg,
+.abyss-manta-tail svg,
+.abyss-manta-wing svg { inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+.abyss-manta-spot {
+  fill: rgb(150 255 245 / 80%);
+  animation: abyss-manta-spot 3.2s ease-in-out infinite;
+}
+
+.abyss-manta-tail {
+  top: 97px;
+  left: 0;
+  width: 84px;
+  height: 6px;
+  transform-origin: 100% 50%;
+  animation: abyss-manta-tail var(--stroke) ease-in-out infinite;
+  animation-delay: calc(var(--stroke) * -.35);
+}
+
+/* Attached along the body's edge; the lower wing is the mirror image. */
+.abyss-manta-wing {
+  left: 92px;
+  width: 132px;
+  height: 84px;
+}
+.abyss-manta-wing[data-side="top"] { top: 16px; }
+/* Mirrored in place, so its root sits on the body line and the tip points down. */
+.abyss-manta-wing[data-side="bottom"] { top: 100px; transform: scaleY(-1); }
+.abyss-manta-wing > i {
+  inset: 0;
+  transform-origin: 50% 100%;
+  animation: abyss-manta-flap var(--stroke) cubic-bezier(.45, 0, .4, 1) infinite;
+}
+
+@keyframes abyss-manta-cross {
+  0% { opacity: 0; transform: translate3d(-260px, 0, 0) scale(.66); }
+  5% { opacity: .62; }
+  45% { opacity: .62; transform: translate3d(calc(100cqw + 20px), -6cqh, 0) scale(.66); }
+  50%, 100% { opacity: 0; transform: translate3d(calc(100cqw + 20px), -6cqh, 0) scale(.66); }
+}
+@keyframes abyss-manta-glide {
+  from { transform: translateY(-5cqh) rotate(-5deg); }
+  to { transform: translateY(7cqh) rotate(6deg); }
+}
+/* Up- and downstroke: from above the wing shortens as it rises or falls;
+   the skew lets the tip trail behind the root. */
+@keyframes abyss-manta-flap {
+  0%, 100% { transform: scaleY(1) skewX(0deg); }
+  22% { transform: scaleY(.42) skewX(-14deg); }
+  48% { transform: scaleY(.95) skewX(6deg); }
+  72% { transform: scaleY(.58) skewX(10deg); }
+}
+@keyframes abyss-manta-body {
+  0%, 100% { transform: translateX(0) scaleX(1); }
+  22% { transform: translateX(3px) scaleX(1.03); }
+  72% { transform: translateX(-2px) scaleX(.98); }
+}
+@keyframes abyss-manta-tail {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(7deg); }
+  70% { transform: rotate(-6deg); }
+}
+@keyframes abyss-manta-spot { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+
+/* ---------- Bubbles ---------- */
+.abyss-bubble {
+  bottom: -20px;
+  left: var(--x);
+  width: var(--s);
+  height: var(--s);
+  opacity: 0;
+  animation: abyss-bubble var(--t) ease-in infinite var(--d);
+  will-change: transform, opacity;
+}
+.abyss-bubble > i {
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, rgb(255 255 255 / 70%) 0 12%, transparent 30%), radial-gradient(closest-side, transparent 60%, rgb(160 255 245 / 50%) 88%, transparent);
+  animation: abyss-wobble 1.8s ease-in-out infinite alternate;
+}
+
+/* ---------- Kelp and seabed ---------- */
+.abyss-kelp {
+  bottom: -2%;
+  width: 12%;
+  height: 46%;
+  background: linear-gradient(180deg, rgb(20 90 90 / 0%), rgb(8 48 52 / 85%) 40%, #03161a);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 200' preserveAspectRatio='none'%3E%3Cpath d='M14 200C10 160 22 130 14 100S20 40 12 0c6 30 12 60 8 100s-2 70 4 100ZM34 200c-4-50 10-80 2-120S44 30 40 6c8 34 6 70 2 104s4 60 2 90ZM50 200c2-36-6-64 0-96s-4-52 2-74c4 26 4 48-2 72s4 66 0 98Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 200' preserveAspectRatio='none'%3E%3Cpath d='M14 200C10 160 22 130 14 100S20 40 12 0c6 30 12 60 8 100s-2 70 4 100ZM34 200c-4-50 10-80 2-120S44 30 40 6c8 34 6 70 2 104s4 60 2 90ZM50 200c2-36-6-64 0-96s-4-52 2-74c4 26 4 48-2 72s4 66 0 98Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  transform-origin: 50% 100%;
+  animation: abyss-kelp 9s ease-in-out infinite alternate;
+}
+.abyss-kelp-a { left: 2%; }
+.abyss-kelp-b { left: 9%; width: 8%; height: 34%; opacity: .7; animation-duration: 7s; animation-delay: -3s; }
+.abyss-kelp-c { right: 3%; width: 10%; height: 40%; animation-duration: 11s; animation-delay: -5s; }
+.abyss-kelp-d { right: 10%; width: 7%; height: 28%; opacity: .6; animation-duration: 8s; animation-delay: -2s; }
+
+.abyss-floor {
+  inset: auto 0 0;
+  height: 18%;
+  background:
+    radial-gradient(1.5px 1.5px at 22% 60%, rgb(228 107 255 / 80%), transparent),
+    radial-gradient(1.5px 1.5px at 47% 72%, rgb(92 232 218 / 80%), transparent),
+    radial-gradient(1.5px 1.5px at 74% 58%, rgb(92 232 218 / 70%), transparent),
+    radial-gradient(1.5px 1.5px at 88% 78%, rgb(228 107 255 / 70%), transparent),
+    linear-gradient(180deg, #03141a, #010508);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'%3E%3Cpath d='M0 26C40 14 70 30 110 22S180 6 230 18 320 34 360 16 400 20 400 20V60H0Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'%3E%3Cpath d='M0 26C40 14 70 30 110 22S180 6 230 18 320 34 360 16 400 20 400 20V60H0Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+}
+
+.abyss-vignette {
+  inset: 0;
+  background: radial-gradient(120% 90% at 50% 35%, transparent 55%, rgb(0 4 8 / 55%));
+}
+
+/* ---------- Motion ---------- */
+@keyframes abyss-enter { from { opacity: 0; } }
+@keyframes abyss-caustics { to { transform: translateX(calc(-1 * var(--tile))); } }
+@keyframes abyss-ray {
+  from { opacity: .18; transform: rotate(14deg) translateX(-2%); }
+  to { opacity: .55; transform: rotate(18deg) translateX(2%); }
+}
+@keyframes abyss-rise {
+  from { transform: translate3d(0, 110cqh, 0); }
+  /* Out over the surface: the whole canvas plus its own height. */
+  to { transform: translate3d(0, calc(-100cqh - 100%), 0); }
+}
+@keyframes abyss-sway {
+  from { transform: translateX(-6cqw) rotate(-6deg); }
+  to { transform: translateX(6cqw) rotate(5deg); }
+}
+/* A bell contracts quickly and opens slowly; that pushes the jelly up. */
+@keyframes abyss-pulse-body {
+  0%, 100% { transform: scale(1, 1) translateY(0); }
+  28% { transform: scale(.84, 1.1) translateY(-7%); }
+  60% { transform: scale(1.05, .95) translateY(-4%); }
+}
+/* Rim and core flare with the contraction (same timing as the bell). */
+@keyframes abyss-jelly-flash {
+  0%, 100% { opacity: .25; }
+  26% { opacity: 1; }
+  55% { opacity: .45; }
+}
+@keyframes abyss-tentacles {
+  0%, 100% { transform: skewX(0deg) scaleY(1); }
+  30% { transform: skewX(-7deg) scaleY(.92); }
+  65% { transform: skewX(6deg) scaleY(1.05); }
+}
+@keyframes abyss-bubble {
+  0% { opacity: 0; transform: translateY(0); }
+  8% { opacity: .9; }
+  85% { opacity: .7; }
+  100% { opacity: 0; transform: translateY(-105cqh); }
+}
+@keyframes abyss-wobble { from { transform: translateX(-3px) scale(1, .94); } to { transform: translateX(3px) scale(.95, 1); } }
+@keyframes abyss-kelp { from { transform: rotate(-3deg) skewX(-2deg); } to { transform: rotate(3deg) skewX(3deg); } }

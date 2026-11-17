@@ -1,0 +1,26 @@
+/* Profile artwork has a shared palette; surfaces and ink still follow the app theme. */
+:root {
+  --profile-sky: #7cc8ff;
+  --profile-violet: #b39bff;
+  --profile-rose: #ff7aa8;
+  --profile-amber: #ffc15c;
+  --profile-mint: #4fe0b0;
+  --profile-coral: #ff8a65;
+  --profile-gold: #ffd166;
+  --profile-slate: #9aa7bd;
+  --profile-night: #081321;
+  --profile-paper: #ecf4ff;
+  --profile-gold-shadow: #79511c;
+  --profile-gold-light: #ffedb5;
+  --profile-on-accent: var(--profile-night);
+  --profile-frame-line: 2px;
+}
+[data-accent] { --profile-on-accent: var(--profile-night); }
+[data-accent="sky"] { --profile-accent: var(--profile-sky); }
+[data-accent="violet"] { --profile-accent: var(--profile-violet); }
+[data-accent="rose"] { --profile-accent: var(--profile-rose); }
+[data-accent="amber"] { --profile-accent: var(--profile-amber); }
+[data-accent="mint"] { --profile-accent: var(--profile-mint); }
+[data-accent="coral"] { --profile-accent: var(--profile-coral); }
+[data-accent="gold"] { --profile-accent: var(--profile-gold); }
+[data-accent="slate"] { --profile-accent: var(--profile-slate); }

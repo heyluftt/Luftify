@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#172337"/>
+      <stop offset="1" stop-color="#0b0e14"/>
+    </linearGradient>
+    <linearGradient id="orb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eaf3ff"/>
+      <stop offset="0.45" stop-color="#a7c7ff"/>
+      <stop offset="1" stop-color="#9d8df1"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="154" fill="none" stroke="#a7c7ff" stroke-opacity=".28" stroke-width="7"/>
+  <circle cx="256" cy="256" r="104" fill="none" stroke="#9d8df1" stroke-opacity=".42" stroke-width="5"/>
+  <path d="M117 284c62-82 119-101 172-57 47 39 78 36 106-10" fill="none" stroke="#dceaff" stroke-opacity=".7" stroke-width="14" stroke-linecap="round"/>
+  <path d="M130 326c51-58 101-65 151-24 42 35 79 32 112-10" fill="none" stroke="#a7c7ff" stroke-opacity=".5" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="256" cy="256" r="42" fill="url(#orb)"/>
+  <circle cx="389" cy="138" r="13" fill="#a7c7ff"/>
+</svg>

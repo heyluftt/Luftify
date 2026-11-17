@@ -1,0 +1,12 @@
+[package]
+name = "luft-modules"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+luft-core = { path = "../luft-core" }
+serde.workspace = true
+thiserror.workspace = true
+

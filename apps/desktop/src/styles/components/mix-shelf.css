@@ -1,0 +1,337 @@
+/* Luftify mixes: a row of quiet cards; the open mix lists its songs below. */
+
+.mix-shelf {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--sp-2);
+}
+
+/* Card: cover | copy | tools. The open target covers the card, controls sit above it. */
+.mix-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-3) 44px var(--sp-3) var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+}
+
+.mix-card:hover {
+  background: var(--fill-2);
+}
+
+:root:not([data-input="pointer"]) .mix-card:has(.mix-card-open-target:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mix-card[data-selected] {
+  background: var(--fill-2);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+
+.mix-card[data-replacing] {
+  opacity: .6;
+}
+
+.mix-card-open-target {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: transparent;
+}
+
+.mix-card-open-target:focus {
+  outline: none;
+}
+
+.mix-card-cover {
+  position: relative;
+  flex: 0 0 84px;
+  width: 84px;
+  height: 84px;
+}
+
+.mix-cover-grid {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  background: var(--fill-2);
+  box-shadow: 0 6px 16px color-mix(in srgb, #000 22%, transparent);
+}
+
+.mix-cover-grid .album-art {
+  width: 42px;
+  height: 42px;
+  border-radius: 0;
+}
+
+.mix-cover-grid .album-art::after {
+  display: none;
+}
+
+.mix-card-play {
+  position: absolute;
+  right: -8px;
+  bottom: -8px;
+  z-index: 2;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 6px 16px color-mix(in srgb, #000 34%, transparent);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--duration-fast) ease, transform var(--duration-fast) var(--ease-out);
+}
+
+.mix-card:hover .mix-card-play,
+.mix-card:focus-within .mix-card-play,
+.mix-card[data-current] .mix-card-play {
+  opacity: 1;
+  transform: none;
+}
+
+.mix-card-play:hover:not(:disabled) {
+  transform: scale(1.06);
+}
+
+.mix-card-play:disabled {
+  opacity: 0 !important;
+}
+
+.mix-card-copy {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 3px;
+}
+
+.mix-card-copy strong {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.mix-card-copy > span,
+.mix-card-meta {
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mix-card-meta {
+  display: flex;
+  min-height: 16px;
+  align-items: center;
+  gap: 6px;
+}
+
+.mix-card-badge {
+  padding: 1px 7px;
+  border-radius: var(--r-full);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+}
+
+.mix-card[data-current] .mix-card-copy strong {
+  color: var(--accent-text);
+}
+
+.mix-card-tools {
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mix-card-icon {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: var(--r-full);
+  color: var(--text-2);
+  opacity: 0;
+}
+
+.mix-card:hover .mix-card-icon,
+.mix-card:focus-within .mix-card-icon,
+.mix-card-icon[aria-pressed="true"] {
+  opacity: 1;
+}
+
+.mix-card-icon:hover:not(:disabled) {
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+.mix-card-icon[aria-pressed="true"] {
+  color: var(--accent);
+}
+
+.mix-card-icon:disabled {
+  opacity: .3 !important;
+}
+
+.mix-card-flag {
+  position: absolute;
+  top: -8px;
+  left: var(--sp-3);
+  z-index: 2;
+  padding: 1px 8px;
+  border-radius: var(--r-full);
+  background: var(--raised);
+  color: var(--warning);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+}
+
+.mix-card-skeleton {
+  pointer-events: none;
+}
+
+.mix-card-skeleton .mix-cover-grid,
+.mix-card-skeleton .mix-card-copy > * {
+  background:
+    linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--text) 6%, transparent) 50%, transparent 70%) 0 0 / 300% 100%,
+    var(--fill-2);
+  animation: ds-shimmer 1.6s ease-in-out infinite;
+}
+
+.mix-card-skeleton .mix-card-copy > * {
+  display: block;
+  height: 10px;
+  border-radius: 5px;
+}
+
+.mix-card-skeleton .mix-card-copy small {
+  width: 30%;
+}
+
+.mix-card-skeleton .mix-card-copy strong {
+  width: 75%;
+  height: 14px;
+}
+
+.mix-card-skeleton .mix-card-copy span {
+  width: 50%;
+}
+
+.mix-card .mix-card-name {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-width: 0;
+  padding: 2px 6px;
+  border: 0;
+  border-radius: var(--r-xs);
+  background: var(--fill-3);
+  color: var(--text);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+}
+
+.mix-undo {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+  padding: 6px 6px 6px var(--sp-4);
+  border-radius: var(--r-full);
+  background: var(--raised);
+  box-shadow: inset 0 0 0 1px var(--line);
+  font-size: var(--fs-sm);
+}
+
+.mix-undo span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mix-undo .ghost-button {
+  min-height: 30px;
+  color: var(--accent-text);
+}
+
+.mix-context-menu {
+  position: fixed;
+  z-index: 10000;
+  width: 208px;
+  max-width: calc(100vw - 16px);
+  padding: 6px;
+  border-radius: var(--r-md);
+  background: var(--raised);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line);
+}
+
+.mix-context-menu button {
+  width: 100%;
+  min-height: 36px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-xs);
+  font-size: var(--fs-sm);
+  text-align: left;
+}
+
+.mix-context-menu button:hover:not(:disabled),
+:root:not([data-input="pointer"]) .mix-context-menu button:focus-visible {
+  background: var(--fill-2);
+  outline: none;
+}
+
+.mix-context-menu button.is-danger {
+  color: var(--danger);
+}
+
+.mix-detail-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+  margin: var(--sp-6) 0 var(--sp-3);
+}
+
+.mix-detail-title {
+  min-width: 0;
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-semibold);
+  overflow-wrap: anywhere;
+}
+
+@media (hover: none) {
+  .mix-card-play,
+  .mix-card-icon {
+    opacity: 1;
+    transform: none;
+  }
+}

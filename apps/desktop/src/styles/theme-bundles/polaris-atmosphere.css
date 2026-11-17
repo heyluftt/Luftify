@@ -1,0 +1,261 @@
+/*
+ * Polaris: polar night behind the content canvas (anchored by
+ * shell/atmosphere.css). Sky gradient, a soft Milky Way band, a star field
+ * that turns once every 40 minutes around the north star, rare meteors
+ * and a mountain ridge on the horizon. Everything static for reduced motion.
+ */
+
+:root[data-theme="luft.polaris"] {
+  --polaris-pole-x: 80%;
+  --polaris-pole-y: 15%;
+}
+
+.polaris-sky {
+  background:
+    linear-gradient(180deg, #0b1633 0%, #08112a 24%, #070d1f 52%, #060b18 78%, #081326 100%);
+  animation: polaris-enter 1.6s var(--ease-out) both;
+}
+
+.polaris-sky > i {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+/* ---------- Horizon glow ---------- */
+.polaris-glow {
+  inset: auto -10% 0;
+  height: 55%;
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 100%, rgb(70 120 210 / 18%), transparent 70%),
+    radial-gradient(ellipse 36% 40% at 26% 100%, rgb(150 132 230 / 8%), transparent 72%);
+}
+
+/* ---------- Milky Way ---------- */
+/* A soft band of light across the sky, passing close to the north star.
+   It sits inside the rotor, so it turns with the stars. */
+.polaris-milkyway {
+  position: absolute;
+  top: 2%;
+  left: -18%;
+  width: 150%;
+  height: 42%;
+  background:
+    radial-gradient(ellipse 30% 26% at 64% 50%, rgb(232 238 255 / 16%), transparent 72%),
+    radial-gradient(ellipse 56% 40% at 52% 50%, rgb(190 206 255 / 11%), transparent 74%),
+    radial-gradient(ellipse 80% 52% at 42% 52%, rgb(156 144 232 / 8%), transparent 76%);
+  transform: rotate(-22deg);
+  transform-origin: 60% 50%;
+  animation: polaris-band calc(90s * var(--motion-scale, 1)) ease-in-out infinite alternate;
+}
+
+/* The dark dust lane that splits the band, like the real one. */
+.polaris-milkyway-dust {
+  position: absolute;
+  top: 44%;
+  left: 18%;
+  width: 70%;
+  height: 12%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%, rgb(4 7 16 / 55%), transparent 70%);
+  filter: blur(14px);
+}
+
+.polaris-milkyway-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  border-radius: 50%;
+}
+
+/* ---------- Stars ---------- */
+.polaris-rotor {
+  inset: 0;
+  transform-origin: var(--polaris-pole-x) var(--polaris-pole-y);
+  will-change: transform;
+  animation: polaris-turn calc(2400s * var(--motion-scale, 1)) linear infinite;
+}
+
+.polaris-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  border-radius: 50%;
+}
+
+.polaris-stars-far,
+.polaris-stars-near,
+.polaris-stars-twinkle-a,
+.polaris-stars-twinkle-b {
+  width: 2px;
+  height: 2px;
+}
+
+.polaris-stars-twinkle-a {
+  animation: polaris-twinkle calc(5.2s * var(--motion-scale, 1)) ease-in-out infinite;
+}
+
+.polaris-stars-twinkle-b {
+  animation: polaris-twinkle calc(7.4s * var(--motion-scale, 1)) ease-in-out -2.6s infinite;
+}
+
+/* The north star: a bright point with a soft halo and diffraction spikes. */
+.polaris-north {
+  top: var(--polaris-pole-y);
+  left: var(--polaris-pole-x);
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  background:
+    radial-gradient(circle, #fff 0 1.4px, rgb(255 250 235 / 80%) 2.4px, rgb(242 220 162 / 30%) 6px, transparent 14px),
+    radial-gradient(circle, rgb(169 210 255 / 16%), transparent 44%),
+    linear-gradient(90deg, transparent 49.6%, rgb(255 255 255 / 55%) 50%, transparent 50.4%),
+    linear-gradient(0deg, transparent 49.6%, rgb(255 255 255 / 45%) 50%, transparent 50.4%);
+  mask-image: radial-gradient(circle, #000 0 12%, rgb(0 0 0 / 55%) 28%, transparent 60%);
+  animation: polaris-north calc(8s * var(--motion-scale, 1)) ease-in-out infinite;
+}
+
+/* ---------- Meteors: rare, short, one at a time ---------- */
+/*
+ * The bright head sits at the right end of the element, which is also the
+ * transform origin. The element is turned to the direction of travel
+ * (--meteor-angle matches --meteor-dx/--meteor-dy), so the head always
+ * leads and the tail grows out behind it.
+ */
+.polaris-meteor {
+  --meteor-dx: -300px;
+  --meteor-dy: 160px;
+  --meteor-angle: 152deg;
+  width: 150px;
+  height: 1.5px;
+  margin-left: -150px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgb(190 214 255 / 35%) 55%, rgb(236 244 255 / 90%));
+  opacity: 0;
+  transform-origin: right center;
+}
+
+.polaris-meteor::after {
+  position: absolute;
+  top: 50%;
+  right: -1px;
+  width: 3px;
+  height: 3px;
+  margin-top: -1.5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 6px 1px rgb(214 232 255 / 70%);
+  content: "";
+}
+
+.polaris-meteor-a {
+  top: 10%;
+  left: 62%;
+  animation: polaris-meteor calc(47s * var(--motion-scale, 1)) cubic-bezier(.3, .6, .4, 1) 9s infinite;
+}
+
+.polaris-meteor-b {
+  --meteor-dx: -240px;
+  --meteor-dy: 170px;
+  --meteor-angle: 145deg;
+  top: 6%;
+  left: 38%;
+  animation: polaris-meteor calc(71s * var(--motion-scale, 1)) cubic-bezier(.3, .6, .4, 1) 31s infinite;
+}
+
+/* ---------- Horizon ridge ---------- */
+.polaris-ridge {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 22%;
+  min-height: 110px;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'><path fill='%23030710' d='M0 200V132l70-26 58 18 84-58 62 40 48-22 96 66 70-44 60 28 88-74 74 52 52-18 90 60 66-36 72 30 64-42 76 44 70-22V200z'/></svg>") bottom / 100% 62% no-repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'><path fill='%230a1428' d='M0 200V96l96-40 72 30 110-62 84 52 66-26 118 70 92-58 80 34 104-82 94 64 72-30 110 58 102-44V200z'/></svg>") bottom / 100% 100% no-repeat;
+  opacity: .95;
+}
+
+.polaris-grain {
+  inset: 0;
+  opacity: .035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* Detail pages and lyrics: the sky steps back behind covers and text.
+   --polaris-dim is used inside the animations, which own the opacity. */
+.polaris-sky {
+  --polaris-dim: 1;
+}
+
+:root[data-theme="luft.polaris"] .app-frame:is([data-theme-art="none"], [data-theme-art="lyrics"]) .polaris-sky {
+  --polaris-dim: .5;
+}
+
+:root[data-theme="luft.polaris"] .app-frame:is([data-theme-art="none"], [data-theme-art="lyrics"]) .polaris-meteor {
+  display: none;
+}
+
+.polaris-rotor {
+  opacity: calc(.4 + .6 * var(--polaris-dim));
+}
+
+/* Resting values; the animations take them over while they run. */
+:is(.polaris-north, .polaris-milkyway) {
+  opacity: var(--polaris-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .polaris-sky,
+  .polaris-sky i {
+    animation: none;
+  }
+
+  .polaris-meteor {
+    display: none;
+  }
+}
+
+@keyframes polaris-enter {
+  from { opacity: 0; }
+}
+
+@keyframes polaris-turn {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes polaris-band {
+  from { opacity: calc(.8 * var(--polaris-dim)); }
+  to { opacity: var(--polaris-dim); }
+}
+
+@keyframes polaris-twinkle {
+  0%, 100% { opacity: .35; }
+  45% { opacity: 1; }
+  70% { opacity: .55; }
+}
+
+@keyframes polaris-north {
+  0%, 100% { opacity: calc(.78 * var(--polaris-dim)); transform: scale(1); }
+  50% { opacity: var(--polaris-dim); transform: scale(1.05); }
+}
+
+/* The flight takes the first ~3 % of the cycle: quick in, gently out. */
+@keyframes polaris-meteor {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(var(--meteor-angle)) scaleX(.15);
+  }
+  .6% { opacity: 1; }
+  2.4% { opacity: .8; }
+  3.2% {
+    opacity: 0;
+    transform: translate3d(var(--meteor-dx), var(--meteor-dy), 0) rotate(var(--meteor-angle)) scaleX(1);
+  }
+  100% { opacity: 0; }
+}

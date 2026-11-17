@@ -1,0 +1,160 @@
+/*
+ * Luftify design tokens. theme.ts writes the six theme inputs
+ * (--color-bg, --color-surface, --color-surface-elevated, --color-primary,
+ * --color-text, --color-muted) onto :root; everything else derives from them.
+ * A theme bundle may override any semantic token below, nothing more.
+ */
+
+:root {
+  /* Theme inputs (defaults = "Dunkel", replaced at runtime). */
+  --color-bg: #020304;
+  --color-surface: #080a0c;
+  --color-surface-elevated: #101316;
+  --color-primary: #bcc7d4;
+  --color-text: #e8ebef;
+  --color-muted: #a0a7b0;
+  --color-success: #6bd6a2;
+  --color-warning: #f0c36e;
+  --color-error: #f07f8d;
+  --radius: 14px;
+  --blur: 18px;
+  --space-scale: 1;
+  --motion-scale: var(--theme-motion-scale, 1);
+
+  /* Surfaces: the app floor, the content canvas, floating layers. */
+  --bg: var(--color-bg);
+  --sidebar-bg: var(--color-bg);
+  --canvas: var(--color-surface);
+  --canvas-edge: color-mix(in srgb, var(--text) 5%, transparent);
+  --raised: var(--color-surface-elevated);
+  --overlay: color-mix(in srgb, #000 56%, transparent);
+  /* Media rooms keep a cinema floor even inside a light theme. */
+  --media-floor: #090d14;
+  --media-ink: #edf1f5;
+  --media-muted: #b8c3ce;
+
+  /* Ink. */
+  --text: var(--color-text);
+  --text-2: var(--color-muted);
+  --text-3: color-mix(in srgb, var(--color-muted) 62%, var(--canvas));
+  --accent: var(--color-primary);
+  --on-accent: color-mix(in srgb, var(--color-bg) 90%, #000);
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+  --accent-text: var(--accent);
+  --success: var(--color-success);
+  --warning: var(--color-warning);
+  --danger: var(--color-error);
+
+  /* Quiet fills instead of borders. */
+  --fill-1: color-mix(in srgb, var(--text) 4.5%, transparent);
+  --fill-2: color-mix(in srgb, var(--text) 8%, transparent);
+  --fill-3: color-mix(in srgb, var(--text) 12%, transparent);
+  --line: color-mix(in srgb, var(--text) 8%, transparent);
+  --line-strong: color-mix(in srgb, var(--text) 15%, transparent);
+
+  /* Type. */
+  --font-sans: "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Segoe UI Variable Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Cascadia Mono", "Consolas", ui-monospace, monospace;
+  --fs-2xs: 11px;
+  --fs-xs: 11.5px;
+  --fs-sm: 12.5px;
+  --fs-md: 14px;
+  --fs-lg: 15.5px;
+  --fs-h3: 17px;
+  --fs-h2: 21px;
+  --fs-h1: 30px;
+  --fs-hero: clamp(38px, 4.4vw, 64px);
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --tracking-tight: -.022em;
+  --tracking-title: -.035em;
+  --tracking-caps: .08em;
+
+  /* Space, radius, depth. */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --r-xs: 6px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --r-full: 999px;
+  --r-cover: 8px;
+  --shadow-1: 0 8px 24px color-mix(in srgb, #000 22%, transparent);
+  --shadow-2: 0 18px 48px color-mix(in srgb, #000 34%, transparent);
+  --shadow-cover: 0 12px 32px color-mix(in srgb, #000 30%, transparent);
+  --focus-ring: 0 0 0 2px var(--canvas), 0 0 0 4px color-mix(in srgb, var(--accent) 80%, transparent);
+
+  /* Motion. */
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-exit: cubic-bezier(.4, 0, 1, 1);
+  --ease-interactive: cubic-bezier(.2, .72, .2, 1);
+  --ease-spring: cubic-bezier(.22, 1, .36, 1);
+  /* Overshoots its target a little (DESIGN.md, motion "Lebendig"). */
+  --ease-bounce: cubic-bezier(.34, 1.56, .64, 1);
+  --ease-pop: cubic-bezier(.22, 1.3, .36, 1);
+  --duration-instant: calc(80ms * var(--motion-scale));
+  --duration-fast: calc(130ms * var(--motion-scale));
+  --duration-normal: calc(200ms * var(--motion-scale));
+  --duration-slow: calc(320ms * var(--motion-scale));
+
+  /* Layout. */
+  --titlebar-height: 36px;
+  --sidebar-width: 288px;
+  --sidebar-collapsed-width: 76px;
+  --player-height: 84px;
+  --player-row: var(--player-height);
+  --shell-gap: 8px;
+  --page-gutter: clamp(24px, 2.8vw, 44px);
+  --content-width: 1480px;
+  --reading-width: 720px;
+  --control-height: 36px;
+  --track-row-height: 56px;
+
+  /* Legacy names still read by older stylesheets, mapped onto the tokens. */
+  --color-border: var(--line);
+  --color-border-strong: var(--line-strong);
+  --color-hover: var(--fill-1);
+  --color-accent: var(--accent);
+  --radius-xs: var(--r-xs);
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-xl);
+  --surface-soft: var(--fill-1);
+  --surface-raised: var(--raised);
+  --surface-tint: var(--accent-soft);
+  --surface-glass: color-mix(in srgb, var(--raised) 92%, transparent);
+  --hairline: var(--line);
+  --shadow-xs: none;
+  --shadow-sm: var(--shadow-1);
+  --shadow-md: var(--shadow-1);
+  --shadow-lg: var(--shadow-2);
+  --section-gap: var(--sp-10);
+
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-scale: 0;
+  }
+}
+
+/* Narrow windows keep more room for the canvas. */
+@media (max-width: 1100px) {
+  :root {
+    --sidebar-width: 244px;
+  }
+}

@@ -1,0 +1,535 @@
+/* Shared controls: buttons, fields, chips, switches, sliders, headings. */
+
+/* ---------- Page scaffolding ---------- */
+.page {
+  width: min(var(--content-width), 100%);
+  min-height: 100%;
+  margin-inline: auto;
+  padding: var(--sp-6) var(--page-gutter) var(--sp-16);
+  animation: ds-fade-up var(--duration-normal) var(--ease-out) both;
+}
+
+.page-heading {
+  display: grid;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-8);
+}
+
+.page-heading.split {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4) var(--sp-6);
+}
+
+.page-heading h1 {
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-semibold);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-title);
+}
+
+.page-heading p {
+  max-width: var(--reading-width);
+  color: var(--text-2);
+  font-size: var(--fs-md);
+  line-height: 1.55;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+}
+
+.section-block {
+  margin-top: var(--sp-10);
+}
+
+.section-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.section-title h2 {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-tight);
+}
+
+.section-title .eyebrow {
+  margin-bottom: var(--sp-1);
+}
+
+.count-label {
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Buttons ---------- */
+.primary-button,
+.secondary-button,
+.ghost-button,
+.text-button,
+.back-button {
+  display: inline-flex;
+  min-height: var(--control-height);
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-4);
+  border: 0;
+  border-radius: var(--r-full);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.primary-button > svg,
+.secondary-button > svg,
+.ghost-button > svg,
+.text-button > svg,
+.back-button > svg {
+  flex-shrink: 0;
+}
+
+.primary-button {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.primary-button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent) 88%, var(--text));
+}
+
+.secondary-button {
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+.secondary-button:hover:not(:disabled) {
+  background: var(--fill-3);
+}
+
+.secondary-button.danger,
+.ghost-button.danger,
+.text-button.danger {
+  color: var(--danger);
+}
+
+.ghost-button {
+  background: transparent;
+  color: var(--text-2);
+}
+
+.ghost-button:hover:not(:disabled) {
+  background: var(--fill-1);
+  color: var(--text);
+}
+
+.text-button,
+.back-button {
+  min-height: 28px;
+  padding: 0;
+  background: transparent;
+  color: var(--text-2);
+}
+
+.text-button:hover:not(:disabled),
+.back-button:hover:not(:disabled) {
+  color: var(--text);
+}
+
+.primary-button:not(:disabled):active,
+.secondary-button:not(:disabled):active,
+.ghost-button:not(:disabled):active {
+  transform: scale(.97);
+  transition-duration: var(--duration-instant);
+}
+
+.icon-button {
+  display: inline-grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--r-full);
+  background: transparent;
+  color: var(--text-2);
+}
+
+.icon-button:hover:not(:disabled) {
+  background: var(--fill-1);
+  color: var(--text);
+}
+
+.icon-button.active,
+.icon-button[aria-pressed="true"] {
+  color: var(--accent);
+}
+
+/* The big round play button of headers and cards. */
+.play-fab {
+  display: inline-grid;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--r-full);
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 8px 22px color-mix(in srgb, #000 28%, transparent);
+}
+
+.play-fab:hover:not(:disabled) {
+  transform: scale(1.04);
+  background: color-mix(in srgb, var(--accent) 90%, var(--text));
+}
+
+.play-fab:not(:disabled):active {
+  transform: scale(.96);
+}
+
+/* ---------- Fields ---------- */
+.ds-field,
+.search-field {
+  display: flex;
+  min-width: 0;
+  height: 40px;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-3);
+  border: 0;
+  border-radius: var(--r-full);
+  background: var(--fill-2);
+  color: var(--text-2);
+  box-shadow: inset 0 0 0 1px transparent;
+}
+
+.ds-field:focus-within,
+.search-field:focus-within {
+  background: var(--fill-3);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 22%, transparent);
+  color: var(--text);
+}
+
+.ds-field input,
+.search-field input {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: var(--fs-md);
+}
+
+.ds-field input::placeholder,
+.search-field input::placeholder {
+  color: var(--text-2);
+}
+
+.ds-field button,
+.search-field button {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--r-full);
+  color: var(--text-2);
+}
+
+.ds-field button:hover,
+.search-field button:hover {
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+select {
+  min-height: var(--control-height);
+  padding: 0 var(--sp-8) 0 var(--sp-3);
+  border: 0;
+  border-radius: var(--r-sm);
+  background:
+    linear-gradient(45deg, transparent 50%, var(--text-2) 50%) calc(100% - 17px) 55% / 5px 5px no-repeat,
+    linear-gradient(135deg, var(--text-2) 50%, transparent 50%) calc(100% - 12px) 55% / 5px 5px no-repeat,
+    var(--fill-2);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  appearance: none;
+  cursor: pointer;
+}
+
+select:hover {
+  background-color: var(--fill-3);
+}
+
+select option {
+  background: var(--raised);
+  color: var(--text);
+}
+
+textarea,
+input[type="text"],
+input[type="search"],
+input[type="url"],
+input[type="number"] {
+  border-radius: var(--r-sm);
+}
+
+/* ---------- Chips and segmented controls ---------- */
+.ds-chip {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-full);
+  background: var(--fill-2);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+}
+
+.ds-chip:hover {
+  background: var(--fill-3);
+}
+
+.ds-chip.is-active,
+.ds-chip[aria-pressed="true"],
+.ds-chip[aria-selected="true"] {
+  background: var(--text);
+  color: var(--canvas);
+}
+
+.ds-chip small {
+  color: inherit;
+  font-size: var(--fs-2xs);
+  opacity: .7;
+}
+
+.ds-segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--r-full);
+  background: var(--fill-1);
+}
+
+.ds-segmented > button {
+  min-height: 30px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-full);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.ds-segmented > button:hover {
+  color: var(--text);
+}
+
+.ds-segmented > button.active,
+.ds-segmented > button[aria-pressed="true"],
+.ds-segmented > button[aria-selected="true"] {
+  background: var(--fill-3);
+  color: var(--text);
+}
+
+/* ---------- Switch ---------- */
+.switch {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.switch > span {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  border-radius: var(--r-full);
+  background: var(--fill-3);
+  transition: background-color var(--duration-fast) ease;
+}
+
+.switch > span::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--text) 72%, var(--canvas));
+  box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
+  content: "";
+  transition: transform var(--duration-normal) var(--ease-spring);
+}
+
+.switch input:checked + span {
+  background: var(--accent);
+}
+
+.switch input:checked + span::after {
+  background: var(--on-accent);
+  transform: translateX(16px);
+}
+
+.switch input:focus-visible + span {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.switch input:disabled + span {
+  opacity: .45;
+}
+
+/* ---------- Range sliders ---------- */
+input[type="range"] {
+  height: 16px;
+  margin: 0;
+  background: transparent;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.smooth-progress {
+  position: relative;
+  display: grid;
+  min-height: 16px;
+  align-items: center;
+}
+
+.smooth-progress-rail,
+.smooth-progress-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: var(--r-full);
+  pointer-events: none;
+}
+
+.smooth-progress-rail {
+  background: var(--fill-3);
+}
+
+.smooth-progress-fill {
+  width: 100%;
+  background: var(--text);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.smooth-progress:hover .smooth-progress-fill {
+  background: var(--accent);
+}
+
+.smooth-progress input[type="range"] {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 16px;
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  accent-color: transparent;
+}
+
+.smooth-progress input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: transparent;
+}
+
+.smooth-progress input[type="range"]::-webkit-slider-thumb {
+  width: 12px;
+  height: 12px;
+  margin-top: -4px;
+  appearance: none;
+  border: 0;
+  border-radius: 50%;
+  background: var(--text);
+  opacity: 0;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.smooth-progress:hover input[type="range"]::-webkit-slider-thumb,
+.smooth-progress input[type="range"]:focus-visible::-webkit-slider-thumb,
+.smooth-progress input[type="range"]:active::-webkit-slider-thumb {
+  opacity: 1;
+}
+
+/* ---------- Status ---------- */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-dot.is-online {
+  color: var(--success);
+}
+
+.status-dot.is-warning {
+  color: var(--warning);
+}
+
+.status-dot.is-offline {
+  color: var(--text-3);
+}
+
+.status-badge {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 var(--sp-2);
+  border-radius: var(--r-full);
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+}
+
+.status-badge.online {
+  color: var(--success);
+}
+
+.status-badge.offline {
+  color: var(--danger);
+}
+
+.status-badge.warning {
+  color: var(--warning);
+}
+
+.status-badge.mock {
+  color: var(--accent);
+}
+
+.spin,
+.is-spinning {
+  animation: ds-spin calc(1s * var(--motion-scale, 1)) linear infinite;
+}

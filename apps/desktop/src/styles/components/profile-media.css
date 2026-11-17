@@ -1,0 +1,74 @@
+/* ---------- Moving picture and own banner (features/friends/media) ---------- */
+.listen-avatar:has(> .listen-avatar-motion) { position: relative; }
+.listen-avatar-motion {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+  animation: profile-media-in var(--duration-normal) var(--ease-out) both;
+}
+
+.profile-banner[data-banner="media"] { background: var(--canvas); }
+/* The grain stays on presets; an own picture shows as it is. */
+.profile-banner[data-banner="media"]::before { content: none; }
+.profile-banner-media {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: profile-media-in var(--duration-slow) var(--ease-out) both;
+}
+
+@keyframes profile-media-in { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.listen-avatar-motion, .profile-banner-media) { animation: none; }
+}
+
+/* ---------- Colour swatches: an own colour and "matching" ---------- */
+.look-swatches > .look-swatch-own { position: relative; }
+.look-swatches > .look-swatch-own > i {
+  background: conic-gradient(from 90deg, #ff6b6b, #ffd166, #4fe0b0, #7cc8ff, #b39bff, #ff7aa8, #ff6b6b);
+}
+.look-swatches > .look-swatch-own[style] > i { background: var(--own-color); }
+.look-swatches > .look-swatch-own > svg {
+  position: absolute;
+  color: var(--text);
+  opacity: 0;
+  transition: opacity var(--duration-fast) ease;
+  filter: drop-shadow(0 0 2px var(--canvas));
+}
+.look-swatches > .look-swatch-own:is(:hover, [aria-expanded="true"]) > svg { opacity: 1; }
+.look-swatches > .look-swatch-own[aria-checked="true"] { box-shadow: 0 0 0 2px var(--own-color, var(--accent)); }
+.look-swatches > .look-swatch-auto { background: var(--fill-2); color: var(--text-2); }
+.look-swatches > .look-swatch-auto[aria-checked="true"] { box-shadow: 0 0 0 2px var(--profile-accent, var(--accent)); color: var(--text); }
+
+.look-name-colors { display: grid; gap: var(--sp-2); padding: var(--sp-3); border-radius: var(--r-md); background: var(--fill-1); animation: own-profile-emojis-in var(--duration-fast) ease-out; }
+.look-name-colors > small { color: var(--text-2); font-size: var(--fs-xs); font-weight: var(--fw-medium); }
+
+/* ---------- Choosing the visible part (MediaCropper.tsx) ---------- */
+.media-cropper { display: grid; gap: var(--sp-3); padding: var(--sp-3); border-radius: var(--r-md); background: var(--fill-1); animation: own-profile-emojis-in var(--duration-fast) ease-out; }
+.media-cropper-stage {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  background: var(--fill-2);
+  box-shadow: inset 0 0 0 1px var(--line);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.media-cropper-stage:active { cursor: grabbing; }
+.media-cropper-stage[data-round] { width: min(220px, 100%); justify-self: center; border-radius: 50%; }
+.media-cropper-stage > :is(img, video) { position: absolute; max-width: none; height: auto; pointer-events: none; }
+.media-cropper-stage:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.media-cropper-zoom { display: flex; align-items: center; gap: var(--sp-2); color: var(--text-2); }
+.media-cropper-zoom > input { flex: 1; accent-color: var(--profile-accent, var(--accent)); }
+.own-profile-editor .media-cropper-zoom > input { min-height: 0; padding: 0; background: none; }
+.media-cropper-soft { color: var(--warning); font-size: var(--fs-xs); }
+.media-cropper-actions { display: flex; justify-content: flex-end; gap: var(--sp-2); }

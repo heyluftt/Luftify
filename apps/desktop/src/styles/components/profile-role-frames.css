@@ -1,0 +1,108 @@
+/* ---------- Role rings with their own signature ---------- */
+.role-avatar[data-role] .avatar-frame-fx { inset: -4px; z-index: 1; }
+.role-avatar:is([data-size="lg"], [data-size="xl"])[data-role] .avatar-frame-fx { inset: -6px; }
+
+/*
+ * Luft: an aurora ring. The iridescent band turns slowly, a bright streak of
+ * wind runs the other way across it, one glint rides along, and large
+ * pictures get a two-tone halo that breathes. `[data-size]` (always set)
+ * gives these the weight of the general ring rules in roles.css.
+ */
+.role-avatar[data-role="luft"] { --luft-band: 2px; --luft-inset: -4px; }
+.role-avatar:is([data-size="lg"], [data-size="xl"])[data-role="luft"] { --luft-band: 4px; --luft-inset: -7px; }
+
+.role-avatar[data-role="luft"][data-size]::before {
+  inset: var(--luft-inset);
+  background: conic-gradient(from 0deg, var(--role-a), var(--role-b) 28%, var(--role-c) 50%, var(--role-b) 72%, var(--role-a));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--luft-band)), #000 calc(100% - var(--luft-band) + .5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--luft-band)), #000 calc(100% - var(--luft-band) + .5px));
+  animation: role-spin 16s linear infinite;
+}
+
+/* The carrier turns with the band and holds the streak and the glint. */
+.role-avatar[data-role="luft"][data-size] .avatar-frame-fx {
+  inset: var(--luft-inset);
+  animation: role-spin 16s linear infinite;
+}
+
+/* The wind: a short bright arc, faster and the other way round. */
+.role-avatar[data-role="luft"][data-size] .avatar-frame-fx::before {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg,
+    transparent 0 60%,
+    color-mix(in srgb, var(--profile-paper) 0%, transparent) 64%,
+    color-mix(in srgb, var(--profile-paper) 92%, transparent) 78%,
+    color-mix(in srgb, var(--role-a) 40%, transparent) 84%,
+    transparent 90%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--luft-band)), #000 calc(100% - var(--luft-band) + .5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--luft-band)), #000 calc(100% - var(--luft-band) + .5px));
+  content: "";
+  animation: role-spin 5.5s linear infinite reverse;
+}
+
+/* One glint on the band, twinkling as it goes round. */
+.role-avatar[data-role="luft"][data-size] .avatar-frame-fx::after {
+  position: absolute;
+  top: calc(var(--luft-band) / 2);
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  background: var(--profile-paper);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  content: "";
+  animation: frame-sparkle 3.2s ease-in-out infinite;
+}
+.role-avatar[data-size="sm"][data-role="luft"] .avatar-frame-fx::after { width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; }
+.role-avatar[data-size="md"][data-role="luft"] .avatar-frame-fx::after { width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; }
+
+/* Behind the big picture: sky and rose, slowly trading places. */
+.role-avatar[data-size="xl"][data-role="luft"]::after {
+  inset: -26px;
+  background:
+    radial-gradient(closest-side at 35% 40%, color-mix(in srgb, var(--role-a) 34%, transparent), transparent),
+    radial-gradient(closest-side at 65% 62%, color-mix(in srgb, var(--role-c) 26%, transparent), transparent);
+  animation: luft-halo 14s ease-in-out infinite;
+}
+
+/* Crew: a golden shine runs round the ring. */
+.role-avatar[data-role="crew"] .avatar-frame-fx {
+  background: conic-gradient(from 0deg, transparent 0 78%, rgb(255 246 214 / 95%) 90%, transparent);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+  animation: role-spin 3.2s linear infinite;
+}
+.role-avatar:is([data-size="lg"], [data-size="xl"])[data-role="crew"] .avatar-frame-fx {
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+}
+
+/* Dev: a segmented ring, turning slowly like a loader. */
+.role-avatar[data-role="dev"]::before {
+  background: repeating-conic-gradient(var(--role-a) 0 22deg, transparent 22deg 30deg);
+  animation: role-spin 14s linear infinite;
+}
+
+/* Tester: the gradient drifts round, unhurried. */
+.role-avatar[data-role="tester"]::before { animation: role-spin 16s linear infinite; }
+
+@keyframes luft-halo {
+  0% { opacity: .6; transform: rotate(0deg) scale(.94); }
+  50% { opacity: 1; transform: rotate(180deg) scale(1.05); }
+  100% { opacity: .6; transform: rotate(360deg) scale(.94); }
+}
+
+@keyframes frame-sparkle {
+  0%, 100% { opacity: 0; transform: scale(.3) rotate(0deg); }
+  25% { opacity: 1; transform: scale(1) rotate(45deg); }
+  50% { opacity: 0; transform: scale(.4) rotate(90deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .role-avatar[data-role]::before, .role-avatar[data-role]::after,
+  .role-avatar[data-role] .avatar-frame-fx,
+  .role-avatar[data-role] .avatar-frame-fx::before,
+  .role-avatar[data-role] .avatar-frame-fx::after { animation: none; }
+}

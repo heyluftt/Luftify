@@ -1,0 +1,385 @@
+/* Friends page layout: profile hero, tabs, friend cards, wide Luft corner. */
+.friends-page { width: min(1320px, 100%); }
+
+/* ---------- Hero: your profile ---------- */
+.friends-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(220px, 280px);
+  align-items: center;
+  gap: var(--sp-6);
+  margin-bottom: var(--sp-6);
+  padding: var(--sp-6) var(--sp-8);
+  /* Not clipped: the status menu opens below it. The backgrounds clip themselves. */
+  z-index: 2;
+  isolation: isolate;
+  border-radius: var(--r-xl);
+  background: var(--fill-1);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+/* A busy background stays visible but never fights the text: darker behind the copy. */
+.friends-hero[data-banner]::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--canvas) 82%, transparent) 0%, color-mix(in srgb, var(--canvas) 58%, transparent) 48%, color-mix(in srgb, var(--canvas) 28%, transparent) 100%),
+    linear-gradient(0deg, color-mix(in srgb, var(--canvas) 45%, transparent), transparent 55%);
+  pointer-events: none;
+}
+
+.friends-hero-glow {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(60% 120% at 8% 0%, color-mix(in srgb, var(--role-a, var(--accent)) 20%, transparent), transparent 70%),
+    radial-gradient(50% 100% at 60% 0%, color-mix(in srgb, var(--role-c, var(--accent)) 10%, transparent), transparent 70%);
+  pointer-events: none;
+}
+
+.friends-hero-avatar { padding: 8px; border-radius: 50%; }
+.friends-hero-avatar:hover .listen-avatar { filter: brightness(1.08); }
+
+.friends-hero-copy { display: grid; justify-items: start; min-width: 0; gap: var(--sp-2); }
+.friends-hero-copy h2 { font-size: var(--fs-h1); font-weight: var(--fw-bold); letter-spacing: var(--tracking-tight); line-height: 1.12; overflow-wrap: anywhere; }
+.friends-hero-listeners { display: inline-flex; align-items: center; gap: var(--sp-2); color: var(--accent); font-size: var(--fs-sm); font-weight: var(--fw-medium); animation: own-profile-emojis-in var(--duration-normal) ease-out; }
+.friends-hero-bio { max-width: 52ch; color: var(--text-2); font-size: var(--fs-md); line-height: 1.5; overflow-wrap: anywhere; }
+.friends-hero[data-banner] .friends-hero-bio { color: color-mix(in srgb, var(--text) 84%, transparent); }
+.friends-hero-bio-empty { min-height: 26px; padding: 0; color: var(--text-2); font-size: var(--fs-sm); }
+.friends-hero-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-2); }
+.friends-hero[data-banner] .friends-hero-actions .secondary-button {
+  background: color-mix(in srgb, var(--canvas) 55%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Code, numbers and connection on a frosted panel, readable on any background. */
+.friends-hero-side {
+  display: grid;
+  min-width: 0;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border-radius: var(--r-lg);
+  background: color-mix(in srgb, var(--canvas) 52%, transparent);
+  box-shadow: inset 0 0 0 1px var(--line);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+.friends-hero-side .friends-copy-feedback { margin: 0; }
+
+.friends-hero-side > .friends-code {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+  color: var(--text-2);
+  text-align: left;
+  transition: background var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+.friends-hero-side > .friends-code:hover { background: var(--fill-2); color: var(--text); }
+.friends-hero-side > .friends-code > span { min-width: 0; }
+.friends-hero-side > .friends-code strong:not(.role-code) { color: var(--text); }
+
+.friends-hero-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-2); margin: 0; }
+.friends-hero-facts > div { display: grid; gap: 2px; padding: var(--sp-2); border-radius: var(--r-sm); background: var(--fill-1); text-align: center; }
+.friends-hero-facts dt { overflow: hidden; color: var(--text-2); font-size: var(--fs-2xs); text-overflow: ellipsis; white-space: nowrap; }
+.friends-hero-facts dd { margin: 0; color: var(--text); font-size: var(--fs-md); font-weight: var(--fw-semibold); font-variant-numeric: tabular-nums; }
+
+.friends-hero-server { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); padding-left: var(--sp-1); color: var(--text-2); font-size: var(--fs-2xs); }
+
+/* ---------- Tabs ---------- */
+.friends-tabs {
+  display: flex;
+  gap: var(--sp-1);
+  margin-bottom: var(--sp-6);
+  padding: var(--sp-1);
+  border-radius: var(--r-full);
+  background: var(--fill-1);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.friends-tabs > button {
+  position: relative;
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-4);
+  border-radius: var(--r-full);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+  transition: background var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+
+.friends-tabs > button > small { padding: 1px 7px; border-radius: var(--r-full); background: var(--fill-2); color: var(--text-2); font-size: var(--fs-2xs); font-variant-numeric: tabular-nums; }
+.friends-tabs > button:hover { color: var(--text); background: var(--fill-1); }
+.friends-tabs > button[aria-selected="true"] { background: var(--fill-3); color: var(--text); }
+.friends-tabs > button[aria-selected="true"] > small { background: var(--accent-soft); color: var(--accent); }
+.friends-tabs > button[data-special] { margin-left: auto; }
+.friends-tabs > button[data-special][aria-selected="true"] {
+  background: linear-gradient(100deg, color-mix(in srgb, var(--role-a, var(--accent)) 18%, var(--fill-2)), color-mix(in srgb, var(--role-c, var(--accent)) 18%, var(--fill-2)));
+}
+
+.friends-tab-body { display: grid; gap: var(--sp-5); }
+
+/* ---------- Friends tab: friends left, requests and search right ---------- */
+.friends-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 340px); align-items: start; gap: var(--sp-6); }
+.friends-main { display: grid; min-width: 0; gap: var(--sp-8); }
+.friends-side { position: sticky; top: var(--sp-4); display: grid; min-width: 0; gap: var(--sp-4); }
+.friends-side > .friends-panel { padding: var(--sp-5); }
+.friends-side .friends-section-heading { margin-bottom: var(--sp-3); }
+.friends-side .friends-section-heading h2 { font-size: var(--fs-h3); }
+/* Narrow column: name and code on their own line, the buttons below them. */
+.friends-side .friends-person { flex-wrap: wrap; row-gap: var(--sp-2); }
+.friends-side .friends-person-copy { flex: 1 1 calc(100% - 56px); }
+.friends-side .friends-row-actions { width: 100%; padding-left: 48px; }
+.friends-side .friends-row-actions > .primary-button { flex: 1; justify-content: center; }
+/* The friends grid is a page section here, not another box in a box. */
+.friends-main > .friends-list { padding: 0; background: none; }
+.friends-list-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--sp-2); }
+.friends-list-search { display: flex; align-items: center; gap: var(--sp-2); min-height: 32px; padding: 0 var(--sp-3); border-radius: var(--r-full); background: var(--fill-1); color: var(--text-2); }
+.friends-page .friends-list-search input[type="search"] { width: 150px; min-height: 30px; padding: 0; border-radius: 0; background: transparent; font-size: var(--fs-sm); }
+.friends-list-search:focus-within { background: var(--fill-2); }
+
+/* Hidden listening, top left on a card: only you see it. */
+.friends-card-hidden { position: absolute; z-index: 1; top: var(--sp-2); left: var(--sp-2); display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: color-mix(in srgb, var(--canvas) 60%, transparent); color: var(--text-2); }
+
+/* ---------- Friend cards ---------- */
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.friends-card {
+  position: relative;
+  border-radius: var(--r-lg);
+  background: var(--fill-1);
+  transition: background var(--duration-fast) ease, transform var(--duration-normal) var(--ease-out);
+}
+
+.friends-card:hover { background: var(--fill-2); transform: translateY(-2px); }
+
+.friends-card-main {
+  display: grid;
+  width: 100%;
+  justify-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-5) var(--sp-4) var(--sp-4);
+  border-radius: inherit;
+  text-align: center;
+}
+
+.friends-card-main > .friends-avatar-presence { margin-bottom: var(--sp-1); }
+.friends-card-name { max-width: 100%; overflow: hidden; padding-bottom: .14em; margin-bottom: -.14em; font-size: var(--fs-md); font-weight: var(--fw-semibold); text-overflow: ellipsis; white-space: nowrap; }
+.friends-card .role-badges { justify-content: center; }
+/* "Hört bei dir mit" / "Du hörst mit" on a card. */
+.friends-card-along {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px var(--sp-2);
+  border-radius: var(--r-full);
+  background: color-mix(in srgb, var(--card-accent, var(--accent)) 16%, transparent);
+  color: var(--card-accent, var(--accent));
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  animation: own-profile-emojis-in var(--duration-normal) ease-out;
+}
+.friends-card-along > svg { animation: listen-along-beat 1.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .friends-card-along > svg { animation: none; } }
+.friends-card .friends-row-track { max-width: 100%; justify-content: center; }
+
+/* Listen along and invite, top right, shown on hover; listening along stays visible. */
+.friends-card > .friends-card-actions {
+  position: absolute;
+  top: var(--sp-2);
+  right: var(--sp-2);
+  display: flex;
+  gap: var(--sp-1);
+}
+.friends-card-actions > .friends-icon-button {
+  opacity: 0;
+  transition: opacity var(--duration-fast) ease;
+}
+.friends-card:is(:hover, :focus-within) .friends-card-actions > .friends-icon-button,
+.friends-card-actions > .listen-along-button[data-active] { opacity: 1; }
+.listen-along-button[data-active] { background: var(--accent-soft); color: var(--accent); }
+
+/* ---------- Visibility tab ---------- */
+.friends-tab-body > .friends-options .friends-option { max-width: 760px; }
+
+/* ---------- Luft corner, wide ---------- */
+.friends-owner-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.friends-owner-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); align-items: start; gap: var(--sp-6); margin-top: var(--sp-5); }
+.friends-owner-column { display: grid; min-width: 0; gap: var(--sp-4); }
+.friends-owner-column > .badge-editor,
+.friends-owner-column > .friends-owner-team { margin: 0; padding: 0; border: 0; }
+
+/* ---------- Own profile editor (dialog) ---------- */
+.own-profile-editor { display: grid; width: min(100%, 360px); gap: var(--sp-2); text-align: left; }
+.own-profile-editor > h2 { margin-bottom: var(--sp-2); font-size: var(--fs-h2); text-align: center; }
+.own-profile-editor fieldset > label { margin-top: var(--sp-1); color: var(--text-2); font-size: var(--fs-xs); }
+.own-profile-editor input:not([type="file"]) { width: 100%; min-height: 40px; padding: 0 var(--sp-3); border: 0; border-radius: var(--r-sm); background: var(--fill-2); color: var(--text); font-size: var(--fs-md); }
+.own-profile-editor input:focus-visible { background: var(--fill-3); }
+.own-profile-editor fieldset > small { color: var(--text-2); font-size: var(--fs-2xs); }
+.own-profile-editor .shared-queue-filter input { min-height: 36px; padding: 0; background: transparent; }
+.own-profile-editor-actions { display: flex; justify-content: flex-end; gap: var(--sp-2); margin-top: var(--sp-3); }
+.own-profile-note { display: flex; align-items: flex-start; gap: var(--sp-2); color: var(--text-2); font-size: var(--fs-xs); line-height: 1.5; }
+.own-profile-note > svg { flex: 0 0 auto; margin-top: 1px; }
+.friend-profile-sections > .own-profile-note { justify-content: center; }
+
+@media (max-width: 1180px) {
+  .friends-columns { grid-template-columns: minmax(0, 1fr); }
+  /* One column: answers waiting (invitations, requests) above the friends, search below. */
+  .friends-side { display: contents; }
+  .friends-side > .friends-invitations,
+  .friends-side > .friends-requests { order: -1; }
+}
+
+@media (max-width: 980px) {
+  .friends-hero { grid-template-columns: auto minmax(0, 1fr); padding: var(--sp-5); }
+  /* Code and numbers side by side under the profile. */
+  .friends-hero-side { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); align-items: center; }
+  .friends-hero-side > .friends-hero-server { grid-column: 1 / -1; }
+  .friends-owner-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 620px) {
+  .friends-hero { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .friends-hero-copy { justify-items: center; }
+  .friends-tabs { overflow-x: auto; }
+  .friends-tabs > button[data-special] { margin-left: 0; }
+}
+
+/* ---------- Your status ---------- */
+.friends-hero-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+
+.presence-picker { position: relative; }
+
+.presence-picker-button {
+  display: inline-flex;
+  height: 24px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  border-radius: var(--r-full);
+  background: var(--fill-1);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+}
+
+.presence-picker-button:hover:not(:disabled) { background: var(--fill-2); color: var(--text); }
+
+.presence-picker i[data-activity] { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: var(--text-3); }
+.presence-picker i[data-activity="online"] { background: var(--success); }
+.presence-picker i[data-activity="away"] { background: var(--warning); }
+.presence-picker i[data-activity="busy"] { background: var(--danger); }
+.presence-picker i[data-activity="offline"] { box-shadow: inset 0 0 0 2px var(--text-3); background: transparent; }
+
+.presence-picker-menu {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  left: 0;
+  display: grid;
+  width: 300px;
+  gap: 2px;
+  margin: 0;
+  padding: var(--sp-2);
+  border-radius: var(--r-md);
+  background: var(--raised);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line);
+  list-style: none;
+  animation: friend-profile-fade var(--duration-fast) var(--ease-out);
+}
+
+.presence-picker-menu button {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-2);
+  border-radius: var(--r-sm);
+  text-align: left;
+}
+
+.presence-picker-menu button:hover:not(:disabled) { background: var(--fill-1); }
+.presence-picker-menu button > i { margin-top: 5px; }
+.presence-picker-menu button > span { display: grid; min-width: 0; flex: 1; gap: 2px; }
+.presence-picker-menu strong { font-size: var(--fs-sm); }
+.presence-picker-menu small { color: var(--text-2); font-size: var(--fs-2xs); line-height: 1.4; }
+.presence-picker-menu button > svg { margin-top: 2px; color: var(--accent); }
+
+/* ---------- Badge chips (Luft corner, admin/BadgeChips.tsx) ---------- */
+.badge-manager-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* A badge not given is shown faded; given, it is at full colour. */
+.badge-chip { padding: 0; border-radius: var(--r-full); transition: opacity var(--duration-fast) ease, transform var(--duration-fast) var(--ease-spring); }
+.badge-chip[aria-pressed="false"] { opacity: .38; filter: grayscale(.6); }
+.badge-chip:hover:not(:disabled) { opacity: 1; filter: none; transform: translateY(-1px); }
+.badge-chip:disabled { cursor: not-allowed; }
+.badge-chip > .role-badge { cursor: inherit; }
+
+/* ---------- Activity line ---------- */
+.activity-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+}
+
+.activity-line > i { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: var(--text-3); }
+.activity-line[data-activity="online"] { color: color-mix(in srgb, var(--success) 70%, var(--text)); }
+.activity-line[data-activity="online"] > i { background: var(--success); box-shadow: 0 0 0 3px color-mix(in srgb, var(--success) 22%, transparent); }
+.activity-line[data-activity="away"] { color: color-mix(in srgb, var(--warning) 70%, var(--text)); }
+.activity-line[data-activity="away"] > i { background: var(--warning); box-shadow: 0 0 0 3px color-mix(in srgb, var(--warning) 22%, transparent); }
+.activity-line[data-activity="busy"] { color: color-mix(in srgb, var(--danger) 70%, var(--text)); }
+.activity-line[data-activity="busy"] > i { background: var(--danger); box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 22%, transparent); }
+.activity-line[data-listening] { color: color-mix(in srgb, var(--accent) 75%, var(--text)); }
+
+.friends-card-main > .activity-line { margin-top: 2px; }
+.friends-card-bio { display: -webkit-box; max-width: 100%; overflow: hidden; color: var(--text-2); font-size: var(--fs-xs); line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+
+/* A bigger dot on cards, cut out of the card colour. */
+.friends-card-main > .friends-avatar-presence > i { right: 2px; bottom: 2px; width: 17px; height: 17px; border-width: 3px; border-color: color-mix(in srgb, var(--text) 5%, var(--canvas)); }
+
+/* ---------- "…" menu in profiles ---------- */
+/* Fixed and above the profile dialog (z 110); placed by ProfileMenu. */
+.profile-menu-list {
+  position: fixed;
+  z-index: 120;
+  display: grid;
+  min-width: 230px;
+  gap: 2px;
+  padding: var(--sp-2);
+  border-radius: var(--r-md);
+  background: var(--raised);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line-strong);
+  animation: friend-profile-fade var(--duration-fast) var(--ease-out);
+}
+
+.profile-menu-button[aria-expanded="true"] { background: var(--fill-2); color: var(--text); }
+
+.profile-menu-list > button { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2); border-radius: var(--r-sm); font-size: var(--fs-sm); text-align: left; white-space: nowrap; }
+.profile-menu-list > button:hover:not(:disabled) { background: var(--fill-1); }
+.profile-menu-list > button[data-danger] { color: var(--danger); }

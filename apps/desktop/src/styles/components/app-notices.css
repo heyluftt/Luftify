@@ -1,0 +1,158 @@
+/* In-app notices, bottom right above the player; newest at the bottom. */
+.app-notices {
+  position: fixed;
+  z-index: 100;
+  right: var(--sp-6);
+  bottom: calc(var(--player-height) + var(--sp-6));
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--sp-2);
+  width: min(380px, calc(100vw - 48px));
+  pointer-events: none;
+}
+.app-notices > * { pointer-events: auto; }
+.app-notices:empty { display: none; }
+
+.app-notice {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--raised);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line-strong);
+  color: var(--text);
+  animation: update-notice-in var(--duration-slow) var(--ease-spring);
+}
+.app-notice > strong { min-width: 0; flex: 1; font-size: var(--fs-sm); font-weight: var(--fw-medium); line-height: 1.35; overflow-wrap: anywhere; }
+.app-notice > .secondary-button { min-height: 30px; padding-inline: var(--sp-3); font-size: var(--fs-xs); white-space: nowrap; }
+.app-notice-icon { display: grid; width: 32px; height: 32px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: var(--accent-soft); color: var(--accent); }
+.app-notice[data-kind="host"] .app-notice-icon { background: color-mix(in srgb, var(--warning) 18%, transparent); color: var(--warning); }
+
+@media (max-width: 620px) {
+  .app-notices { right: var(--sp-4); width: calc(100vw - 32px); }
+}
+
+/* Luft's announcement: a little more room for the line, stays until closed. */
+.app-announcement > strong { display: grid; gap: 2px; }
+.app-announcement > strong > small { color: var(--accent); font-size: var(--fs-2xs); font-weight: var(--fw-bold); letter-spacing: var(--tracking-caps); text-transform: uppercase; }
+
+/* The person's picture with the kind as a small mark. */
+.app-notice-face { position: relative; flex: 0 0 auto; }
+.app-notice-face > i {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  display: grid;
+  width: 17px;
+  height: 17px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--raised);
+  color: var(--on-accent);
+}
+.app-notice[data-kind="host"] .app-notice-face > i { background: var(--warning); }
+
+/* Time left: runs down, holds while the pointer or focus is on the card. */
+.app-notice-timer {
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: color-mix(in srgb, var(--accent) 55%, transparent);
+  transform-origin: left;
+  animation: app-notice-time var(--notice-ms, 6s) linear forwards;
+  pointer-events: none;
+}
+.app-notice:is(:hover, :focus-within) .app-notice-timer { animation-play-state: paused; }
+.app-notice[data-leaving] { animation: app-notice-out var(--duration-normal) var(--ease-exit) forwards; pointer-events: none; }
+.app-notice[data-leaving] .app-notice-timer { animation-play-state: paused; }
+
+@keyframes app-notice-time { to { transform: scaleX(0); } }
+@keyframes app-notice-out { to { opacity: 0; transform: translate3d(24px, 0, 0); } }
+
+/* The line is a clock, not decoration: it keeps its pace with reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .app-notice-timer { animation-duration: var(--notice-ms, 6s) !important; }
+}
+
+.app-notices-clear {
+  align-self: flex-end;
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--r-full);
+  background: var(--raised);
+  box-shadow: var(--shadow-1), inset 0 0 0 1px var(--line);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+}
+.app-notices-clear:hover { color: var(--text); }
+
+/* ---------- The bell in the top bar ---------- */
+.notice-center { position: relative; }
+.notice-center > button { position: relative; }
+.notice-center-count {
+  position: absolute;
+  top: -3px;
+  right: -4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: var(--r-full);
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--canvas);
+  color: var(--on-accent);
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  line-height: 16px;
+  text-align: center;
+}
+
+.notice-center-panel {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + var(--sp-2));
+  right: 0;
+  display: grid;
+  width: min(360px, calc(100vw - 32px));
+  max-height: min(480px, 70vh);
+  grid-template-rows: auto auto minmax(0, 1fr);
+  padding: var(--sp-2);
+  border-radius: var(--r-lg);
+  background: var(--raised);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line-strong);
+  animation: update-notice-in var(--duration-normal) var(--ease-spring);
+}
+.notice-center-panel > header { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-1) var(--sp-1) var(--sp-2) var(--sp-2); }
+.notice-center-panel h2 { flex: 1; margin: 0; font-size: var(--fs-md); font-weight: var(--fw-semibold); }
+.notice-center-panel .text-button { min-height: 28px; padding-inline: var(--sp-2); font-size: var(--fs-xs); }
+.notice-center-quiet {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0 0 var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+.notice-center-empty { margin: 0; padding: var(--sp-6) var(--sp-3); color: var(--text-3); font-size: var(--fs-sm); text-align: center; }
+.notice-center-panel ul { display: grid; gap: 2px; margin: 0; padding: 0; overflow-y: auto; list-style: none; }
+.notice-center-panel li > :is(a, div) {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2);
+  border-radius: var(--r-md);
+  color: var(--text);
+}
+.notice-center-panel li > a:hover { background: var(--fill-1); }
+.notice-center-panel li > :is(a, div) > span:last-child { display: grid; min-width: 0; gap: 1px; }
+.notice-center-panel li > :is(a, div) > span:last-child > strong { font-size: var(--fs-sm); font-weight: var(--fw-medium); line-height: 1.35; overflow-wrap: anywhere; }
+.notice-center-panel li > :is(a, div) > span:last-child > small { color: var(--text-3); font-size: var(--fs-2xs); }
+.notice-center-panel .app-notice-icon { width: 30px; height: 30px; }
+.notice-center-panel .app-notice-face > i { box-shadow: 0 0 0 2px var(--raised); }

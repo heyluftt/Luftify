@@ -1,0 +1,66 @@
+/* Theme-specific materials and silhouettes. */
+:root:is(
+  [data-theme="luft.light"], [data-theme="luft.atelier"], [data-theme="luft.violet"],
+  [data-theme="luft.redline"], [data-theme="luft.abyss"], [data-theme="luft.rose"],
+  [data-theme="luft.polaris"], [data-theme="luft.prisma"], [data-theme="luft.calamus"], [data-theme="luft.aeris"]
+) .brand-mark-dark {
+  display: none;
+}
+
+:root[data-theme="luft.light"] .brand-mark-light,
+:root[data-theme="luft.atelier"] .brand-mark-atelier,
+:root[data-theme="luft.violet"] .brand-mark-violet,
+:root[data-theme="luft.redline"] .brand-mark-redline,
+:root[data-theme="luft.abyss"] .brand-mark-abyss,
+:root[data-theme="luft.rose"] .brand-mark-rose,
+:root[data-theme="luft.polaris"] .brand-mark-polaris,
+:root[data-theme="luft.prisma"] .brand-mark-prisma,
+:root[data-theme="luft.calamus"] .brand-mark-calamus,
+:root[data-theme="luft.aeris"] .brand-mark-aeris {
+  display: inline;
+}
+
+:root[data-theme="luft.light"] .sidebar-brand-orbit,
+:root[data-theme="luft.atelier"] .sidebar-brand-orbit {
+  --brand-light: color-mix(in srgb, var(--accent) 12%, var(--canvas));
+  --brand-depth: color-mix(in srgb, var(--accent) 68%, var(--canvas));
+  --brand-orbit-period: 24s;
+}
+
+:root[data-theme="luft.violet"] .sidebar-brand-orbit {
+  --brand-secondary: var(--violet-orchid, var(--accent));
+  --brand-light: color-mix(in srgb, var(--accent) 40%, var(--text));
+  --brand-orbit-period: 18s;
+}
+
+:root[data-theme="luft.redline"] .sidebar-brand-orbit {
+  --brand-secondary: var(--warning);
+  --brand-light: color-mix(in srgb, var(--warning) 55%, var(--text));
+  --brand-orbit-period: 12s;
+}
+
+:root[data-theme="luft.abyss"] .sidebar-brand-orbit {
+  --brand-secondary: var(--abyss-magenta, var(--accent));
+  --brand-light: color-mix(in srgb, var(--accent) 45%, var(--text));
+  --brand-orbit-period: 28s;
+}
+
+:root[data-theme="luft.rose"] .sidebar-brand-orbit {
+  --brand-secondary: color-mix(in srgb, var(--accent) 55%, var(--text));
+  --brand-orbit-period: 24s;
+}
+
+:root[data-theme="luft.polaris"] .sidebar-brand-orbit {
+  --brand-secondary: var(--polaris-star, var(--accent));
+  --brand-light: color-mix(in srgb, var(--accent) 12%, var(--text));
+  --brand-orbit-period: 30s;
+}
+
+:root[data-theme="luft.prisma"] .sidebar-brand-orbit {
+  --brand-secondary: color-mix(in srgb, var(--accent) 52%, var(--text));
+  --brand-orbit-period: 20s;
+}
+
+:root[data-theme="luft.calamus"] .sidebar-brand-orbit {
+  --brand-orbit-period: 22s;
+}

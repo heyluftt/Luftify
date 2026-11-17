@@ -1,0 +1,172 @@
+/*
+ * Banner effects (BannerEffect.tsx). Each piece moves transform or opacity
+ * only, on long cycles; minimised windows pause them (ds/base.css) and
+ * reduced motion stops them. Colours follow the profile accent.
+ */
+.banner-effect {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  contain: strict;
+  pointer-events: none;
+}
+.banner-effect > i { position: absolute; display: block; }
+
+/* ---------- Starry sky: a faint milky way, three drifting depths, flaring stars, shooting stars ---------- */
+.fx-milky-way {
+  left: -10%; top: 5%; width: 120%; height: 55%;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse 50% 30% at 45% 50%, color-mix(in srgb, var(--profile-paper) 16%, transparent), transparent 70%),
+    radial-gradient(ellipse 70% 45% at 55% 50%, color-mix(in srgb, var(--banner-accent) 22%, transparent), transparent 75%);
+  filter: blur(var(--sp-3));
+  transform: rotate(-14deg);
+  animation: fx-milky 24s ease-in-out infinite alternate;
+}
+@keyframes fx-milky { from { opacity: .55; transform: rotate(-14deg) scale(1); } to { opacity: 1; transform: rotate(-11deg) scale(1.06); } }
+
+.fx-star-layer {
+  top: 0; left: 0; width: 1px; height: 1px;
+  border-radius: 50%;
+  animation: fx-drift 180s linear infinite, fx-twinkle 4.5s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.fx-star-layer[data-layer="1"] { animation-duration: 120s, 3.2s; animation-delay: 0s, -1.4s; }
+.fx-star-layer[data-layer="2"] { animation-duration: 75s, 2.4s; animation-delay: 0s, -.8s; }
+@keyframes fx-drift { to { transform: translateX(-640px); } }
+@keyframes fx-twinkle { from { opacity: .5; } to { opacity: 1; } }
+
+/* A bright star now and then flares up with long, thin rays. */
+.fx-flare {
+  left: var(--x); top: var(--y); width: calc(var(--s) * 2); height: calc(var(--s) * 2);
+  margin: calc(var(--s) * -1) 0 0 calc(var(--s) * -1);
+  background:
+    radial-gradient(circle, var(--profile-paper) 0 6%, color-mix(in srgb, var(--banner-accent) 50%, transparent) 14%, transparent 34%),
+    linear-gradient(90deg, transparent 0 20%, color-mix(in srgb, var(--profile-paper) 70%, transparent) 50%, transparent 80% 100%) center / 100% 1px no-repeat,
+    linear-gradient(0deg, transparent 0 20%, color-mix(in srgb, var(--profile-paper) 70%, transparent) 50%, transparent 80% 100%) center / 1px 100% no-repeat;
+  animation: fx-flare 6s ease-in-out infinite var(--d);
+}
+@keyframes fx-flare { 0%, 100% { opacity: .15; transform: scale(.35) rotate(0); } 45% { opacity: 1; transform: scale(1) rotate(12deg); } }
+
+.fx-shooting {
+  top: 14%; left: 80%; width: 180px; height: 1.5px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--profile-paper), color-mix(in srgb, var(--banner-accent) 60%, transparent) 25%, transparent);
+  box-shadow: 0 0 var(--sp-2) color-mix(in srgb, var(--profile-paper) 50%, transparent);
+  opacity: 0;
+  transform-origin: 0 50%;
+  animation: fx-shoot 11s ease-in infinite 2.5s;
+}
+.fx-shooting[data-trail="second"] { left: 46%; top: 30%; width: 120px; animation-duration: 17s; animation-delay: -6s; }
+@keyframes fx-shoot {
+  0%, 84% { opacity: 0; transform: translate(0, 0) rotate(-20deg) scaleX(.2); }
+  87% { opacity: 1; }
+  95%, 100% { opacity: 0; transform: translate(-320px, 116px) rotate(-20deg) scaleX(1); }
+}
+
+/* ---------- Crystal light: glints flash up across the banner, a sheen of light passes now and then ---------- */
+.fx-glint {
+  --c: var(--profile-paper);
+  left: var(--x); top: var(--y); width: var(--s); height: var(--s);
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  /* The glow sits on the element, the star shape on its ::before: a clip would cut the glow off. */
+  filter: drop-shadow(0 0 var(--sp-1) var(--c)) drop-shadow(0 0 var(--sp-2) color-mix(in srgb, var(--c) 60%, transparent));
+  opacity: 0;
+  animation: fx-glint 5s ease-in-out infinite var(--d);
+}
+.fx-glint::before {
+  position: absolute; inset: 0; content: "";
+  background: radial-gradient(circle, var(--profile-paper) 0 18%, var(--c) 45%, transparent 75%);
+  clip-path: polygon(50% 0, 56% 44%, 100% 50%, 56% 56%, 50% 100%, 44% 56%, 0 50%, 44% 44%);
+}
+.fx-glint[data-tint="1"] { --c: var(--banner-accent); animation-duration: 6.5s; }
+.fx-glint[data-tint="2"] { --c: color-mix(in srgb, var(--profile-rose) 60%, var(--profile-paper)); animation-duration: 4.2s; }
+@keyframes fx-glint {
+  0%, 40%, 100% { opacity: 0; transform: scale(.15) rotate(0); }
+  62% { opacity: 1; transform: scale(1) rotate(45deg); }
+  80% { opacity: .25; transform: scale(.55) rotate(90deg); }
+}
+.fx-sparkle-sweep {
+  inset: -40%;
+  background: linear-gradient(115deg, transparent 43%, color-mix(in srgb, var(--profile-sky) 22%, transparent) 47%, color-mix(in srgb, var(--profile-paper) 50%, transparent) 49.5%, color-mix(in srgb, var(--profile-rose) 22%, transparent) 51%, transparent 57%);
+  animation: fx-reflection 13s var(--ease-out) infinite;
+  opacity: 0;
+}
+@keyframes fx-reflection {
+  0%, 60% { transform: translateX(-65%); opacity: 0; }
+  67% { opacity: .7; }
+  85%, 100% { transform: translateX(65%); opacity: 0; }
+}
+
+/* ---------- Lights: two lens blooms and soft out-of-focus orbs floating up ---------- */
+.fx-light-bloom {
+  left: 4%; top: -35%; width: 55%; height: 150%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--banner-accent) 42%, transparent), transparent 70%);
+  animation: fx-bloom 12s ease-in-out infinite alternate;
+}
+.fx-light-bloom[data-layer="1"] { left: auto; right: -4%; top: -45%; background: radial-gradient(ellipse, color-mix(in srgb, var(--profile-rose) 34%, transparent), transparent 70%); animation-delay: -5s; animation-duration: 17s; }
+@keyframes fx-bloom { from { transform: translateX(-8%) scale(.85); opacity: .55; } to { transform: translateX(8%) scale(1.15); opacity: 1; } }
+
+.fx-orb {
+  --c: var(--banner-accent);
+  left: var(--x); bottom: calc(-1 * var(--s)); width: var(--s); height: var(--s);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--c) 55%, color-mix(in srgb, var(--profile-paper) 55%, transparent)), color-mix(in srgb, var(--c) 45%, transparent) 55%, color-mix(in srgb, var(--c) 20%, transparent) 85%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--profile-paper) 22%, transparent);
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation: fx-rise 18s linear infinite var(--d);
+  will-change: transform, opacity;
+}
+.fx-orb[data-tint="1"] { --c: var(--profile-paper); animation-duration: 23s; }
+.fx-orb[data-tint="2"] { --c: color-mix(in srgb, var(--profile-rose) 55%, var(--banner-accent)); animation-duration: 15s; }
+@keyframes fx-rise {
+  0% { opacity: 0; transform: translate3d(0, 0, 0) scale(.7); }
+  15% { opacity: .95; }
+  50% { transform: translate3d(22px, -170px, 0) scale(1); }
+  75% { opacity: .75; }
+  100% { opacity: 0; transform: translate3d(-10px, -340px, 0) scale(1.15); }
+}
+
+/* ---------- Petals: soft blossoms drift down, turning and fluttering ---------- */
+.fx-petal {
+  --c: var(--profile-rose);
+  left: var(--x); top: calc(-1 * var(--s) * 2); width: var(--s); height: calc(var(--s) * .7);
+  animation: fx-petal-fall 14s linear infinite var(--d);
+  will-change: transform;
+}
+.fx-petal::before {
+  position: absolute; inset: 0; content: "";
+  border-radius: 100% 0 100% 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--profile-paper) 85%, var(--c)), var(--c) 70%);
+  box-shadow: 0 0 var(--sp-2) color-mix(in srgb, var(--c) 40%, transparent);
+  animation: fx-petal-flutter 2.6s ease-in-out infinite alternate var(--d);
+}
+.fx-petal[data-tint="1"] { --c: color-mix(in srgb, var(--banner-accent) 70%, var(--profile-rose)); animation-duration: 17s; }
+.fx-petal[data-tint="2"] { --c: color-mix(in srgb, var(--profile-paper) 60%, var(--profile-rose)); animation-duration: 12s; }
+@keyframes fx-petal-fall {
+  0% { opacity: 0; transform: translate3d(0, 0, 0) rotate(0); }
+  8% { opacity: .95; }
+  50% { transform: translate3d(-40px, 170px, 0) rotate(160deg); }
+  90% { opacity: .9; }
+  100% { opacity: 0; transform: translate3d(-90px, 340px, 0) rotate(330deg); }
+}
+@keyframes fx-petal-flutter { from { transform: rotateX(0) rotateY(10deg); } to { transform: rotateX(65deg) rotateY(-50deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .banner-effect *, .banner-effect *::before, .banner-effect *::after { animation: none !important; }
+  .fx-orb { bottom: calc(var(--y) / 1.5); opacity: .55; }
+  .fx-petal { top: var(--y); opacity: .7; }
+  .fx-flare { opacity: .6; transform: scale(.7); }
+  .fx-glint { opacity: .5; transform: scale(.6); }
+  .fx-shooting, .fx-sparkle-sweep { display: none; }
+}
+
+/* Covers fade into the dialog above their effect, so no edge shows; the
+   cover keeps that layering to itself, below the overlapping picture. */
+.friend-profile-cover,
+.profile-preview-cover { isolation: isolate; }
+.friend-profile-cover::after,
+.profile-preview-cover::after { z-index: 2; }

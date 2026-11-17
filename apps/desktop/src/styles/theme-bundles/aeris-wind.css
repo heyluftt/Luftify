@@ -1,0 +1,21 @@
+.aeris-wind { width: 100%; height: 100%; opacity: .78; }
+.aeris-sheet { transform-box: view-box; transform-origin: 72% 52%; }
+.aeris-sheet-front { animation: aeris-sheet-lift 23s -8s ease-in-out infinite alternate; }
+.aeris-sheet-back { animation: aeris-sheet-release 31s -19s ease-in-out infinite alternate; }
+.aeris-sheet-edge { animation: aeris-edge-breathe 13s -4s ease-in-out infinite alternate; }
+.aeris-wind-lines { transform-origin: 72% 52%; animation: aeris-line-drift 37s -12s ease-in-out infinite alternate; }
+
+
+.app-frame:not([data-theme-art="home"]) .aeris-wind { opacity: .28; }
+
+/* Streaks sit above the reading veil, faded where the greeting and hero copy sit. */
+.aeris-streams {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  mask-image: linear-gradient(100deg, transparent 8%, rgb(0 0 0 / 45%) 38%, rgb(0 0 0) 72%);
+}
+.app-frame:not([data-theme-art="home"]) .aeris-streams { opacity: .45; mask-image: none; }
+
+@media (max-width: 800px) { .aeris-wind { opacity: .55; } }

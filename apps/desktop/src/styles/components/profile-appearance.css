@@ -1,0 +1,251 @@
+/* Where banners sit */
+.friend-profile-banner {
+  position: absolute;
+  inset: 0;
+}
+
+.friends-hero-banner {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.friends-card-banner {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 76px;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  -webkit-mask: linear-gradient(#000 35%, transparent);
+  mask: linear-gradient(#000 35%, transparent);
+}
+
+.friends-card { overflow: hidden; isolation: isolate; }
+.friends-card > .friends-card-banner { z-index: -1; }
+
+/* Accent on the profile's own buttons */
+.friend-profile[data-accent] .friend-profile-actions .primary-button,
+.friends-hero[data-accent] .friends-hero-actions .primary-button {
+  background: var(--profile-accent);
+  color: var(--profile-on-accent);
+}
+
+/* ---------- Profile song ---------- */
+.profile-song {
+  --song-accent: var(--profile-accent, var(--accent));
+  --song-muted: color-mix(in srgb, var(--text-2) 85%, var(--text));
+  display: flex;
+  width: min(100%, 380px);
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2);
+  padding-right: var(--sp-3);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--song-accent) 4%, var(--raised));
+  box-shadow: inset 0 0 0 1px var(--line-strong), var(--shadow-1);
+  color: var(--text);
+  text-align: left;
+}
+
+.profile-song-art { display: grid; width: 44px; height: 44px; flex: 0 0 auto; place-items: center; overflow: hidden; border-radius: var(--r-xs); background: var(--fill-2); color: var(--text-2); }
+.profile-song-art .album-art { width: 44px; height: 44px; border-radius: inherit; }
+.profile-song-copy { display: grid; min-width: 0; flex: 1; gap: var(--sp-1); }
+.profile-song-copy > small { color: var(--song-muted); font-size: var(--fs-2xs); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-caps, .08em); text-transform: uppercase; }
+.profile-song-copy > strong,
+.profile-song-copy > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-song-copy > strong { font-size: var(--fs-sm); font-weight: var(--fw-semibold); }
+.profile-song-copy > span { color: var(--song-muted); font-size: var(--fs-xs); }
+
+.profile-song-play {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--song-accent);
+  color: var(--profile-on-accent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--song-accent) 20%, var(--text-2)), var(--shadow-1);
+  transition: transform var(--duration-fast) var(--ease-spring);
+}
+
+.profile-song-play:hover { transform: scale(1.08); }
+
+.friends-hero-copy > .profile-song { margin-top: var(--sp-1); }
+
+/* ---------- Editor ---------- */
+.friend-profile[data-wide] { width: min(880px, 100%); }
+
+.friend-profile[data-wide] .own-profile-editor { width: 100%; }
+/* A steady height, so switching sections does not make the dialog jump. */
+.friend-profile[data-editing] { height: min(720px, 100%); }
+.friend-profile[data-editing] > .own-profile-editor { grid-template-rows: auto 1fr auto; }
+.own-profile-editor-grid { display: grid; grid-template-columns: 280px minmax(0, 1fr); align-items: start; gap: var(--sp-6); }
+
+.own-profile-preview { position: sticky; top: 0; display: grid; gap: var(--sp-3); }
+
+/* Preview: the profile view in small, or the card as it appears in lists. */
+.own-profile-preview-switch { display: inline-flex; justify-self: center; gap: 2px; padding: 3px; border-radius: var(--r-full); background: var(--fill-1); }
+.own-profile-preview-switch > button { min-height: 26px; padding: 0 var(--sp-3); border-radius: var(--r-full); color: var(--text-2); font-size: var(--fs-xs); font-weight: var(--fw-medium); }
+.own-profile-preview-switch > button[aria-selected="true"] { background: var(--fill-3); color: var(--text); }
+
+.profile-preview-sheet { overflow: hidden; border-radius: var(--r-lg); background: var(--raised); box-shadow: inset 0 0 0 1px var(--line); }
+.profile-preview-cover { position: relative; height: 96px; overflow: hidden; background: var(--fill-1); }
+.profile-preview-cover::after { position: absolute; inset: auto 0 0; height: 40px; background: linear-gradient(transparent, var(--raised)); content: ""; }
+.profile-preview-body { display: grid; justify-items: center; gap: var(--sp-2); margin-top: -46px; padding: 0 var(--sp-4) var(--sp-4); text-align: center; position: relative; }
+.profile-preview-body .listen-avatar { box-shadow: 0 0 0 4px var(--raised); }
+.profile-preview-body .role-avatar:is([data-frame], [data-role]):not([data-frame="none"]) .listen-avatar { box-shadow: none; }
+.profile-preview-body > .friends-avatar-presence > i { right: 3px; bottom: 3px; width: 15px; height: 15px; border-width: 3px; border-color: var(--raised); }
+.profile-preview-body > strong { font-size: var(--fs-h3); overflow-wrap: anywhere; }
+.profile-preview-body > p { color: var(--text); font-size: var(--fs-xs); line-height: 1.45; overflow-wrap: anywhere; }
+.profile-preview-body .role-badges { justify-content: center; }
+.profile-preview-body > .profile-song { width: 100%; }
+
+.profile-preview-card { pointer-events: none; }
+.profile-preview-card:hover { transform: none; }
+.profile-preview-card .friends-card-main { cursor: default; }
+
+.own-profile-fields { display: grid; min-width: 0; gap: var(--sp-5); }
+.own-profile-fields fieldset { display: grid; min-width: 0; gap: var(--sp-2); margin: 0; padding: 0; border: 0; }
+.own-profile-fields legend {
+  margin-bottom: var(--sp-2);
+  padding: 0;
+  color: var(--text-2);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-caps, .08em);
+  text-transform: uppercase;
+}
+
+.own-profile-fields .own-profile-avatar { display: flex; justify-items: start; align-items: center; gap: var(--sp-2); margin: 0; }
+
+.own-profile-banners { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: var(--sp-2); }
+.own-profile-banners > button { display: grid; gap: 6px; padding: 4px; border-radius: var(--r-md); color: var(--text-2); font-size: var(--fs-2xs); text-align: center; transition: background var(--duration-fast) ease; }
+.own-profile-banners > button:hover:not(:disabled) { background: var(--fill-1); }
+.own-profile-banners > button:disabled { opacity: .45; }
+.own-profile-banners > button[aria-checked="true"] { background: var(--fill-2); color: var(--text); box-shadow: inset 0 0 0 1.5px var(--profile-accent, var(--accent)); }
+.own-profile-banner-swatch { position: relative; display: block; aspect-ratio: 16 / 10; border-radius: var(--r-sm); box-shadow: inset 0 0 0 1px var(--line); }
+.own-profile-banner-swatch[data-plain] { display: grid; place-items: center; background: var(--fill-2); color: var(--text-2); }
+
+.own-profile-editor .badge-editor-colors > button:disabled { opacity: .5; }
+
+/* Profile song picker */
+.profile-song-picker { display: grid; gap: var(--sp-2); }
+.profile-song-empty { color: var(--text-2); font-size: var(--fs-xs); line-height: 1.5; list-style: none; }
+.profile-song-choice { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2); border-radius: var(--r-md); background: var(--fill-1); }
+.profile-song-choice > .profile-song-line { flex: 1; }
+.profile-song-current { justify-self: start; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-song-results { display: grid; margin: 0; padding: 0; list-style: none; }
+.profile-song-results button { display: flex; width: 100%; padding: 6px var(--sp-2); border-radius: var(--r-sm); text-align: left; }
+.profile-song-results button:hover:not(:disabled),
+.profile-song-results button[aria-pressed="true"] { background: var(--fill-1); }
+.profile-song-line { display: flex; min-width: 0; align-items: center; gap: var(--sp-2); }
+.profile-song-line > span:last-child { display: grid; min-width: 0; }
+.profile-song-line strong,
+.profile-song-line small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-song-line strong { font-size: var(--fs-sm); font-weight: var(--fw-medium); }
+.profile-song-line small { color: var(--text-2); font-size: var(--fs-xs); }
+.profile-song-line-art { display: grid; width: 32px; height: 32px; flex: 0 0 auto; place-items: center; overflow: hidden; border-radius: 4px; background: var(--fill-2); color: var(--text-2); }
+.profile-song-line-art .album-art { width: 32px; height: 32px; border-radius: inherit; }
+
+@media (max-width: 760px) {
+  .own-profile-editor-grid { grid-template-columns: 1fr; }
+  .own-profile-preview { position: static; }
+}
+
+/* ---------- Name, emoji ---------- */
+/*
+ * From an own start colour (or the profile colour) to a second one (chosen,
+ * or a neighbouring hue a little lighter), slowly flowing. A soft shadow keeps
+ * it readable on banners.
+ */
+.profile-name[data-gradient] {
+  --name-from: var(--name-start, var(--profile-accent, var(--accent)));
+  --name-auto: oklch(from var(--name-from) calc(l + .1) c calc(h + 50));
+  background: linear-gradient(100deg, var(--name-from), var(--name-to, var(--name-auto)) 50%, var(--name-from)) 0 0 / 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  /* The gradient paints the box only: room below for descenders (g, y, p), without moving anything. */
+  padding-bottom: .14em;
+  margin-bottom: -.14em;
+  color: transparent;
+  filter: drop-shadow(0 1px 1px color-mix(in srgb, var(--bg, var(--canvas)) 55%, transparent));
+  animation: profile-name-flow 9s linear infinite;
+}
+@keyframes profile-name-flow { to { background-position: 200% 0; } }
+@media (prefers-reduced-motion: reduce) { .profile-name[data-gradient] { animation: none; } }
+
+.profile-emoji { margin-right: .4em; font-style: normal; }
+
+/* ---------- Editor: sections, chips, emojis, sticky actions ---------- */
+.own-profile-sections { display: flex; gap: var(--sp-1); margin-bottom: var(--sp-1); padding-bottom: var(--sp-2); box-shadow: inset 0 -1px 0 var(--line); }
+.own-profile-sections > button { min-height: 32px; padding: 0 var(--sp-4); border-radius: var(--r-full); color: var(--text-2); font-size: var(--fs-sm); font-weight: var(--fw-medium); }
+.own-profile-sections > button:hover { background: var(--fill-1); color: var(--text); }
+.own-profile-sections > button[aria-selected="true"] { background: var(--fill-2); color: var(--text); }
+
+.own-profile-fields legend label { margin: 0; color: inherit; font-size: inherit; }
+
+
+.own-profile-bio-row { display: flex; align-items: center; gap: var(--sp-2); }
+.own-profile-bio-row > input { flex: 1; }
+.own-profile-bio-emoji { display: grid; width: 40px; height: 40px; flex: 0 0 auto; place-items: center; border-radius: var(--r-sm); background: var(--fill-2); color: var(--text-2); font-size: 18px; transition: background var(--duration-fast) ease; }
+.own-profile-bio-emoji:hover:not(:disabled), .own-profile-bio-emoji[aria-expanded="true"] { background: var(--fill-3); color: var(--text); }
+
+.own-profile-emojis { display: grid; grid-template-columns: repeat(auto-fill, minmax(34px, 1fr)); gap: 4px; padding: var(--sp-2); border-radius: var(--r-md); background: var(--fill-1); animation: own-profile-emojis-in var(--duration-fast) ease-out; }
+@keyframes own-profile-emojis-in { from { opacity: 0; transform: translateY(-4px); } }
+.own-profile-emojis > button { display: grid; aspect-ratio: 1; place-items: center; border-radius: var(--r-sm); background: var(--fill-1); color: var(--text-2); font-size: 17px; transition: background var(--duration-fast) ease, transform var(--duration-fast) var(--ease-spring); }
+.own-profile-emojis > button:hover:not(:disabled) { background: var(--fill-2); transform: scale(1.08); }
+.own-profile-emojis > button[aria-checked="true"] { background: var(--fill-3); box-shadow: inset 0 0 0 1.5px var(--profile-accent, var(--accent)); }
+
+.own-profile-toggle { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4); padding: var(--sp-3); border-radius: var(--r-md); background: var(--fill-1); cursor: pointer; }
+.own-profile-toggle strong { font-size: var(--fs-sm); font-weight: var(--fw-medium); }
+
+/* Saving stays in reach while the sections scroll. */
+.friend-profile[data-editing] .own-profile-editor-actions {
+  position: sticky;
+  z-index: 3;
+  /* The scrollport's edge, not past it: a negative offset hid the bar's lower part
+     while the editor was scrolled to the top. The negative margin still covers the padding. */
+  bottom: 0;
+  align-items: center;
+  margin: var(--sp-5) calc(-1 * var(--sp-6)) calc(-1 * var(--sp-6));
+  padding: var(--sp-3) var(--sp-6);
+  border-top: 1px solid var(--line);
+  background: color-mix(in srgb, var(--raised) 92%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.own-profile-editor-actions > small { margin-right: auto; color: var(--text-2); font-size: var(--fs-xs); }
+
+/* ---------- Effect and frame tiles: live previews ---------- */
+.look-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: var(--sp-2); }
+.look-tiles[data-kind="frame"] { grid-template-columns: repeat(auto-fill, minmax(86px, 1fr)); }
+.look-tiles > button {
+  display: grid;
+  gap: 6px;
+  padding: 5px 5px 7px;
+  border-radius: var(--r-md);
+  color: var(--text-2);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-medium);
+  text-align: center;
+  transition: background var(--duration-fast) ease, color var(--duration-fast) ease, transform var(--duration-normal) var(--ease-spring);
+}
+.look-tiles > button:hover:not(:disabled) { background: var(--fill-1); color: var(--text); transform: translateY(-1px); }
+.look-tiles > button[aria-checked="true"] {
+  background: color-mix(in srgb, var(--profile-accent, var(--accent)) 14%, var(--fill-1));
+  box-shadow: inset 0 0 0 1.5px var(--profile-accent, var(--accent));
+  color: var(--text);
+}
+.look-tile-stage {
+  position: relative;
+  display: grid;
+  height: 62px;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--r-sm);
+  background: var(--fill-2);
+}
+.look-tiles[data-kind="frame"] .look-tile-stage { height: 72px; background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--profile-accent, var(--accent)) 12%, var(--fill-2)), var(--fill-1)); }
+.look-tile-banner { position: absolute; inset: 0; }

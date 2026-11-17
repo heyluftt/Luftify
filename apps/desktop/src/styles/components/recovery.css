@@ -1,0 +1,41 @@
+/* Recovery code: settings panel and the restore form (settings, friends page, first start). */
+.recovery-panel { display: grid; gap: var(--sp-3); margin-top: var(--sp-6); padding-top: var(--sp-5); border-top: 1px solid var(--line); }
+.recovery-panel h3 { margin: 0; font-size: var(--fs-md); }
+.recovery-panel .settings-inline-hint { margin: 0; }
+.recovery-panel [role="status"] { min-height: 0; }
+.recovery-muted { color: var(--text-3); font-size: var(--fs-sm); }
+.recovery-code {
+  display: block; width: fit-content; max-width: 100%; padding: var(--sp-3) var(--sp-4); border-radius: var(--r-md);
+  background: var(--fill-2); color: var(--text); font-family: var(--font-mono); font-size: var(--fs-md);
+  letter-spacing: .08em; user-select: all; overflow-wrap: anywhere;
+}
+.recovery-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.recovery-switch { justify-self: start; }
+.recovery-confirm { display: grid; gap: var(--sp-3); max-width: 520px; padding: var(--sp-3); border-radius: var(--r-md); background: var(--fill-2); }
+.recovery-confirm p { margin: 0; font-size: var(--fs-sm); line-height: 1.5; }
+.recovery-confirm > div { display: flex; justify-content: flex-end; gap: var(--sp-2); }
+.recovery-error { margin: 0; padding: var(--sp-3) var(--sp-4); border-radius: var(--r-md); background: color-mix(in srgb, var(--danger) 12%, transparent); color: var(--danger); font-size: var(--fs-sm); }
+
+.recovery-restore { display: grid; gap: var(--sp-2); max-width: 420px; }
+.recovery-restore label { margin: 0; font-weight: 600; }
+.recovery-restore small { color: var(--text-2); font-size: var(--fs-sm); line-height: 1.45; }
+.recovery-restore input.recovery-input {
+  box-sizing: border-box; width: 100%; height: 40px; margin: 0; padding: 0 var(--sp-3); border: 0; border-radius: var(--r-sm);
+  background: var(--fill-2); color: var(--text); font-family: var(--font-mono); letter-spacing: .06em; outline: 0;
+}
+.recovery-restore input.recovery-input:focus { background: var(--fill-3); }
+.recovery-restore .recovery-actions { margin-top: var(--sp-1); }
+
+/* Linking a phone: the code, the steps, the linked devices. */
+.devices-link { display: grid; gap: var(--sp-2); }
+.devices-link p { margin: 0; color: var(--text-2); font-size: var(--fs-sm); }
+.devices-link small { color: var(--text-3); font-size: var(--fs-xs); font-variant-numeric: tabular-nums; }
+.devices-code { font-size: var(--fs-h3); letter-spacing: .16em; }
+.devices-list { display: grid; gap: var(--sp-2); }
+.devices-list > strong { font-size: var(--fs-sm); font-weight: var(--fw-semibold); }
+.devices-list ul { display: grid; gap: var(--sp-1); max-width: 520px; margin: 0; padding: 0; list-style: none; }
+.devices-list li { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-3); border-radius: var(--r-md); background: var(--fill-1); }
+.devices-list li > svg { flex: 0 0 auto; color: var(--text-2); }
+.devices-list li > span { display: grid; flex: 1; min-width: 0; gap: 1px; }
+.devices-list li b { font-size: var(--fs-sm); font-weight: var(--fw-medium); }
+.devices-list li small { color: var(--text-3); font-size: var(--fs-xs); }

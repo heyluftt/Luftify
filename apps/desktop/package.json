@@ -1,0 +1,43 @@
+{
+  "name": "@luft/desktop",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:web": "vite --configLoader runner",
+    "build:web": "tsc -b && vite build --configLoader runner",
+    "prepare:bundle": "pnpm --dir ../.. sync:product && pnpm build:web",
+    "build": "pnpm build:web",
+    "tauri": "tauri",
+    "lint": "tsc -b --pretty false",
+    "test": "vitest run --configLoader runner",
+    "typecheck": "tsc -b --pretty false"
+  },
+  "dependencies": {
+    "@luft/protocol-types": "workspace:*",
+    "@tanstack/react-query": "^5.81.5",
+    "@tanstack/react-virtual": "^3.13.12",
+    "@tauri-apps/api": "^2.5.0",
+    "lucide-react": "^0.468.0",
+    "motion": "^12.23.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.3",
+    "zod": "^3.25.67",
+    "zustand": "^5.0.6"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.5.0",
+    "@tauri-apps/cli-win32-x64-msvc": "2.11.4",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "jsdom": "^26.1.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.0.4",
+    "vitest": "^3.2.4"
+  }
+}

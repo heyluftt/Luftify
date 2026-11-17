@@ -1,0 +1,38 @@
+/* Only transforms/opacity animate; no changing blur, SVG path or paint tiles. */
+@keyframes aeris-cloud-pass {
+  from { transform: translate(-5%, -2%) scale(1); }
+  to { transform: translate(7%, 3%) scale(1.04); }
+}
+@keyframes aeris-cloud-return {
+  from { transform: translate(8%, 26%) scale(1.2); }
+  to { transform: translate(-6%, 22%) scale(1.24); }
+}
+@keyframes aeris-sail-turn { to { transform: rotate(360deg); } }
+@keyframes aeris-cover-arrive {
+  from { transform: translateY(var(--sp-2)) scale(.985); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes aeris-edge-breathe {
+  from { opacity: .4; }
+  to { opacity: .85; }
+}
+@keyframes aeris-sheet-lift {
+  from { transform: translate(-.8%, 1.8%) rotate(-1.5deg) scale(.985); }
+  to { transform: translate(1%, -1.5%) rotate(1deg) scale(1.015); }
+}
+@keyframes aeris-sheet-release {
+  from { transform: translate(1%, -.8%) rotate(1.2deg); }
+  to { transform: translate(-1%, 1.4%) rotate(-1.5deg); }
+}
+@keyframes aeris-line-drift {
+  from { transform: translate(-.7%, 1%) rotate(-1deg); opacity: .45; }
+  to { transform: translate(.7%, -1%) rotate(.7deg); opacity: .75; }
+}
+
+.aeris-scene[data-paused] *,
+.aeris-scene[data-paused] *::before,
+.aeris-scene[data-paused] *::after { animation-play-state: paused !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .aeris-scene *, :root[data-theme="luft.aeris"] .brand-aeris-sails { animation: none !important; }
+}

@@ -1,0 +1,65 @@
+@import "./polaris-atmosphere.css";
+
+/*
+ * Theme „Polaris“: polar night. Midnight blue, ice-blue light, one gold
+ * accent for the north star. Surfaces carry a cold tint instead of grey,
+ * headings are light and precise.
+ */
+
+:root[data-theme="luft.polaris"] {
+  color-scheme: dark;
+  --polaris-ice: #a9d2ff;
+  --polaris-haze: #c9c4ff;
+  --polaris-star: #f2dca2;
+
+  --canvas: #070c18;
+  --raised: #0f1829;
+  --sidebar-bg: var(--color-bg);
+  --on-accent: #041022;
+  --accent-text: var(--polaris-ice);
+  --accent-soft: color-mix(in srgb, var(--polaris-ice) 14%, transparent);
+  --text-3: #5d6a82;
+
+  --fill-1: color-mix(in srgb, var(--polaris-ice) 5%, transparent);
+  --fill-2: color-mix(in srgb, var(--polaris-ice) 9%, transparent);
+  --fill-3: color-mix(in srgb, var(--polaris-ice) 14%, transparent);
+  --line: color-mix(in srgb, var(--polaris-ice) 9%, transparent);
+  --line-strong: color-mix(in srgb, var(--polaris-ice) 17%, transparent);
+  --canvas-edge: color-mix(in srgb, var(--polaris-ice) 8%, transparent);
+
+  --shadow-1: 0 10px 28px rgb(0 4 14 / 42%);
+  --shadow-2: 0 24px 64px rgb(0 4 14 / 58%);
+  --shadow-cover: 0 14px 36px rgb(0 4 16 / 50%);
+  --r-cover: 6px;
+  --tracking-caps: .16em;
+}
+
+/* Light, precise headings: a star chart, not a poster. */
+:root[data-theme="luft.polaris"] :is(.page-heading h1, .home-welcome h1, .entity-hero-copy h1, .home-feature-copy h2) {
+  font-weight: 350;
+  letter-spacing: -.028em;
+}
+
+:root[data-theme="luft.polaris"] :is(.section-title h2, .audio-panel-title h2, .settings-section-heading h2) {
+  font-weight: 500;
+}
+
+/* The north star, used sparingly: new things and what is playing now. */
+:root[data-theme="luft.polaris"] .nav-fresh-dot {
+  background: var(--polaris-star);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--polaris-star) 70%, transparent);
+}
+
+:root[data-theme="luft.polaris"] :is(.home-live-bars span, .playerbar-collapsed-state.is-playing) {
+  background: var(--polaris-star);
+}
+
+:root[data-theme="luft.polaris"] .smooth-progress:hover .smooth-progress-fill {
+  background: linear-gradient(90deg, var(--polaris-haze), var(--polaris-ice));
+}
+
+:root[data-theme="luft.polaris"] .volume-slider-control:hover input[type="range"]::-webkit-slider-runnable-track {
+  background:
+    linear-gradient(90deg, var(--polaris-haze), var(--polaris-ice)) 0 0 / var(--volume) 100% no-repeat,
+    var(--fill-3);
+}

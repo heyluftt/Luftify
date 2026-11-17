@@ -1,0 +1,289 @@
+/* Reset, type and global behaviour. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+:root {
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  letter-spacing: -.004em;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--bg);
+  font-size: var(--fs-md);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  line-height: 1.15;
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+button {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:disabled {
+  cursor: default;
+  opacity: .42;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: default;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+abbr {
+  text-decoration: none;
+}
+
+kbd {
+  display: inline-grid;
+  min-width: 20px;
+  place-items: center;
+  padding: 1px 6px;
+  border-radius: var(--r-xs);
+  background: var(--fill-2);
+  color: var(--text-2);
+  font-family: var(--font-sans);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  line-height: 18px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 34%, transparent);
+  color: var(--text);
+}
+
+/* Interactive defaults. */
+button,
+a {
+  transition:
+    color var(--duration-fast) ease,
+    background-color var(--duration-fast) ease,
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease,
+    opacity var(--duration-fast) ease,
+    transform var(--duration-fast) var(--ease-interactive);
+}
+
+input,
+select,
+textarea {
+  transition:
+    color var(--duration-fast) ease,
+    background-color var(--duration-fast) ease,
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+/* Keyboard focus only; the pointer never leaves rings behind. */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 85%, var(--text) 10%);
+  outline-offset: 2px;
+}
+
+:root[data-input="pointer"] :focus,
+:root[data-input="pointer"] :focus-visible {
+  outline: none !important;
+}
+
+/* Nothing animates before the first frame is painted (layouts/inputModality). */
+:root:not(.motion-ready) *,
+:root:not(.motion-ready) *::before,
+:root:not(.motion-ready) *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Scrollbars: thin and quiet. Chromium ignores every ::-webkit-scrollbar
+   rule on an element once scrollbar-width/-color applies to it, so those
+   two only go to engines without the pseudo-elements. Themes tint the
+   thumb through --scrollbar-thumb. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  min-height: 40px;
+  border: 3px solid transparent;
+  border-radius: var(--r-full);
+  background: var(--scrollbar-thumb, color-mix(in srgb, var(--text) 16%, transparent)) padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--text) 28%, transparent);
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb, color-mix(in srgb, var(--text) 18%, transparent)) transparent;
+  }
+}
+
+/* No Windows spin arrows; the fields take typed values. */
+input[type="number"] {
+  appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+/* Autofill keeps the field's own colours instead of yellow or blue. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text);
+  caret-color: var(--text);
+  box-shadow: 0 0 0 100px var(--raised) inset;
+  transition: background-color 9999s;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes ds-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ds-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes ds-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes ds-shimmer {
+  to {
+    background-position: -150% 0;
+  }
+}
+
+/* Legacy keyframe names still referenced by components. */
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -150% 0;
+  }
+}
+
+@keyframes pulse {
+  to {
+    opacity: .3;
+    transform: translateY(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* Minimised or in the tray: decorative motion rests (see windowActivity.ts). */
+:root[data-window-idle] *,
+:root[data-window-idle] *::before,
+:root[data-window-idle] *::after {
+  animation-play-state: paused !important;
+  /* Lets the compositor drop the GPU layers kept for smooth animation. */
+  will-change: auto !important;
+}

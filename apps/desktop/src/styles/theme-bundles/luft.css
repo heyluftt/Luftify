@@ -1,0 +1,36 @@
+@import "./luft-atmosphere.css";
+@import "./luft-surfaces.css";
+
+/*
+ * Theme „Luft Violet“: night air. Deep indigo-black, moonlit lavender for
+ * actions, a little orchid for what is alive right now. Surfaces carry a
+ * violet tint instead of grey.
+ */
+
+:root[data-theme="luft.violet"] {
+  color-scheme: dark;
+  --violet-lilac: #b9acff;
+  --violet-iris: #8f7bf7;
+  --violet-orchid: #e59ae9;
+
+  --canvas: #0d0a1c;
+  --raised: #1a1532;
+  --sidebar-bg: var(--color-bg);
+  --on-accent: #120a30;
+  --accent-text: var(--violet-lilac);
+  --accent-soft: color-mix(in srgb, var(--violet-iris) 18%, transparent);
+  --text-3: #6d6789;
+
+  --fill-1: color-mix(in srgb, var(--violet-lilac) 5%, transparent);
+  --fill-2: color-mix(in srgb, var(--violet-lilac) 9%, transparent);
+  --fill-3: color-mix(in srgb, var(--violet-lilac) 14%, transparent);
+  --line: color-mix(in srgb, var(--violet-lilac) 10%, transparent);
+  --line-strong: color-mix(in srgb, var(--violet-lilac) 18%, transparent);
+  --canvas-edge: color-mix(in srgb, var(--violet-lilac) 9%, transparent);
+  --overlay: color-mix(in srgb, #05030f 62%, transparent);
+
+  --shadow-1: 0 10px 28px rgb(6 2 22 / 46%);
+  --shadow-2: 0 24px 64px rgb(6 2 22 / 62%);
+  --shadow-cover: 0 14px 36px rgb(8 3 26 / 55%);
+  --focus-ring: 0 0 0 2px var(--canvas), 0 0 0 4px color-mix(in srgb, var(--violet-lilac) 85%, transparent);
+}

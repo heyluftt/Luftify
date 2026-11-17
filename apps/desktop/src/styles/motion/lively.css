@@ -1,0 +1,300 @@
+/*
+ * Motion "Lebendig" (DESIGN.md): things spring slightly past their target
+ * and controls give way when pressed. Loaded last, it only adds movement on
+ * top of the shell and the themes; colours and shapes stay theirs. Every
+ * duration scales with --motion-scale (0 with "reduce motion").
+ */
+
+/* ---------- Page change ---------- */
+/* The page slides in; cards and the first rows pop up one after another,
+   only while the route is new (usePageEntering), never while scrolling. */
+.page-scroll .page:not(.lyrics-page) {
+  animation: lively-page-in calc(460ms * var(--motion-scale)) var(--ease-pop) backwards;
+}
+
+.page-scroll[data-entering] :is(.ds-tile, .ds-row-tile, .home-feature, .recap-tile, .track-row:nth-child(-n + 10)) {
+  animation: lively-pop-in calc(520ms * var(--motion-scale)) var(--ease-bounce) backwards;
+  animation-delay: calc(var(--lively-order, 0) * 45ms * var(--motion-scale));
+}
+
+.page-scroll[data-entering] :is(.ds-tile, .ds-row-tile, .recap-tile, .track-row):nth-child(2) { --lively-order: 1; }
+.page-scroll[data-entering] :is(.ds-tile, .ds-row-tile, .recap-tile, .track-row):nth-child(3) { --lively-order: 2; }
+.page-scroll[data-entering] :is(.ds-tile, .ds-row-tile, .recap-tile, .track-row):nth-child(4) { --lively-order: 3; }
+.page-scroll[data-entering] :is(.ds-tile, .ds-row-tile, .recap-tile, .track-row):nth-child(5) { --lively-order: 4; }
+.page-scroll[data-entering] :is(.ds-tile, .ds-row-tile, .recap-tile, .track-row):nth-child(6) { --lively-order: 5; }
+.page-scroll[data-entering] :is(.ds-tile, .ds-row-tile, .recap-tile, .track-row):nth-child(7) { --lively-order: 6; }
+.page-scroll[data-entering] :is(.ds-tile, .ds-row-tile, .recap-tile, .track-row):nth-child(8) { --lively-order: 7; }
+.page-scroll[data-entering] :is(.ds-tile, .ds-row-tile, .recap-tile, .track-row):nth-child(n + 9) { --lively-order: 8; }
+
+@keyframes lively-page-in {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+}
+
+@keyframes lively-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(.88);
+  }
+}
+
+/* ---------- Sidebar ---------- */
+/* A highlight springs from the old entry to the new one (useNavGlide.ts);
+   meanwhile the entries hide their own active background. */
+.sidebar-nav {
+  position: relative;
+}
+
+.sidebar-nav > .nav-item {
+  z-index: 1;
+}
+
+.nav-glide {
+  position: absolute;
+  top: 0;
+  z-index: 0;
+  border-radius: var(--r-sm);
+  background: var(--fill-2);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform calc(460ms * var(--motion-scale)) var(--ease-bounce),
+    opacity calc(160ms * var(--motion-scale)) ease;
+}
+
+.nav-glide.is-visible {
+  opacity: 1;
+}
+
+:root .sidebar-nav.is-gliding > .nav-item.active {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+:root .sidebar-nav.is-gliding > .nav-item.active::before {
+  opacity: 0;
+}
+
+.nav-item svg {
+  transition: transform calc(380ms * var(--motion-scale)) var(--ease-bounce);
+}
+
+.nav-item:hover svg {
+  transform: scale(1.12) rotate(-6deg);
+}
+
+.nav-item:active svg {
+  transform: scale(.88);
+}
+
+/* ---------- Cards and rows ---------- */
+.ds-tile {
+  transition:
+    translate calc(380ms * var(--motion-scale)) var(--ease-bounce),
+    rotate calc(380ms * var(--motion-scale)) var(--ease-bounce),
+    scale calc(200ms * var(--motion-scale)) var(--ease-bounce),
+    background-color calc(200ms * var(--motion-scale)) ease;
+}
+
+.ds-tile:hover {
+  translate: 0 -4px;
+  rotate: -.6deg;
+}
+
+.ds-tile:active {
+  scale: .96;
+}
+
+/* Room above a scrolling shelf, so a lifted card is not cut off. */
+.ds-shelf {
+  margin-top: -8px;
+  padding-top: 8px;
+}
+
+.ds-tile-art .album-art {
+  transition: box-shadow calc(380ms * var(--motion-scale)) var(--ease-bounce);
+}
+
+.ds-tile:hover .ds-tile-art .album-art {
+  box-shadow: var(--shadow-2);
+}
+
+/* The play button pops instead of rising. */
+.ds-tile-play {
+  transform: scale(.4);
+  transition:
+    opacity calc(200ms * var(--motion-scale)) ease,
+    transform calc(420ms * var(--motion-scale)) var(--ease-bounce),
+    background-color var(--duration-fast) ease;
+}
+
+.ds-tile:hover .ds-tile-play,
+.ds-tile:focus-within .ds-tile-play,
+.ds-tile-play.is-playing {
+  transform: scale(1);
+}
+
+.ds-tile-play:hover {
+  transform: scale(1.1) !important;
+}
+
+.ds-row-tile {
+  transition:
+    translate calc(320ms * var(--motion-scale)) var(--ease-bounce),
+    scale calc(200ms * var(--motion-scale)) var(--ease-bounce),
+    background-color calc(200ms * var(--motion-scale)) ease;
+}
+
+.ds-row-tile:hover {
+  translate: 0 -2px;
+}
+
+.ds-row-tile:active,
+.track-row:active {
+  scale: .98;
+}
+
+.track-row {
+  transition: scale calc(200ms * var(--motion-scale)) var(--ease-bounce);
+}
+
+/* ---------- Player bar ---------- */
+/* A new song: the cover spins in, title and artists follow from the right
+   (PlayerBar keys them by the song). */
+.player-cover-link .album-art {
+  animation: lively-cover-in calc(620ms * var(--motion-scale)) var(--ease-bounce) backwards;
+}
+
+.track-copy > :is(.track-title-link, strong) {
+  animation: lively-copy-in calc(520ms * var(--motion-scale)) var(--ease-pop) backwards;
+}
+
+.track-copy > .artist-links {
+  animation: lively-copy-in calc(520ms * var(--motion-scale)) var(--ease-pop) calc(60ms * var(--motion-scale)) backwards;
+}
+
+@keyframes lively-cover-in {
+  from {
+    opacity: 0;
+    transform: rotate(-90deg) scale(.4);
+  }
+}
+
+@keyframes lively-copy-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+
+.play-button {
+  transition: transform calc(380ms * var(--motion-scale)) var(--ease-bounce);
+}
+
+.play-button:not(:disabled):active {
+  transform: scale(.84);
+}
+
+/* Play and pause swap with a small pop. */
+.play-button svg {
+  animation: lively-icon-pop calc(360ms * var(--motion-scale)) var(--ease-bounce) backwards;
+}
+
+.transport-buttons .icon-button:not(:disabled) {
+  transition: transform calc(320ms * var(--motion-scale)) var(--ease-bounce);
+}
+
+.transport-buttons .icon-button:not(:disabled):active {
+  transform: scale(.82);
+}
+
+@keyframes lively-icon-pop {
+  from {
+    opacity: 0;
+    transform: scale(.4) rotate(-30deg);
+  }
+}
+
+/* ---------- Panels, menus, dialogs ---------- */
+.queue-panel:not(.is-closing) {
+  transform-origin: 100% 100%;
+  animation: lively-panel-in calc(480ms * var(--motion-scale)) var(--ease-bounce) both;
+}
+
+.ds-dialog,
+.close-confirm {
+  animation: lively-dialog-in calc(440ms * var(--motion-scale)) var(--ease-bounce) both;
+}
+
+.track-actions-menu,
+.settings-select-menu {
+  transform-origin: top center;
+  animation: lively-menu-in calc(320ms * var(--motion-scale)) var(--ease-pop) both;
+}
+
+.audio-quick-settings {
+  transform-origin: 100% 100%;
+  animation: lively-panel-in calc(420ms * var(--motion-scale)) var(--ease-bounce) both;
+}
+
+.command-palette {
+  transition:
+    opacity var(--duration-fast) ease,
+    transform calc(440ms * var(--motion-scale)) var(--ease-bounce);
+}
+
+.command-palette:not(.is-open) {
+  transform: translate3d(0, 18px, 0) scale(.94);
+}
+
+@keyframes lively-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(.9);
+  }
+}
+
+@keyframes lively-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(.88);
+  }
+}
+
+@keyframes lively-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(.92);
+  }
+}
+
+/* ---------- Signature: cover flight (features/motion/coverFlight.ts) ---------- */
+.cover-flight {
+  position: fixed;
+  z-index: 9000;
+  pointer-events: none;
+}
+
+.cover-flight-art {
+  margin: 0;
+  transform-origin: 0 0;
+  box-shadow: var(--shadow-2);
+}
+
+.player-cover-link .album-art[data-landing] {
+  animation: none;
+}
+
+/* Liking pops the heart. */
+.player-like-button.active svg {
+  animation: lively-heart calc(460ms * var(--motion-scale)) ease-out;
+}
+
+@keyframes lively-heart {
+  0% { scale: .6; }
+  45% { scale: 1.28; }
+  70% { scale: .94; }
+  100% { scale: 1; }
+}

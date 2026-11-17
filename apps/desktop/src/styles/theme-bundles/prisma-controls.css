@@ -1,0 +1,27 @@
+:root[data-theme="luft.prisma"] :is(.primary-button, .play-fab, .play-button) {
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--text) 30%, transparent) inset,
+    0 6px 26px color-mix(in srgb, var(--accent) 38%, transparent);
+}
+:root[data-theme="luft.prisma"] .secondary-button {
+  background: linear-gradient(180deg, var(--prisma-glass-top), transparent), var(--fill-1);
+  box-shadow: 0 0 0 1px var(--prisma-rim) inset;
+}
+:root[data-theme="luft.prisma"] .secondary-button:hover:not(:disabled) { background: var(--fill-2); }
+:root[data-theme="luft.prisma"] :is(.nav-item.active, .sidebar-nav a[aria-current="page"]) {
+  background: linear-gradient(90deg, var(--accent-soft), color-mix(in srgb, var(--accent) 3%, transparent));
+  box-shadow: 2px 0 0 var(--accent) inset;
+}
+:root[data-theme="luft.prisma"] .smooth-progress-fill {
+  background: linear-gradient(90deg, var(--prisma-pigment-2, var(--accent)), var(--accent) 70%);
+}
+:root[data-theme="luft.prisma"] :is(.settings-select-option[aria-selected="true"], .ds-segmented button.active, .ds-segmented button[aria-pressed="true"], .ds-segmented button[aria-selected="true"]) {
+  background: var(--accent-soft);
+  color: var(--text);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent) inset;
+}
+:root[data-theme="luft.prisma"] .sidebar-brand-orbit {
+  --brand-secondary: var(--prisma-ui-secondary, var(--accent));
+  --brand-light: color-mix(in srgb, var(--accent) 24%, var(--text));
+}

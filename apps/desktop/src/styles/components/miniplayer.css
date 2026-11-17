@@ -1,0 +1,726 @@
+html.miniplayer-root,
+html.miniplayer-root body.miniplayer-body,
+html.miniplayer-root body.miniplayer-body #root {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Window: 390 x 116 logical px (+228 with a list), scaled as a whole. */
+.miniplayer-app {
+  padding: 2px;
+  background: transparent;
+  opacity: var(--miniplayer-opacity, .94);
+  transform-origin: top left;
+  transition: opacity 180ms ease;
+}
+
+/* The chosen transparency is for idling over a game; under the mouse the
+   player is fully readable. Click-through windows never get hover. Not on
+   focus: focus stays after any click, which kept the player opaque. While
+   the quick settings are open the chosen value shows, so the slider has a
+   visible effect. */
+.miniplayer-app:hover:not(.is-tuning) {
+  opacity: 1;
+}
+
+.miniplayer-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  grid-template-rows: 36px 32px 16px;
+  column-gap: 12px;
+  row-gap: 2px;
+  height: 112px;
+  box-sizing: border-box;
+  padding: 9px 12px 7px 10px;
+  overflow: clip;
+  isolation: isolate;
+  border: 1px solid color-mix(in srgb, var(--text) 11%, transparent);
+  border-radius: 16px;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 9%, var(--canvas)), var(--canvas) 65%);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 24%), inset 0 1px color-mix(in srgb, var(--text) 5%, transparent);
+}
+
+/* The current cover, blurred far behind everything: a hint of the colour
+   of the song without competing with the controls. */
+.miniplayer-card::after {
+  position: absolute;
+  z-index: -1;
+  inset: -30%;
+  background: var(--miniplayer-art, none) center / cover;
+  content: "";
+  filter: blur(26px) saturate(1.2);
+  opacity: .22;
+  pointer-events: none;
+}
+
+.miniplayer-card::before {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 20%;
+  left: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  content: "";
+  opacity: .2;
+  pointer-events: none;
+}
+
+/* Cover and titles move the window. */
+.miniplayer-drag-region {
+  display: contents;
+}
+
+.miniplayer-cover,
+.miniplayer-copy {
+  cursor: grab;
+  user-select: none;
+}
+
+.miniplayer-cover:active,
+.miniplayer-copy:active {
+  cursor: grabbing;
+}
+
+.miniplayer-cover *,
+.miniplayer-copy * {
+  pointer-events: none;
+}
+
+.miniplayer-cover {
+  grid-row: 1 / 3;
+  grid-column: 1;
+  align-self: center;
+}
+
+.miniplayer-cover .album-art.small {
+  width: 64px;
+  height: 64px;
+  border-color: color-mix(in srgb, var(--text) 12%, transparent);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 26%);
+}
+
+.miniplayer-copy {
+  grid-row: 1;
+  grid-column: 2;
+  min-width: 0;
+  align-self: center;
+  padding-right: 96px;
+}
+
+.miniplayer-copy strong,
+.miniplayer-copy span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.miniplayer-copy strong {
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -.015em;
+}
+
+.miniplayer-copy span {
+  margin-top: 2px;
+  color: color-mix(in srgb, var(--text-2) 85%, var(--text));
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.miniplayer-controls {
+  display: flex;
+  grid-row: 2;
+  grid-column: 2;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.miniplayer-transport {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.miniplayer-transport button,
+.miniplayer-lists button,
+.miniplayer-tools button {
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-2);
+  line-height: 1;
+  transition: background-color 120ms ease, color 120ms ease, opacity 120ms ease;
+}
+
+.miniplayer-transport svg,
+.miniplayer-lists svg,
+.miniplayer-tools svg {
+  display: block;
+}
+
+.miniplayer-skip {
+  width: 28px;
+  height: 30px;
+}
+
+.miniplayer-mode {
+  width: 24px;
+  height: 26px;
+}
+
+.miniplayer-transport .miniplayer-play-button {
+  width: 34px;
+  height: 34px;
+  margin: 0 2px;
+  border-radius: 11px;
+  background: var(--accent);
+  color: color-mix(in srgb, var(--bg) 85%, #000);
+  box-shadow: inset 0 1px rgb(255 255 255 / 12%);
+}
+
+.miniplayer-transport .miniplayer-play-button:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.miniplayer-transport button:active:not(:disabled) {
+  transform: scale(.95);
+}
+
+.miniplayer-transport button:hover:not(:disabled):not(.miniplayer-play-button),
+.miniplayer-lists button:hover,
+.miniplayer-tools button:hover:not(:disabled) {
+  background: var(--fill-1);
+  color: var(--text);
+}
+
+.miniplayer-transport .miniplayer-mode.active,
+.miniplayer-lists button.active,
+.miniplayer-tools button.active {
+  background: color-mix(in srgb, var(--accent) 13%, transparent);
+  color: var(--accent);
+}
+
+.miniplayer-transport button:disabled,
+.miniplayer-tools button:disabled {
+  opacity: .35;
+  cursor: default;
+}
+
+.miniplayer-lists {
+  display: flex;
+  margin-left: auto;
+  gap: 1px;
+}
+
+.miniplayer-lists button {
+  width: 26px;
+  height: 26px;
+}
+
+.miniplayer-volume {
+  display: flex;
+  width: 64px;
+  flex: 0 0 64px;
+  align-items: center;
+}
+
+.miniplayer-volume .volume-slider-control {
+  width: 100%;
+}
+
+.miniplayer-volume .volume-slider-control.compact input {
+  min-width: 0;
+  height: 4px;
+}
+
+.miniplayer-timeline {
+  display: grid;
+  grid-row: 3;
+  grid-column: 1 / -1;
+  grid-template-columns: 32px minmax(0, 1fr) 32px;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-2);
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+}
+
+.miniplayer-timeline > span:last-child {
+  text-align: right;
+}
+
+.miniplayer-progress {
+  height: 4px;
+  min-height: 0;
+  border-radius: 999px;
+  transition: height 120ms ease;
+}
+
+.miniplayer-progress .smooth-progress-rail,
+.miniplayer-progress .smooth-progress-fill {
+  border-radius: 999px;
+}
+
+.miniplayer-progress input[type="range"] {
+  height: 12px;
+  margin-top: -4px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.miniplayer-timeline:hover .miniplayer-progress {
+  height: 6px;
+}
+
+.miniplayer-tools {
+  position: absolute;
+  z-index: 4;
+  top: 8px;
+  right: 9px;
+  display: flex;
+  gap: 1px;
+}
+
+.miniplayer-tools button {
+  width: 22px;
+  height: 22px;
+  opacity: .5;
+}
+
+/* The heart stays readable; the window buttons fade in under the mouse. */
+.miniplayer-card:hover .miniplayer-tools button,
+.miniplayer-tools button:focus-visible,
+.miniplayer-tools button.active,
+.miniplayer-tools .miniplayer-like {
+  opacity: 1;
+}
+
+.miniplayer-tools .miniplayer-like.active {
+  background: transparent;
+  color: var(--accent);
+}
+
+.miniplayer-tools .miniplayer-close:hover {
+  background: color-mix(in srgb, #e45b64 16%, var(--canvas));
+  color: #e45b64;
+}
+
+/* Click-through: the lock in the tools' corner. The pointer resting on it
+   fills the ring (driven by the app, the window gets no hover). */
+.miniplayer-lock {
+  position: absolute;
+  z-index: 4;
+  top: 6px;
+  right: 7px;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  color: var(--text-2);
+  opacity: .6;
+  pointer-events: none;
+  transition: opacity 160ms ease, color 160ms ease;
+}
+
+.miniplayer-lock-progress {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.miniplayer-lock-track,
+.miniplayer-lock-ring {
+  fill: none;
+  stroke-width: 2.4;
+}
+
+.miniplayer-lock-track {
+  stroke: color-mix(in srgb, var(--text) 16%, transparent);
+}
+
+.miniplayer-lock-ring {
+  stroke: var(--accent);
+  stroke-linecap: round;
+  transition: stroke-dasharray 90ms linear;
+}
+
+.miniplayer-lock.is-unlocking {
+  color: var(--accent);
+  opacity: 1;
+}
+
+/* Over the time line for a few seconds, so it never hides the title. */
+.miniplayer-lock-hint {
+  position: absolute;
+  z-index: 4;
+  right: 10px;
+  bottom: 5px;
+  left: 86px;
+  overflow: hidden;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  color: var(--text-2);
+  font-size: 10px;
+  line-height: 1.4;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.miniplayer-lock-hint.is-unlocking {
+  color: var(--text);
+}
+
+html.miniplayer-root .miniplayer-app button:focus-visible {
+  outline: none;
+}
+
+html.miniplayer-root .miniplayer-app button:focus-visible:not(:disabled) {
+  filter: brightness(1.12);
+}
+
+/* Lists below the player. */
+.miniplayer-browse {
+  display: flex;
+  height: 222px;
+  box-sizing: border-box;
+  flex-direction: column;
+  margin-top: 4px;
+  padding: 8px 8px 6px 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--canvas);
+  color: var(--text);
+}
+
+.miniplayer-browse header {
+  display: flex;
+  flex: 0 0 26px;
+  align-items: center;
+  gap: 8px;
+}
+
+.miniplayer-browse header strong {
+  color: var(--text-2);
+  font-size: 10px;
+  font-weight: 650;
+}
+
+.miniplayer-browse header > button {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  margin-left: auto;
+  place-items: center;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-2);
+}
+
+.miniplayer-filter {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  height: 22px;
+  align-items: center;
+  gap: 5px;
+  padding: 0 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text-2);
+}
+
+.miniplayer-filter:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+
+.miniplayer-filter input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 10px;
+}
+
+.miniplayer-browse-list {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+@supports selector(::-webkit-scrollbar) {
+  .miniplayer-browse-list { scrollbar-width: auto; scrollbar-color: auto; }
+  .miniplayer-browse-list::-webkit-scrollbar { width: 7px; }
+  .miniplayer-browse-list::-webkit-scrollbar-track { background: transparent; }
+  .miniplayer-browse-list::-webkit-scrollbar-thumb { border: 2px solid transparent; border-radius: 999px; background: var(--line-strong); background-clip: padding-box; }
+  .miniplayer-browse-list::-webkit-scrollbar-thumb:hover { background-color: var(--text-2); }
+  .miniplayer-browse-list::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+}
+
+.miniplayer-browse-list ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.miniplayer-browse-list li.is-current,
+.miniplayer-queue-row,
+.miniplayer-playlist-row {
+  display: flex;
+  width: 100%;
+  min-height: 36px;
+  box-sizing: border-box;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+}
+
+.miniplayer-browse-list li.is-current {
+  margin-bottom: 3px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.miniplayer-browse-list li.is-current small {
+  color: var(--accent);
+}
+
+.miniplayer-browse-list li.is-empty {
+  padding: 10px 6px;
+  color: var(--text-2);
+  font-size: 10px;
+}
+
+.miniplayer-queue-row > svg,
+.miniplayer-playlist-row > svg {
+  flex: 0 0 auto;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.miniplayer-queue-row:hover:not(:disabled),
+.miniplayer-playlist-row:hover:not(:disabled),
+.miniplayer-browse header > button:hover {
+  background: var(--fill-1);
+}
+
+.miniplayer-queue-row:hover:not(:disabled) > svg,
+.miniplayer-playlist-row:hover:not(:disabled) > svg,
+.miniplayer-queue-row:focus-visible > svg,
+.miniplayer-playlist-row:focus-visible > svg {
+  opacity: 1;
+}
+
+.miniplayer-queue-row:disabled,
+.miniplayer-playlist-row:disabled {
+  cursor: default;
+  opacity: .55;
+}
+
+.miniplayer-row-number {
+  min-width: 16px;
+  color: var(--text-2);
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.miniplayer-row-art {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.miniplayer-row-art .album-art {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
+
+.miniplayer-liked-art {
+  background: linear-gradient(140deg, var(--accent), color-mix(in srgb, var(--accent) 38%, var(--bg)));
+  color: color-mix(in srgb, #fff 92%, var(--accent));
+}
+
+.miniplayer-row-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.miniplayer-row-copy strong,
+.miniplayer-row-copy small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.miniplayer-row-copy strong {
+  font-size: 11px;
+  font-weight: 550;
+}
+
+.miniplayer-row-copy small {
+  margin-top: 2px;
+  color: var(--text-2);
+  font-size: 9px;
+}
+
+.miniplayer-browse-list p {
+  margin: 0;
+  padding: 12px 6px;
+  color: var(--text-2);
+  font-size: 10px;
+}
+
+.miniplayer-browse-list p button,
+.miniplayer-load-more {
+  margin: 4px;
+  padding: 5px;
+  background: transparent;
+  color: var(--accent);
+  font-size: 10px;
+}
+
+/* Quick settings replace the controls inside the card. */
+.miniplayer-card.settings-open {
+  display: block;
+}
+
+.miniplayer-quick-settings {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 8px 10px 4px;
+}
+
+.miniplayer-quick-range {
+  display: block;
+  min-width: 0;
+  color: var(--text-2);
+  font-size: 9.5px;
+}
+
+.miniplayer-quick-range > span {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.miniplayer-quick-range output {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.miniplayer-quick-range input {
+  width: 100%;
+  height: 4px;
+  margin-top: 9px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.miniplayer-quick-toggles {
+  display: grid;
+  grid-template-columns: repeat(2, 28px);
+  grid-template-rows: 28px auto;
+  align-items: center;
+  gap: 4px;
+}
+
+.miniplayer-quick-toggles button {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: var(--r-sm);
+  background: var(--fill-2);
+  color: var(--text-2);
+}
+
+.miniplayer-quick-toggles button:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+  color: var(--text);
+}
+
+.miniplayer-quick-toggles button.active {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--canvas));
+  color: var(--accent);
+}
+
+.miniplayer-quick-toggles kbd {
+  overflow: hidden;
+  grid-column: 1 / -1;
+  color: var(--text-2);
+  font-family: inherit;
+  font-size: 7.5px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .miniplayer-app,
+  .miniplayer-progress,
+  .miniplayer-transport button,
+  .miniplayer-tools button {
+    transition: none;
+  }
+}
+
+/* Mini player section on the settings page. */
+.miniplayer-settings-card .settings-list { margin: 14px 0 10px; }
+.miniplayer-settings-card { padding: var(--sp-4); border-radius: var(--r-lg); background: var(--fill-1); }
+.miniplayer-settings-intro { display: flex; align-items: center; gap: 11px; padding-bottom: 14px; box-shadow: inset 0 -1px 0 var(--line); }
+.miniplayer-settings-intro > svg { color: var(--text-2); }
+.miniplayer-settings-intro > div { min-width: 0; flex: 1; }
+.miniplayer-settings-intro strong, .miniplayer-settings-intro small { display: block; }
+.miniplayer-settings-intro strong { font-size: var(--fs-md); font-weight: var(--fw-semibold); }
+.miniplayer-settings-intro small, .miniplayer-range-row small { margin-top: 3px; color: var(--text-2); font-size: 11px; line-height: 1.35; }
+.miniplayer-settings-intro .secondary-button { flex: 0 0 auto; }
+.miniplayer-range-row { display: grid; grid-template-columns: minmax(130px, 1fr) minmax(120px, .72fr) 42px; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.miniplayer-range-row span strong, .miniplayer-range-row span small { display: block; }
+.miniplayer-range-row span strong { font-size: 12px; }
+.miniplayer-range-row input { width: 100%; accent-color: var(--accent); }
+.miniplayer-range-row output { color: var(--text-2); font-size: 11px; text-align: right; }
+.miniplayer-settings-note { margin: 0; color: var(--text-2); font-size: 11px; line-height: 1.45; }
+.miniplayer-settings-note + .miniplayer-settings-note { margin-top: 5px; }
+
+@media (max-width: 720px) { .miniplayer-range-row { grid-template-columns: 1fr auto; } .miniplayer-range-row input { grid-column: 1 / -1; grid-row: 2; } }

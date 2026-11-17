@@ -1,0 +1,107 @@
+/* Mix section chrome and the songs of the open mix. */
+
+.discovery-section .section-title {
+  flex-wrap: wrap;
+}
+
+.discovery-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.discovery-section .section-title p,
+.discovery-note {
+  margin: 0 0 var(--sp-4);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+
+.discovery-tracks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2px var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.discovery-tracks button {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 6px;
+  border-radius: var(--r-sm);
+  text-align: left;
+}
+
+.discovery-tracks button:hover:not(:disabled) {
+  background: var(--fill-1);
+}
+
+.discovery-tracks .album-art.small {
+  width: 44px;
+  height: 44px;
+}
+
+.discovery-track-copy {
+  display: grid;
+  min-width: 0;
+}
+
+.discovery-track-copy strong,
+.discovery-track-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.discovery-track-copy strong {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+}
+
+.discovery-track-copy small {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.discovery-tracks button.is-current strong {
+  color: var(--accent-text);
+}
+
+.discovery-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp-2) var(--sp-5);
+  margin: var(--sp-3) 0;
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+
+.discovery-info {
+  max-width: 620px;
+}
+
+.discovery-info summary {
+  width: fit-content;
+  cursor: pointer;
+}
+
+.discovery-info summary:hover {
+  color: var(--text);
+}
+
+.discovery-info p {
+  margin: var(--sp-2) 0;
+  line-height: 1.6;
+}
+
+.discovery-source-note {
+  font-size: var(--fs-2xs);
+}

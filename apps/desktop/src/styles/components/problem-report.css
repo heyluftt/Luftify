@@ -1,0 +1,77 @@
+/* "Report a problem" dialog and Luft's inbox. */
+.problem-report {
+  display: grid;
+  width: min(520px, 100%);
+  max-height: min(760px, 100%);
+  gap: var(--sp-4);
+  padding: var(--sp-6);
+  overflow-y: auto;
+  border-radius: var(--r-xl);
+  background: var(--raised);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line);
+  color: var(--text);
+  outline: none;
+  animation: friend-profile-rise var(--duration-slow) var(--ease-spring);
+}
+
+.problem-report > header { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); }
+.problem-report > header h2 { font-size: var(--fs-h3); }
+.problem-report form { display: grid; gap: var(--sp-2); }
+.problem-report form > label { color: var(--text-2); font-size: var(--fs-xs); font-weight: var(--fw-medium); }
+.problem-report textarea {
+  min-height: 120px;
+  padding: var(--sp-3);
+  resize: vertical;
+  border: 0;
+  border-radius: var(--r-md);
+  background: var(--fill-2);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+.problem-report textarea::placeholder { color: var(--text-2); }
+.problem-report form > small { color: var(--text-2); font-size: var(--fs-2xs); }
+
+.problem-report-details { display: grid; gap: var(--sp-2); margin-top: var(--sp-2); }
+.problem-report-details-row { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); padding-inline: var(--sp-1); }
+.problem-report-details-row small { color: var(--text-2); font-size: var(--fs-2xs); }
+
+.problem-report-preview {
+  max-height: 220px;
+  margin: 0;
+  padding: var(--sp-3);
+  overflow: auto;
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: pre;
+  user-select: text;
+}
+
+.problem-report-actions { display: flex; justify-content: flex-end; gap: var(--sp-2); margin-top: var(--sp-3); }
+
+.problem-report-sent { display: grid; justify-items: center; gap: var(--sp-3); padding: var(--sp-6) 0 var(--sp-2); text-align: center; }
+.problem-report-sent > span { display: grid; width: 48px; height: 48px; place-items: center; border-radius: 50%; background: var(--accent-soft); color: var(--accent); }
+
+/* Inbox in the Luft corner */
+.report-inbox { margin-top: var(--sp-6); padding-top: var(--sp-5); border-top: 1px solid var(--line); }
+.report-inbox-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--sp-3); }
+.report-inbox-heading h3 { display: flex; align-items: center; gap: var(--sp-2); color: var(--text-2); font-size: var(--fs-2xs); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-caps, .08em); text-transform: uppercase; }
+.report-inbox-empty { color: var(--text-2); font-size: var(--fs-xs); }
+.report-inbox > ul { display: grid; gap: var(--sp-2); margin: 0; padding: 0; list-style: none; }
+
+.report-item { display: grid; gap: var(--sp-2); padding: var(--sp-3) var(--sp-4); border-radius: var(--r-md); background: var(--fill-1); }
+.report-item-head { display: flex; align-items: center; gap: var(--sp-2); }
+.report-item-head strong { font-size: var(--fs-sm); }
+.report-item-head small { margin-right: auto; color: var(--text-2); font-size: var(--fs-2xs); font-variant-numeric: tabular-nums; }
+.report-item-head .secondary-button { min-height: 28px; padding-inline: var(--sp-3); font-size: var(--fs-xs); }
+.report-item > p { font-size: var(--fs-sm); line-height: 1.5; white-space: pre-line; overflow-wrap: anywhere; }
+.report-item-toggle { display: inline-flex; align-items: center; justify-self: start; gap: 4px; padding: 0; color: var(--text-2); font-size: var(--fs-xs); }
+.report-item-toggle[aria-expanded="true"] > svg { transform: rotate(180deg); }
+.report-item-none { color: var(--text-2); font-size: var(--fs-2xs); }
+.report-item-details { position: relative; }
+.report-item-details > .friends-icon-button { position: absolute; top: 6px; right: 6px; background: var(--raised); }

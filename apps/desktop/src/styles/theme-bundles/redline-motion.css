@@ -1,0 +1,220 @@
+/* Redline: flame and heat animations, gated by the motion preference. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .redline-atmosphere {
+    animation: redline-atmosphere-enter 1.7s cubic-bezier(0.2, 0.75, 0.25, 1) both;
+  }
+  .redline-atmosphere::before {
+    animation: redline-horizon-breathe 12s 1.35s ease-in-out infinite;
+  }
+  .redline-bed {
+    animation: redline-bed-ignite 1.35s 0.12s cubic-bezier(0.16, 0.78, 0.22, 1) both;
+  }
+  .redline-heat-left {
+    animation:
+      redline-heat-rise 1.35s 0.16s cubic-bezier(0.16, 0.78, 0.22, 1) both,
+      redline-heat-pulse 13s 1.4s ease-in-out infinite alternate;
+  }
+  .redline-heat-right {
+    animation:
+      redline-heat-rise 1.5s 0.28s cubic-bezier(0.16, 0.78, 0.22, 1) both,
+      redline-heat-pulse 16s 1.55s ease-in-out infinite alternate-reverse;
+  }
+  .redline-flame {
+    animation:
+      redline-flame-rise 1.55s cubic-bezier(0.16, 0.82, 0.2, 1) both,
+      redline-flame-breathe 9.5s cubic-bezier(0.42, 0, 0.3, 1) infinite;
+    animation-delay: 0.34s, 1.78s;
+  }
+  .redline-flame-a { animation-delay: 0.28s, 1.72s; }
+  .redline-flame-b { animation-delay: 0.48s, 1.96s; animation-duration: 1.55s, 12.7s; }
+  .redline-flame-c { animation-delay: 0.36s, 1.84s; animation-duration: 1.55s, 10.8s; }
+  .redline-flame-d { animation-delay: 0.54s, 2.02s; animation-duration: 1.55s, 11.6s; }
+  .redline-flame-e { animation-delay: 0.42s, 1.9s; }
+  .redline-flame::after {
+    animation: redline-flame-core-flicker 2.8s 1.7s ease-in-out infinite;
+  }
+  .redline-smoke {
+    animation:
+      redline-smoke-enter 1.8s 0.55s cubic-bezier(0.2, 0.7, 0.25, 1) both,
+      redline-smoke-drift 24s 2.1s ease-in-out infinite alternate;
+  }
+  .redline-ignition {
+    animation: redline-ignition-line 1.45s 40ms cubic-bezier(0.16, 0.78, 0.22, 1) both;
+  }
+  .redline-ignition::before {
+    animation: redline-ignition-flare 1.7s 120ms cubic-bezier(0.16, 0.72, 0.25, 1) both;
+  }
+  .redline-ignition::after {
+    animation: redline-ignition-lift 1.95s 180ms cubic-bezier(0.18, 0.72, 0.22, 1) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .redline-atmosphere,
+  .redline-atmosphere::before,
+  .redline-heat,
+  .redline-bed,
+  .redline-flame,
+  .redline-flame::after,
+  .redline-smoke,
+  :root[data-theme="luft.redline"] .home-feature-theme-art {
+    animation: none;
+  }
+  .redline-ignition {
+    display: none;
+  }
+}
+
+@keyframes redline-atmosphere-enter {
+  0% {
+    filter: saturate(0.38) brightness(0.42);
+    transform: translate3d(0, 22px, 0);
+  }
+  48% {
+    filter: saturate(1.22) brightness(1.16);
+    transform: translate3d(0, -3px, 0);
+  }
+  100% {
+    filter: none;
+    transform: none;
+  }
+}
+
+@keyframes redline-bed-ignite {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.18) scaleY(0.4);
+  }
+  42% { opacity: 1; }
+  100% {
+    opacity: 0.82;
+    transform: none;
+  }
+}
+
+@keyframes redline-flame-breathe {
+  0%, 100% {
+    opacity: var(--flame-opacity);
+    transform: translate3d(0, 0, 0) rotate(var(--flame-angle)) scale(var(--flame-scale-x), var(--flame-scale-y));
+  }
+  28% {
+    opacity: calc(var(--flame-opacity) * 1.16);
+    transform: translate3d(6px, -16px, 0) rotate(calc(var(--flame-angle) + 1.8deg)) scale(calc(var(--flame-scale-x) + 0.04), calc(var(--flame-scale-y) + 0.07));
+  }
+  61% {
+    opacity: calc(var(--flame-opacity) * 0.86);
+    transform: translate3d(-5px, -6px, 0) rotate(calc(var(--flame-angle) - 1.4deg)) scale(calc(var(--flame-scale-x) - 0.025), calc(var(--flame-scale-y) + 0.02));
+  }
+  82% {
+    opacity: calc(var(--flame-opacity) * 1.08);
+    transform: translate3d(3px, -11px, 0) rotate(calc(var(--flame-angle) + 0.6deg)) scale(calc(var(--flame-scale-x) + 0.015), calc(var(--flame-scale-y) + 0.04));
+  }
+}
+
+@keyframes redline-flame-core-flicker {
+  0%, 100% { opacity: 0.78; transform: scale(0.94, 1); }
+  36% { opacity: 1; transform: scale(1.08, 1.14); }
+  68% { opacity: 0.84; transform: scale(0.97, 0.92); }
+}
+
+@keyframes redline-flame-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 36%, 0) rotate(var(--flame-angle)) scale(var(--flame-scale-x), 0.18);
+  }
+  54% {
+    opacity: calc(var(--flame-opacity) * 1.12);
+    transform: translate3d(0, -5%, 0) rotate(var(--flame-angle)) scale(var(--flame-scale-x), calc(var(--flame-scale-y) + 0.1));
+  }
+  100% {
+    opacity: var(--flame-opacity);
+    transform: translate3d(0, 0, 0) rotate(var(--flame-angle)) scale(var(--flame-scale-x), var(--flame-scale-y));
+  }
+}
+
+@keyframes redline-heat-pulse {
+  0% { opacity: 0.7; }
+  55% { opacity: 0.86; }
+  100% { opacity: 0.62; }
+}
+
+@keyframes redline-heat-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 22%, 0) rotate(var(--heat-rotate)) scale(calc(var(--heat-scale) * 0.82), 0.62);
+  }
+  100% {
+    opacity: 0.7;
+    transform: rotate(var(--heat-rotate)) scale(var(--heat-scale));
+  }
+}
+
+@keyframes redline-horizon-breathe {
+  0%, 100% { opacity: 0.5; }
+  43% { opacity: 0.69; }
+  71% { opacity: 0.57; }
+}
+
+@keyframes redline-ignition-flare {
+  0%, 8% {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0) scale(0.36, 0.12);
+  }
+  38% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1, 0.78);
+  }
+  64% { opacity: 0.42; }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -36px, 0) scale(1.18, 1.28);
+  }
+}
+
+@keyframes redline-ignition-lift {
+  0%, 10% {
+    opacity: 0;
+    transform: translate3d(0, 72px, 0) scale(0.64, 0.16);
+  }
+  42% { opacity: 0.88; }
+  68% { opacity: 0.3; }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -62px, 0) scale(1.1, 1.22);
+  }
+}
+
+@keyframes redline-ignition-line {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.02);
+  }
+  18% { opacity: 1; }
+  48% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  78% { opacity: 0.42; }
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes redline-smoke-drift {
+  0%, 100% { transform: translate3d(-2%, 2%, 0) scale(1); }
+  34% { transform: translate3d(1.5%, -2%, 0) scale(1.035, 1.06); }
+  68% { transform: translate3d(3%, -3.5%, 0) scale(1.06, 1.025); }
+}
+
+@keyframes redline-smoke-enter {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 8%, 0) scale(0.94, 0.86);
+  }
+  100% {
+    opacity: 0.68;
+    transform: none;
+  }
+}

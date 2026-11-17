@@ -1,0 +1,110 @@
+/* Redline: rising embers above the flame bed. */
+
+.redline-heat,
+.redline-flame,
+.redline-smoke,
+.redline-ember,
+.redline-bed {
+  position: absolute;
+  display: block;
+}
+
+.redline-ember {
+  --ember-size: 3px;
+  --ember-x: 0px;
+
+  bottom: -10px;
+  left: 10%;
+  width: var(--ember-size);
+  height: var(--ember-size);
+  border-radius: 50%;
+  opacity: 0.55;
+  background: rgb(var(--redline-core-rgb));
+  box-shadow:
+    0 0 4px rgb(var(--redline-core-rgb) / 92%),
+    0 0 11px rgb(var(--redline-hot-rgb) / 58%);
+  will-change: transform, opacity;
+}
+
+.redline-ember-a { left: 7%; --ember-size: 2px; --ember-x: 28px; }
+
+.redline-ember-b { left: 16%; --ember-size: 4px; --ember-x: -34px; }
+
+.redline-ember-c { left: 29%; --ember-size: 2px; --ember-x: 42px; }
+
+.redline-ember-d { left: 43%; --ember-size: 3px; --ember-x: -25px; }
+
+.redline-ember-e { left: 55%; --ember-size: 2px; --ember-x: 34px; }
+
+.redline-ember-f { left: 67%; --ember-size: 4px; --ember-x: -46px; }
+
+.redline-ember-g { left: 77%; --ember-size: 2px; --ember-x: 26px; }
+
+.redline-ember-h { left: 88%; --ember-size: 3px; --ember-x: -32px; }
+
+.redline-ember-i { left: 96%; --ember-size: 2px; --ember-x: -54px; }
+
+.redline-ember-j { left: 36%; --ember-size: 2px; --ember-x: 18px; }
+
+.redline-ember-k { left: 12%; --ember-size: 2px; --ember-x: 52px; }
+
+.redline-ember-l { left: 24%; --ember-size: 3px; --ember-x: -21px; }
+
+.redline-ember-m { left: 49%; --ember-size: 2px; --ember-x: -41px; }
+
+.redline-ember-n { left: 62%; --ember-size: 2px; --ember-x: 47px; }
+
+.redline-ember-o { left: 73%; --ember-size: 3px; --ember-x: 19px; }
+
+.redline-ember-p { left: 91%; --ember-size: 2px; --ember-x: -27px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .redline-ember {
+    animation: redline-ember-rise 11s linear infinite;
+  }
+  .redline-ember-a { animation-duration: 10.2s; animation-delay: 0.92s; }
+  .redline-ember-b { animation-duration: 13.8s; animation-delay: 1.18s; }
+  .redline-ember-c { animation-duration: 9.7s; animation-delay: 1.46s; }
+  .redline-ember-d { animation-duration: 15.1s; animation-delay: 1.05s; }
+  .redline-ember-e { animation-duration: 11.9s; animation-delay: 1.62s; }
+  .redline-ember-f { animation-duration: 14.4s; animation-delay: 1.28s; }
+  .redline-ember-g { animation-duration: 10.8s; animation-delay: 1.84s; }
+  .redline-ember-h { animation-duration: 12.6s; animation-delay: 1.12s; }
+  .redline-ember-i { animation-duration: 16.2s; animation-delay: 1.7s; }
+  .redline-ember-j { animation-duration: 9.2s; animation-delay: 2.05s; }
+  .redline-ember-k { animation-duration: 14.9s; animation-delay: 0.98s; }
+  .redline-ember-l { animation-duration: 10.5s; animation-delay: 1.54s; }
+  .redline-ember-m { animation-duration: 17.2s; animation-delay: 1.36s; }
+  .redline-ember-n { animation-duration: 12.1s; animation-delay: 1.9s; }
+  .redline-ember-o { animation-duration: 15.8s; animation-delay: 1.22s; }
+  .redline-ember-p { animation-duration: 11.3s; animation-delay: 1.76s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .redline-ember {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .redline-flame-b,
+  .redline-flame-d,
+  .redline-ember-c,
+  .redline-ember-e,
+  .redline-ember-j {
+    display: none;
+  }
+}
+
+@keyframes redline-ember-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 4vh, 0) scale(0.55);
+  }
+  10% { opacity: 0.76; }
+  62% { opacity: 0.46; }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--ember-x), -78vh, 0) scale(0.12);
+  }
+}

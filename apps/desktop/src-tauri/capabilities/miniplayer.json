@@ -1,0 +1,12 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "miniplayer-window",
+  "description": "Minimal permissions for the compact miniplayer window.",
+  "windows": ["miniplayer"],
+  "permissions": [
+    "core:event:allow-listen",
+    "core:event:allow-unlisten",
+    "core:window:default",
+    "core:window:allow-start-dragging"
+  ]
+}

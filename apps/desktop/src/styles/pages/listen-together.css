@@ -1,0 +1,435 @@
+/* Listen together: lobby (host / join), room card, people and settings. */
+
+.listen-together-page {
+  width: min(1120px, 100%);
+}
+
+/* ---------- Heading ---------- */
+.listen-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-5);
+  margin-bottom: var(--sp-8);
+}
+
+.listen-heading > div {
+  min-width: 200px;
+  flex: 1;
+}
+
+.listen-heading h1 {
+  font-size: var(--fs-h1);
+  letter-spacing: var(--tracking-title);
+}
+
+.listen-heading p {
+  margin-top: 4px;
+  color: var(--text-2);
+  font-size: var(--fs-md);
+}
+
+.listen-heading-icon,
+.listen-panel-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--r-lg);
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+.listen-heading-icon {
+  width: 56px;
+  height: 56px;
+}
+
+.listen-panel-icon {
+  width: 44px;
+  height: 44px;
+  margin-bottom: var(--sp-5);
+  border-radius: var(--r-md);
+}
+
+.listen-status {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-full);
+  background: var(--fill-2);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+}
+
+.listen-status > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.listen-status[data-state="online"] {
+  color: var(--success);
+}
+
+.listen-status[data-state="busy"] > span {
+  animation: listen-pulse 1.2s ease-in-out infinite;
+}
+
+.listen-feedback {
+  margin-bottom: var(--sp-5);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--warning) 12%, transparent);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Lobby and room ---------- */
+.listen-lobby {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-4);
+}
+
+/* In a room: the shared queue leads, code and people stay beside it. */
+.listen-room-layout {
+  display: grid;
+  grid-template-areas: "queue side";
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+  align-items: start;
+  gap: var(--sp-4);
+}
+
+.listen-room-layout > .shared-queue {
+  grid-area: queue;
+}
+
+.listen-room-side {
+  position: static;
+  display: grid;
+  min-width: 0;
+  grid-area: side;
+  gap: var(--sp-4);
+}
+
+.listen-panel {
+  min-width: 0;
+  padding: var(--sp-6);
+  border-radius: var(--r-xl);
+  background: var(--fill-1);
+}
+
+.listen-panel h2 {
+  margin-bottom: var(--sp-2);
+  font-size: var(--fs-h2);
+  letter-spacing: var(--tracking-tight);
+}
+
+.listen-panel > p {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+
+.listen-host-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.listen-host-panel > p {
+  margin-bottom: var(--sp-6);
+}
+
+.listen-host-panel > button {
+  margin-top: auto;
+}
+
+.listen-together-page input[type="text"],
+.listen-join-controls input {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 0 var(--sp-3);
+  border: 0;
+  background: var(--fill-2);
+  color: var(--text);
+  font-size: var(--fs-md);
+}
+
+.listen-together-page input:focus-visible {
+  background: var(--fill-3);
+}
+
+.listen-join-panel label {
+  display: block;
+  margin: var(--sp-5) 0 var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+
+.listen-join-controls {
+  display: flex;
+  align-items: stretch;
+  gap: var(--sp-2);
+}
+
+.listen-join-controls input {
+  font-family: var(--font-mono);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+/* ---------- Room card ---------- */
+.listen-together-code {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin: var(--sp-5) 0 var(--sp-1);
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--fill-2);
+}
+
+.listen-together-code small {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--text-2);
+  font-size: var(--fs-2xs);
+}
+
+.listen-together-code strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: var(--fw-bold);
+  letter-spacing: .14em;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+.listen-copy-feedback {
+  display: block;
+  min-height: 16px;
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+
+.listen-control {
+  display: grid;
+  gap: var(--sp-1);
+  padding-top: var(--sp-3);
+  box-shadow: inset 0 1px 0 var(--line);
+}
+
+.listen-control-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  cursor: pointer;
+}
+
+.listen-control-toggle strong,
+.listen-control-toggle small {
+  display: block;
+}
+
+.listen-control-toggle strong {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+}
+
+.listen-control-toggle small {
+  margin-top: 2px;
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  line-height: 1.45;
+}
+
+.listen-control-error {
+  color: var(--danger);
+  font-size: var(--fs-xs);
+}
+
+.listen-control-note {
+  display: flex;
+  gap: var(--sp-2);
+  padding-top: var(--sp-3);
+  box-shadow: inset 0 1px 0 var(--line);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+
+.listen-control-note svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.listen-control-note[data-allowed="true"] {
+  color: var(--text);
+}
+
+.listen-sync-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--sp-3);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+
+.listen-sync-line[data-in-sync="true"] svg {
+  color: var(--success);
+}
+
+.listen-sync-line[data-in-sync="false"] svg {
+  color: var(--warning);
+}
+
+/* ---------- People ---------- */
+.listen-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.listen-panel-heading h2 {
+  margin: 0;
+}
+
+.listen-count {
+  padding: 3px var(--sp-2);
+  border-radius: var(--r-full);
+  background: var(--fill-2);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.listen-together-people {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.listen-together-people li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) 0;
+}
+
+.listen-together-people li[data-connected="false"] {
+  opacity: .55;
+}
+
+.listen-avatar {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--fill-2);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+}
+
+.listen-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.listen-person-copy {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 1px;
+}
+
+.listen-person-copy strong {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  overflow-wrap: anywhere;
+}
+
+.listen-person-name {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 6px;
+}
+
+.listen-person-copy small {
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+
+.listen-person-badge {
+  padding: 2px var(--sp-2);
+  border-radius: var(--r-full);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+}
+
+.listen-leave {
+  margin-top: var(--sp-5);
+}
+
+@keyframes listen-pulse {
+  50% {
+    opacity: .3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .listen-status[data-state="busy"] > span {
+    animation: none;
+  }
+}
+
+@media (max-width: 980px) {
+  .listen-room-layout {
+    grid-template-areas: "side" "queue";
+    grid-template-columns: 1fr;
+  }
+
+  .listen-room-side {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .listen-lobby {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 380px) {
+  .listen-join-controls {
+    flex-direction: column;
+  }
+}
+
+/* Friends to invite straight from the lobby; inviting opens a room. */
+.listen-lobby + .friends-room-invite {
+  margin-top: var(--sp-5);
+}

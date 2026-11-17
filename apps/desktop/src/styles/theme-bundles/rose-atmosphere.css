@@ -1,0 +1,161 @@
+/* Rose Nocturne: velvet, lamp light and drifting motes. Anchored under the content canvas by shell/atmosphere.css. */
+
+:root[data-theme="luft.rose"] {
+  --rose-champagne-rgb: 230 196 168;
+  --rose-pearl-rgb: 244 214 224;
+  --rose-powder-rgb: 227 163 184;
+  --rose-wine-rgb: 122 49 72;
+}
+
+.rose-chamber {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.rose-velvet {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 88% 72% at 50% 38%, transparent 36%, rgb(6 2 5 / 58%) 100%),
+    linear-gradient(180deg, transparent 0%, rgb(8 3 7 / 32%) 100%);
+}
+
+.rose-lamp {
+  position: absolute;
+  top: -22%;
+  right: -12%;
+  width: 58%;
+  height: 64%;
+  background:
+    radial-gradient(ellipse 42% 36% at 58% 32%, rgb(var(--rose-pearl-rgb) / 22%), transparent 58%),
+    radial-gradient(ellipse 28% 22% at 66% 26%, rgb(var(--rose-champagne-rgb) / 16%), transparent 54%),
+    radial-gradient(ellipse 70% 58% at 78% 12%, rgb(var(--rose-wine-rgb) / 26%), transparent 68%);
+  filter: blur(8px);
+  opacity: 0.9;
+  animation: rose-lamp-breathe calc(13s * var(--motion-scale, 1)) ease-in-out infinite;
+}
+
+.rose-silk {
+  position: absolute;
+  inset: -34% -22%;
+  background:
+    linear-gradient(118deg, transparent 16%, rgb(var(--rose-powder-rgb) / 8%) 41%, transparent 57%),
+    linear-gradient(32deg, transparent 38%, rgb(var(--rose-champagne-rgb) / 6%) 51%, transparent 64%);
+  filter: blur(34px);
+  opacity: 0.85;
+  animation: rose-silk-drift calc(48s * var(--motion-scale, 1)) ease-in-out infinite alternate;
+}
+
+.rose-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image:
+    repeating-radial-gradient(circle at 12% 18%, rgb(255 236 244 / 70%) 0 0.6px, transparent 1.1px 3.4px),
+    repeating-radial-gradient(circle at 78% 64%, rgb(230 196 168 / 50%) 0 0.5px, transparent 1px 4.2px);
+  background-size: 180px 180px, 240px 240px;
+}
+
+.rose-mote {
+  --rose-mote-scale: 1;
+  position: absolute;
+  width: 8px;
+  height: 5px;
+  border-radius: 70% 40% 65% 45%;
+  background:
+    radial-gradient(circle at 34% 30%, #fffafb, rgb(var(--rose-pearl-rgb) / 70%) 38%, transparent 72%);
+  opacity: 0.42;
+  filter: blur(0.35px);
+  animation: rose-mote-drift calc(32s * var(--motion-scale, 1)) ease-in-out infinite;
+}
+
+.rose-mote-a { top: 14%; left: 18%; animation-delay: -2s; --rose-mote-scale: 0.7; }
+
+.rose-mote-b { top: 22%; left: 72%; animation-delay: -6s; width: 10px; height: 6px; }
+
+.rose-mote-c { top: 38%; left: 8%; animation-delay: -11s; opacity: 0.28; }
+
+.rose-mote-d { top: 46%; left: 58%; animation-delay: -4s; background: radial-gradient(circle at 34% 30%, #fff6ee, rgb(var(--rose-champagne-rgb) / 68%) 40%, transparent 72%); }
+
+.rose-mote-e { top: 62%; left: 26%; animation-delay: -15s; --rose-mote-scale: 0.55; }
+
+.rose-mote-f { top: 71%; left: 81%; animation-delay: -8s; width: 11px; height: 6px; }
+
+.rose-mote-g { top: 18%; left: 44%; animation-delay: -19s; opacity: 0.32; }
+
+.rose-mote-h { top: 84%; left: 12%; animation-delay: -1s; background: radial-gradient(circle at 34% 30%, #fff6ee, rgb(var(--rose-champagne-rgb) / 60%) 40%, transparent 72%); }
+
+.rose-mote-i { top: 9%; left: 88%; animation-delay: -13s; --rose-mote-scale: 0.8; }
+
+.rose-mote-j { top: 54%; left: 91%; animation-delay: -21s; opacity: 0.26; }
+
+.rose-mote-k { top: 77%; left: 48%; animation-delay: -7s; width: 9px; height: 5px; }
+
+.rose-mote-l { top: 33%; left: 36%; animation-delay: -17s; --rose-mote-scale: 0.62; }
+
+:root[data-theme="luft.rose"] .app-frame[data-theme-art="lyrics"] .rose-chamber,
+:root[data-theme="luft.rose"] .app-frame[data-theme-art="none"] .rose-chamber {
+  opacity: 0.48;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rose-chamber {
+    animation: rose-chamber-enter 1.4s ease-out;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rose-lamp,
+  .rose-silk,
+  .rose-mote,
+  .rose-chamber {
+    animation: none;
+  }
+  .rose-lamp { opacity: 0.88; }
+  .rose-silk { opacity: 0.7; }
+  .rose-mote { opacity: 0.34; transform: scale(var(--rose-mote-scale, 1)); }
+}
+
+@media (max-width: 1120px) {
+  :root[data-theme="luft.rose"] .rose-silk {
+    opacity: 0.55;
+  }
+}
+
+@keyframes rose-chamber-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes rose-lamp-breathe {
+  0%,
+  100% { opacity: 0.78; }
+  50% { opacity: 1; }
+}
+
+@keyframes rose-mote-drift {
+  0%,
+  100% {
+    opacity: 0.22;
+    transform: translate3d(0, 0, 0) scale(var(--rose-mote-scale));
+  }
+
+  40% {
+    opacity: 0.55;
+    transform: translate3d(8px, -14px, 0) scale(var(--rose-mote-scale));
+  }
+
+  70% {
+    opacity: 0.34;
+    transform: translate3d(-6px, -8px, 0) scale(var(--rose-mote-scale));
+  }
+}
+
+@keyframes rose-silk-drift {
+  from { transform: translate3d(-2%, 1%, 0) rotate(-1.4deg); }
+  to { transform: translate3d(3%, -2%, 0) rotate(1.8deg); }
+}

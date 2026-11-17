@@ -1,0 +1,84 @@
+@import "./abyss-atmosphere.css";
+
+/*
+ * Theme „Tiefsee“: deep water with bioluminescence. Petrol black, a cyan
+ * glow for actions and a magenta second light used sparingly. Surfaces are
+ * dark water glass; what is active glows a little from within.
+ */
+
+:root[data-theme="luft.abyss"] {
+  color-scheme: dark;
+  --abyss-cyan: #5ce8da;
+  --abyss-magenta: #e46bff;
+  --abyss-foam: #c8fff8;
+
+  --canvas: #04131a;
+  --raised: #0a1f28;
+  --sidebar-bg: var(--color-bg);
+  --on-accent: #022024;
+  --accent-text: var(--abyss-cyan);
+  --accent-soft: color-mix(in srgb, var(--abyss-cyan) 14%, transparent);
+  --text-3: #4f6f74;
+
+  --fill-1: color-mix(in srgb, var(--abyss-cyan) 5%, transparent);
+  --fill-2: color-mix(in srgb, var(--abyss-cyan) 9%, transparent);
+  --fill-3: color-mix(in srgb, var(--abyss-cyan) 14%, transparent);
+  --line: color-mix(in srgb, var(--abyss-cyan) 10%, transparent);
+  --line-strong: color-mix(in srgb, var(--abyss-cyan) 19%, transparent);
+  --canvas-edge: color-mix(in srgb, var(--abyss-cyan) 10%, transparent);
+
+  --shadow-1: 0 10px 28px rgb(0 6 10 / 45%);
+  --shadow-2: 0 24px 64px rgb(0 6 10 / 60%);
+  --shadow-cover: 0 14px 36px rgb(0 8 12 / 55%);
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-cover: 10px;
+  --tracking-caps: .14em;
+}
+
+/* Calm, airy headings, like light in water. */
+:root[data-theme="luft.abyss"] :is(.page-heading h1, .home-welcome h1, .entity-hero-copy h1, .home-feature-copy h2) {
+  font-weight: 380;
+  letter-spacing: -.024em;
+  text-shadow: 0 0 28px color-mix(in srgb, var(--abyss-cyan) 22%, transparent);
+}
+
+/* Actions glow from within. */
+:root[data-theme="luft.abyss"] .primary-button {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--abyss-cyan) 88%, #fff), var(--abyss-cyan));
+  box-shadow: 0 0 18px -4px color-mix(in srgb, var(--abyss-cyan) 70%, transparent), inset 0 1px 0 rgb(255 255 255 / 35%);
+}
+:root[data-theme="luft.abyss"] .primary-button:hover:not(:disabled) {
+  box-shadow: 0 0 26px -2px color-mix(in srgb, var(--abyss-cyan) 85%, transparent), inset 0 1px 0 rgb(255 255 255 / 45%);
+}
+
+/* Tinted water glass. No backdrop blur: over a moving scene it would
+   re-blur every frame. */
+:root[data-theme="luft.abyss"] :is(.friends-panel, .friends-hero) {
+  background: color-mix(in srgb, #0a2430 72%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--abyss-cyan) 10%, transparent), inset 0 0 0 1px var(--line);
+}
+
+/* What is new or playing: the magenta light. */
+:root[data-theme="luft.abyss"] .nav-fresh-dot {
+  background: var(--abyss-magenta);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--abyss-magenta) 75%, transparent);
+}
+:root[data-theme="luft.abyss"] :is(.home-live-bars span, .playerbar-collapsed-state.is-playing) {
+  background: var(--abyss-magenta);
+}
+
+:root[data-theme="luft.abyss"] .smooth-progress-fill {
+  background: linear-gradient(90deg, var(--abyss-cyan), color-mix(in srgb, var(--abyss-cyan) 60%, var(--abyss-foam)));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--abyss-cyan) 60%, transparent);
+}
+:root[data-theme="luft.abyss"] .smooth-progress:hover .smooth-progress-fill {
+  background: linear-gradient(90deg, var(--abyss-magenta), var(--abyss-cyan));
+}
+
+:root[data-theme="luft.abyss"] .volume-slider-control:hover input[type="range"]::-webkit-slider-runnable-track {
+  background:
+    linear-gradient(90deg, var(--abyss-magenta), var(--abyss-cyan)) 0 0 / var(--volume) 100% no-repeat,
+    var(--fill-3);
+}

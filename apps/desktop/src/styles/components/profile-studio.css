@@ -1,0 +1,151 @@
+/* Profile identity: the artwork owns the top, while text rests on a stable surface. */
+.friend-profile:not([data-editing]), .profile-preview-sheet {
+  background:
+    radial-gradient(ellipse 100% 45% at 50% 10%, color-mix(in srgb, var(--profile-accent, var(--accent)) 7%, transparent), transparent),
+    var(--raised);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px color-mix(in srgb, var(--profile-accent, var(--accent)) 22%, var(--line));
+}
+.friend-profile:not([data-editing]) { width: min(560px, 100%); }
+.friend-profile-cover::after, .profile-preview-cover::after {
+  height: var(--sp-12);
+  background: linear-gradient(transparent, var(--raised));
+}
+.friend-profile-hero h2 { max-width: 100%; font-size: clamp(var(--fs-h1), 3vw, calc(var(--fs-h2) * 1.8)); letter-spacing: var(--tracking-title); }
+.friend-profile-bio { color: var(--text-2); max-width: 36ch; }
+.friend-profile-glow {
+  background:
+    repeating-radial-gradient(ellipse at 85% -20%, transparent 0 13%, color-mix(in srgb, var(--profile-accent, var(--role-a, var(--accent))) 12%, transparent) 13.2% 13.4%, transparent 13.6% 21%),
+    radial-gradient(ellipse at 80% 0%, color-mix(in srgb, var(--profile-accent, var(--role-a, var(--accent))) 32%, transparent), transparent 70%),
+    var(--fill-1);
+}
+.profile-name[data-gradient] {
+  background-image: linear-gradient(110deg, var(--name-from), var(--name-to, var(--name-auto)) 38%, var(--name-from) 75%);
+  background-size: 240% 100%;
+  animation-duration: 16s;
+}
+.friend-profile:not([data-editing]) .friend-profile-hero > .profile-name[data-gradient] {
+  animation: profile-part-in var(--duration-slow) var(--ease-out) both, profile-name-flow 16s linear infinite;
+}
+.profile-preview-cover { height: calc(var(--sp-16) * 2); }
+.profile-preview-body { margin-top: calc(-1 * var(--sp-10)); gap: var(--sp-3); padding: 0 var(--sp-5) var(--sp-5); }
+.profile-preview-body > .friends-avatar-presence { margin-bottom: var(--sp-1); }
+.profile-preview-body > strong { font-size: var(--fs-h2); letter-spacing: var(--tracking-tight); }
+.profile-preview-body > p { color: var(--text-2); }
+.profile-preview-sheet { box-shadow: var(--shadow-1), inset 0 0 0 1px var(--line-strong); }
+.profile-preview-card .friends-card-banner { height: calc(var(--sp-16) * 2); }
+
+/* Editor: a fixed preview, one field scrollport and permanently reachable actions. */
+.friend-profile[data-wide] { width: min(960px, 100%); }
+.friend-profile[data-editing] { height: min(760px, 100%); max-height: 100%; overflow: hidden; }
+.friend-profile[data-editing] > .own-profile-editor {
+  height: 100%; min-height: 0; padding: var(--sp-6); gap: var(--sp-5);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+.own-profile-editor-heading { padding-right: var(--sp-10); }
+.own-profile-editor-heading > span {
+  display: block; margin-bottom: var(--sp-1); color: var(--text-2);
+  font-size: var(--fs-2xs); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-caps); text-transform: uppercase;
+}
+.own-profile-editor-heading > h2 { font-size: var(--fs-h2); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-tight); }
+.own-profile-editor-grid { min-height: 0; grid-template-columns: minmax(240px, .8fr) minmax(0, 1.35fr); gap: var(--sp-8); }
+.own-profile-preview { position: static; min-width: 0; gap: var(--sp-3); }
+.own-profile-preview-label { display: flex; justify-content: center; align-items: center; gap: var(--sp-2); color: var(--text-2); font-size: var(--fs-2xs); }
+.own-profile-preview-switch { padding: var(--sp-1); border: 1px solid var(--line); }
+.own-profile-preview-switch > button { min-height: var(--sp-8); }
+.own-profile-preview-switch > button[aria-selected="true"] { background: var(--raised); box-shadow: var(--shadow-1); }
+.own-profile-fields {
+  height: 100%; min-height: 0; overflow: auto; align-content: start;
+  padding-right: var(--sp-2); scrollbar-gutter: stable; overscroll-behavior: contain;
+}
+.own-profile-sections { position: sticky; z-index: 3; top: 0; gap: var(--sp-1); margin: 0; padding: 0 0 var(--sp-3); background: var(--raised); }
+.own-profile-sections > button { display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2); padding-inline: var(--sp-3); border-radius: var(--r-sm); }
+.own-profile-sections > button[aria-selected="true"] { background: color-mix(in srgb, var(--profile-accent, var(--accent)) 10%, var(--fill-2)); }
+.own-profile-fields > fieldset { padding: var(--sp-4); border-radius: var(--r-lg); background: var(--fill-1); }
+.own-profile-fields legend { color: var(--text); letter-spacing: normal; text-transform: none; font-size: var(--fs-xs); }
+.own-profile-fields .own-profile-avatar { gap: var(--sp-4); flex-wrap: wrap; padding: var(--sp-2) 0; }
+.friend-profile[data-editing] .own-profile-editor-actions {
+  position: static; margin: 0 calc(-1 * var(--sp-6)) calc(-1 * var(--sp-6));
+  padding: var(--sp-4) var(--sp-6); background: var(--raised); backdrop-filter: none;
+}
+.own-profile-editor-actions .primary-button { background: var(--profile-accent, var(--accent)); color: var(--profile-on-accent); }
+.own-profile-editor-actions > small { min-width: 0; }
+
+/* A material library, with quiet borders and an explicit selected mark. */
+.look-sections { gap: var(--sp-3); }
+.look-section { background: transparent; box-shadow: inset 0 0 0 1px var(--line-strong); overflow: hidden; }
+.look-section[data-open] { background: var(--fill-1); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--profile-accent, var(--accent)) 35%, var(--line)); }
+.look-section-head { min-height: var(--sp-16); padding: var(--sp-3) var(--sp-4); }
+.look-section-icon { display: grid; place-items: center; width: var(--sp-8); height: var(--sp-8); flex: 0 0 auto; border-radius: var(--r-sm); background: var(--fill-1); color: var(--text-2); }
+.look-section[data-open] .look-section-icon { color: color-mix(in srgb, var(--profile-accent, var(--accent)) 55%, var(--text)); }
+.look-section-preview { max-width: 30%; margin-inline: var(--sp-2); }
+.look-section-scene { position: relative; width: var(--sp-16); height: var(--sp-8); overflow: hidden; isolation: isolate; border-radius: var(--r-xs); }
+.look-section-body { padding-top: var(--sp-2); gap: var(--sp-4); }
+.look-hint { color: var(--text-2); font-size: var(--fs-xs); line-height: 1.5; }
+.look-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.look-tiles[data-kind="frame"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.look-tile-stage { height: var(--sp-16); }
+.look-tiles[data-kind="frame"] .look-tile-stage { height: calc(var(--sp-12) * 2); }
+.own-profile-banners { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.own-profile-banner-swatch { position: relative; inset: auto; width: 100%; aspect-ratio: 3 / 1; border-radius: var(--r-sm); }
+.look-tiles > .look-choice, .own-profile-banners > .look-choice {
+  position: relative; display: grid; min-width: 0; gap: var(--sp-2); padding: var(--sp-2);
+  border-radius: var(--r-md); background: var(--fill-1); box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--text-2); text-align: left;
+}
+.look-choice-label { padding-inline: var(--sp-1); font-size: var(--fs-xs); font-weight: var(--fw-medium); overflow-wrap: anywhere; }
+.look-tiles > .look-choice[aria-checked="true"], .own-profile-banners > .look-choice[aria-checked="true"] {
+  background: color-mix(in srgb, var(--profile-accent, var(--accent)) 10%, var(--fill-1));
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--profile-accent, var(--accent)) 65%, var(--text)); color: var(--text);
+}
+.look-choice-mark {
+  position: absolute; top: var(--sp-3); right: var(--sp-3); display: grid; place-items: center;
+  width: var(--sp-5); height: var(--sp-5); border-radius: 50%; background: var(--profile-accent, var(--accent)); color: var(--profile-on-accent); box-shadow: var(--shadow-1);
+}
+.look-choice[data-locked] .look-choice-mark { background: var(--raised); color: var(--text-2); }
+/* Pause continuous artwork only, never entrance animations or uploaded stills. */
+.look-choice:not([aria-checked="true"]):not(:hover):not(:focus-visible) .banner-effect > i,
+.look-choice:not([aria-checked="true"]):not(:hover):not(:focus-visible) .banner-effect > i::after { animation-play-state: paused; }
+.look-choice[data-locked] { opacity: .6; }
+.look-choice:focus-visible, .look-color-presets > button:focus-visible, .look-gradients > button:focus-visible { outline: 2px solid var(--text); outline-offset: var(--sp-1); }
+
+/* Colours are named and usable without opening the full picker. */
+.look-color-presets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-2); }
+.look-color-presets > button { display: grid; place-items: center; gap: var(--sp-2); padding: var(--sp-3) var(--sp-1); border-radius: var(--r-md); background: var(--fill-1); box-shadow: inset 0 0 0 1px var(--line); }
+.look-color-presets > button > i { display: block; width: var(--sp-6); height: var(--sp-6); border-radius: 50%; background: var(--swatch); box-shadow: inset 0 0 0 1px var(--line-strong); }
+.look-color-presets > button > span { font-size: var(--fs-2xs); color: var(--text-2); }
+.look-color-presets > button[aria-checked="true"] { box-shadow: inset 0 0 0 1.5px var(--swatch); background: color-mix(in srgb, var(--swatch) 10%, var(--fill-1)); }
+.look-color-presets > button[aria-checked="true"] > span { color: var(--text); }
+.look-color-custom { display: flex; align-items: center; gap: var(--sp-3); padding-top: var(--sp-1); }
+.look-color-custom .look-swatch-own { position: relative; display: grid; place-items: center; width: var(--sp-8); height: var(--sp-8); border-radius: 50%; }
+.look-color-custom .look-swatch-own > i { width: var(--sp-6); height: var(--sp-6); border-radius: inherit; }
+.look-color-custom code { margin-left: var(--sp-2); font-size: var(--fs-2xs); color: var(--text-2); }
+.look-gradients { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-2); }
+.look-gradients > button { width: auto; height: auto; min-width: 0; gap: var(--sp-2); padding: var(--sp-2); border-radius: var(--r-sm); background: var(--fill-1); color: var(--text-2); }
+.look-gradients > button > i { height: var(--sp-4); border-radius: var(--r-full); }
+.look-gradients > button > span { width: 100%; overflow: hidden; text-overflow: ellipsis; font-size: var(--fs-2xs); white-space: nowrap; }
+.look-gradients > button[aria-checked="true"] { box-shadow: inset 0 0 0 1px var(--text-2); color: var(--text); }
+.look-gradient-ends { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; }
+.look-gradient-end { border-radius: var(--r-sm); padding: var(--sp-2); }
+.look-gradient-end > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.look-gradient-swap { background: var(--fill-2); }
+
+@media (max-width: 760px) {
+  .friend-profile[data-editing] > .own-profile-editor { gap: var(--sp-3); }
+  .own-profile-editor-grid { grid-template-columns: 1fr; overflow: auto; gap: var(--sp-5); padding-right: var(--sp-2); overscroll-behavior: contain; }
+  .own-profile-preview { width: min(100%, 340px); justify-self: center; }
+  .own-profile-fields { height: auto; overflow: visible; padding-right: 0; }
+  .own-profile-preview .profile-preview-cover { height: var(--sp-16); }
+  .own-profile-preview .profile-preview-body { margin-top: calc(-1 * var(--sp-8)); gap: var(--sp-2); }
+  .own-profile-preview .profile-preview-body .listen-avatar { width: var(--sp-12); height: var(--sp-12); }
+  .own-profile-sections > button { flex: 1; padding-inline: var(--sp-2); gap: var(--sp-1); font-size: var(--fs-xs); }
+}
+@media (max-width: 420px) {
+  .friend-profile[data-editing] > .own-profile-editor { padding: var(--sp-4); }
+  .friend-profile[data-editing] .own-profile-editor-actions { margin-inline: calc(-1 * var(--sp-4)); margin-bottom: calc(-1 * var(--sp-4)); padding: var(--sp-3) var(--sp-4); }
+  .own-profile-editor-actions { flex-wrap: wrap; }
+  .own-profile-editor-actions > small { flex: 1 1 100%; }
+  .look-section-preview { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .friend-profile:not([data-editing]) .friend-profile-hero > .profile-name[data-gradient] { animation: none; }
+}

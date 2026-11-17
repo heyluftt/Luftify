@@ -1,0 +1,306 @@
+/* Cover view composition. Shared responsive and fullscreen rules remain in lyrics.css. */
+
+.lyrics-stage.lyrics-cover-stage {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "cover";
+}
+
+.lyrics-cover-view {
+  grid-area: cover;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  place-items: center;
+  /* Open like the lyrics view: the cover glow fades into the page instead
+     of ending at a card edge. */
+  border-radius: var(--r-xl);
+}
+
+.lyrics-cover-view.is-empty .lyrics-cover-title {
+  font-size: clamp(28px, 3.4vw, 44px);
+  font-weight: 680;
+  letter-spacing: -.04em;
+}
+
+/* A wide, very soft wash of the cover colours. No clipping box: the mask
+   fades to nothing well inside the element, so there is never an edge. */
+.lyrics-cover-backdrop {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  pointer-events: none;
+}
+
+.lyrics-cover-backdrop-art {
+  position: absolute;
+  inset: 0;
+  opacity: .16;
+  filter: blur(80px) saturate(1.1);
+  mask-image: radial-gradient(ellipse 46% 56% at 38% 50%, #000 0 30%, transparent 72%);
+}
+
+.lyrics-cover-backdrop-art .album-art.feature {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  background-position: center;
+  background-size: cover;
+  box-shadow: none;
+}
+
+.lyrics-cover-content {
+  display: grid;
+  position: relative;
+  width: min(1200px, calc(100% - clamp(52px, 7vw, 118px)));
+  min-width: 0;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(40px, 5vw, 80px);
+  animation: lyrics-cover-composition-in 540ms var(--ease-out) both;
+}
+
+.lyrics-cover-visual {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-width: 0;
+  place-items: center;
+}
+
+.lyrics-cover-visual::after {
+  position: absolute;
+  z-index: -1;
+  right: 9%;
+  bottom: -30px;
+  left: 9%;
+  height: 34px;
+  content: "";
+  border-radius: 50%;
+  background: color-mix(in srgb, #000 52%, var(--color-primary) 9%);
+  filter: blur(22px);
+  opacity: .36;
+  transform: scaleX(.86);
+}
+
+.lyrics-cover-artwork {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  width: min(100%, 58dvh, 620px);
+  place-items: center;
+  animation: lyrics-cover-artwork-in 620ms var(--ease-out) both;
+}
+
+.lyrics-cover-artwork::before {
+  display: none;
+}
+
+.lyrics-cover-artwork::after {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--color-text) 8%, transparent);
+  border-radius: clamp(20px, 1.8vw, 28px);
+  background: none;
+  box-shadow:
+    0 2px 8px rgb(0 0 0 / .18),
+    0 16px 40px rgb(0 0 0 / .16);
+}
+
+.lyrics-cover-artwork .album-art.feature {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 1;
+  margin: 0;
+  border-radius: clamp(20px, 1.8vw, 28px);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #fff 8%, transparent),
+    0 26px 78px color-mix(in srgb, #000 28%, transparent);
+}
+
+.lyrics-cover-artwork.has-song-video {
+  width: auto;
+  max-width: 100%;
+  height: min(70dvh, 760px);
+  aspect-ratio: 9 / 16;
+}
+
+/* One shared overlay edge keeps cover and Canvas aligned without nested frames. */
+.lyrics-page .lyrics-cover-artwork > .album-art.feature {
+  border: 0;
+  transform: none;
+  box-shadow: 0 24px 64px color-mix(in srgb, #000 28%, transparent);
+}
+
+.lyrics-cover-artwork.has-song-video > .album-art.feature {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  background-position: center;
+  background-size: cover;
+  opacity: 0;
+}
+
+.lyrics-song-video {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: clamp(20px, 1.8vw, 28px);
+  background: #050505;
+  box-shadow: 0 24px 64px color-mix(in srgb, #000 28%, transparent);
+  object-fit: cover;
+}
+
+.lyrics-cover-artwork .lyrics-artwork-glow {
+  opacity: .4;
+  filter: blur(52px) saturate(1.1);
+  transform: scale(1.2);
+}
+
+.lyrics-cover-artwork .lyrics-artwork-glow .album-art.feature,
+.lyrics-cover-artwork
+  .lyrics-artwork-ambient
+  .album-art.feature {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: inherit;
+  box-shadow: none;
+}
+
+.lyrics-cover-copy {
+  position: relative;
+  min-width: 0;
+  max-width: 660px;
+  padding: clamp(18px, 2.5vh, 30px) 0;
+  border: 0;
+  background: none;
+  animation: lyrics-cover-copy-in 620ms 45ms var(--ease-out) both;
+}
+
+.lyrics-cover-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: color-mix(in srgb, var(--color-text) 48%, var(--color-muted));
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.lyrics-cover-status-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-muted) 68%, transparent);
+}
+
+.lyrics-cover-status-dot.is-playing {
+  background: var(--color-success);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-success) 10%, transparent);
+}
+
+.lyrics-cover-title {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0 0 -.12em;
+  padding: 0 0 .12em;
+  color: var(--color-text);
+  max-width: min(28ch, 100%);
+  font-size: calc(clamp(36px, 3.8vw, 64px) * var(--title-fit, 1));
+  font-weight: 680;
+  line-height: 1.1;
+  letter-spacing: -.035em;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
+  text-wrap: balance;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.lyrics-cover-artists {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  color: color-mix(in srgb, var(--color-text) 66%, var(--color-muted));
+  font-size: clamp(16px, 1.45vw, 22px);
+  font-weight: 500;
+  line-height: 1.5;
+  text-wrap: pretty;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.lyrics-cover-meta {
+  display: grid;
+  gap: 9px;
+  margin-top: clamp(16px, 2vh, 22px);
+}
+
+.lyrics-cover-album {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: color-mix(in srgb, var(--color-text) 39%, var(--color-muted));
+  font-size: 12px;
+  line-height: 1.4;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color var(--duration-fast) ease;
+}
+
+.lyrics-cover-album::before {
+  width: 20px;
+  height: 1px;
+  flex: 0 0 auto;
+  background: color-mix(in srgb, var(--color-primary) 44%, var(--color-muted));
+  content: "";
+  transform-origin: left center;
+  transition: background var(--duration-fast) ease, transform var(--duration-fast) var(--ease-out);
+}
+
+.lyrics-cover-album:hover,
+.lyrics-cover-album:focus-visible {
+  color: color-mix(in srgb, var(--color-text) 76%, var(--color-primary));
+}
+
+.lyrics-cover-album:hover::before,
+.lyrics-cover-album:focus-visible::before {
+  background: var(--color-primary);
+  transform: scaleX(1.22);
+}
+
+@keyframes lyrics-cover-composition-in {
+  from { opacity: .66; transform: translateY(10px) scale(.992); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes lyrics-cover-artwork-in {
+  from { opacity: .72; transform: translate3d(-10px, 8px, 0) scale(.985); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes lyrics-cover-copy-in {
+  from { opacity: 0; transform: translate3d(14px, 0, 0); }
+  to { opacity: 1; transform: none; }
+}

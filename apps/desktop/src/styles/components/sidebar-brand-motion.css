@@ -1,0 +1,46 @@
+/* No timers or frame loops. Hidden theme variants do not render animations. */
+.brand-track-satellite {
+  animation: brand-track-travel var(--brand-lap) linear infinite;
+  animation-delay: var(--brand-phase);
+}
+.brand-track-trail {
+  animation: brand-track-light var(--brand-lap) linear infinite;
+  animation-delay: var(--brand-phase);
+}
+.brand-motion { transform-box: view-box; transform-origin: 32px 32px; }
+.brand-light-iris { animation: brand-iris-turn calc(40s * var(--motion-scale, 1)) linear infinite; }
+.brand-atelier-needle { animation: brand-needle-settle calc(12s * var(--motion-scale, 1)) ease-in-out infinite; }
+.brand-polaris-star { animation: brand-star-breathe calc(6s * var(--motion-scale, 1)) ease-in-out infinite; }
+.brand-prisma-crystal { animation: brand-crystal-tilt calc(14s * var(--motion-scale, 1)) ease-in-out infinite; }
+.brand-calamus-nib { animation: brand-nib-poise calc(9s * var(--motion-scale, 1)) ease-in-out infinite; }
+.brand-redline-flame { transform-origin: 32px 47px; animation: brand-flame-live calc(4s * var(--motion-scale, 1)) ease-in-out infinite; }
+.brand-redline-ember { animation: brand-ember-rise calc(4s * var(--motion-scale, 1)) ease-out infinite; }
+.brand-abyss-jelly { animation: brand-jelly-float calc(8s * var(--motion-scale, 1)) ease-in-out infinite; }
+.brand-abyss-bell { transform-origin: 32px 31px; animation: brand-jelly-pulse calc(4s * var(--motion-scale, 1)) ease-in-out infinite; }
+.brand-abyss-tentacles { transform-origin: 32px 34px; animation: brand-tentacles-sway calc(4s * var(--motion-scale, 1)) ease-in-out infinite; }
+.brand-abyss-plankton { animation: brand-plankton-rise calc(11s * var(--motion-scale, 1)) linear infinite; }
+.brand-rose-bloom { animation: brand-rose-open calc(10s * var(--motion-scale, 1)) ease-in-out infinite; }
+
+@keyframes brand-track-travel { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+/* The eight-unit highlight ends exactly where the satellite is. */
+@keyframes brand-track-light { from { stroke-dashoffset: 8; } to { stroke-dashoffset: -92; } }
+@keyframes brand-iris-turn { to { transform: rotate(360deg); } }
+@keyframes brand-needle-settle { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(8deg); } }
+@keyframes brand-star-breathe { 0%, 100% { opacity: .72; transform: scale(.95); } 50% { opacity: 1; transform: scale(1.03); } }
+@keyframes brand-crystal-tilt { 0%, 100% { transform: rotate(-3deg) translateY(1px); } 50% { transform: rotate(3deg) translateY(-1px); } }
+@keyframes brand-nib-poise { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(4deg); } }
+@keyframes brand-flame-live { 0%, 100% { transform: scale(.97, 1); } 35% { transform: skewX(-3deg) scale(1.02, .96); } 70% { transform: skewX(2deg) scale(.96, 1.04); } }
+@keyframes brand-ember-rise { 0% { opacity: 0; transform: translate(0, 6px); } 25% { opacity: .8; } 100% { opacity: 0; transform: translate(-3px, -7px); } }
+@keyframes brand-jelly-float { 0%, 100% { transform: translateY(2px); } 50% { transform: translateY(-2px); } }
+@keyframes brand-jelly-pulse { 0%, 100% { transform: scale(1, 1); } 45% { transform: scale(.92, 1.07); } 70% { transform: scale(1.02, .96); } }
+@keyframes brand-tentacles-sway { 0%, 100% { transform: skewX(-4deg) scaleY(.98); } 50% { transform: skewX(4deg) scaleY(1.04); } }
+@keyframes brand-plankton-rise { 0% { opacity: 0; transform: translateY(5px); } 20%, 70% { opacity: .7; } 100% { opacity: 0; transform: translateY(-8px); } }
+@keyframes brand-rose-open { 0%, 100% { transform: rotate(-5deg) scale(.93); } 50% { transform: rotate(5deg) scale(1.03); } }
+
+:root[data-window-idle] .sidebar-brand-orbit *,
+.sidebar-brand-orbit[data-paused] * { animation-play-state: paused !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-brand-orbit * { animation: none !important; }
+  .brand-track-trail, .brand-redline-ember, .brand-abyss-plankton { display: none; }
+}

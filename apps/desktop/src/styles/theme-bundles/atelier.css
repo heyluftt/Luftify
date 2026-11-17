@@ -1,0 +1,22 @@
+/* Theme „Atelier“: palette on top of styles/ds/tokens.css. */
+
+:root[data-theme="luft.atelier"] {
+  color-scheme: light;
+  --canvas: #fffcf5;
+  --raised: #ffffff;
+  --sidebar-bg: var(--color-bg);
+  --on-accent: #ffffff;
+  --canvas-edge: color-mix(in srgb, #5a4a2e 9%, transparent);
+  --overlay: color-mix(in srgb, #2a2418 36%, transparent);
+  --shadow-1: 0 8px 24px color-mix(in srgb, #4a3a20 12%, transparent);
+  --shadow-2: 0 18px 48px color-mix(in srgb, #4a3a20 18%, transparent);
+  --shadow-cover: 0 10px 26px color-mix(in srgb, #4a3a20 18%, transparent);
+  --font-display: "Georgia", "Palatino Linotype", serif;
+  --r-md: 10px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+  --r-cover: 6px;
+  --color-success: #1f7a4d;
+  --color-warning: #8a6116;
+  --color-error: #b0352c;
+}

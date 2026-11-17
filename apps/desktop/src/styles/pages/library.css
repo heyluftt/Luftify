@@ -1,0 +1,313 @@
+/* Library page (all playlists) and liked songs. */
+
+.library-page-heading {
+  align-items: center;
+}
+
+.library-heading-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.library-refresh {
+  background: transparent;
+  color: var(--text-2);
+}
+
+.library-refresh:hover:not(:disabled) {
+  background: var(--fill-1);
+  color: var(--text);
+}
+
+.library-refresh .is-spinning {
+  animation: ds-spin 1s linear infinite;
+}
+
+.library-section.section-block {
+  margin-top: 0;
+}
+
+.library-section-header {
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.library-section-heading {
+  display: grid;
+  gap: 2px;
+}
+
+.library-section-heading p {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.library-section-side,
+.library-section-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+}
+
+.library-filter {
+  display: flex;
+  width: 220px;
+  height: 34px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px 0 10px;
+  border-radius: var(--r-full);
+  background: var(--fill-1);
+  color: var(--text-2);
+}
+
+.library-filter:focus-within {
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+.library-filter input {
+  min-width: 0;
+  flex: 1;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+.library-filter-clear {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text-2);
+}
+
+.library-filter-clear:hover {
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+.library-sort {
+  display: inline-flex;
+  height: 34px;
+  align-items: center;
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-full);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.library-sort:hover {
+  background: var(--fill-1);
+}
+
+.library-view-toggle {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--r-full);
+  background: var(--fill-1);
+}
+
+.library-view-toggle button {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: var(--r-full);
+  color: var(--text-2);
+}
+
+.library-view-toggle button:hover {
+  color: var(--text);
+}
+
+.library-view-toggle button[aria-pressed="true"] {
+  background: var(--fill-3);
+  color: var(--text);
+}
+
+/* Owner and folder chips. */
+.library-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
+}
+
+.library-chips button {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-full);
+  background: var(--fill-2);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.library-chips button:hover {
+  background: var(--fill-3);
+}
+
+.library-chips button.active {
+  background: var(--text);
+  color: var(--canvas);
+}
+
+.library-chips small {
+  font-size: var(--fs-2xs);
+  opacity: .65;
+}
+
+.library-empty {
+  display: flex;
+  min-height: 160px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+/* List view: cover | name | [folder] | last played | added | play. */
+.library-playlist-list {
+  --library-columns: 48px minmax(0, 2fr) minmax(0, 1fr) 120px;
+  display: grid;
+  gap: 2px;
+}
+
+.library-playlist-list.has-folders {
+  --library-columns: 48px minmax(0, 2fr) minmax(0, .8fr) minmax(0, 1fr) 120px;
+}
+
+.library-list-header {
+  display: grid;
+  grid-template-columns: var(--library-columns) 44px;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-1);
+  padding: 0 var(--sp-3) var(--sp-2);
+  border-bottom: 1px solid var(--line);
+  color: var(--text-2);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+}
+
+.library-list-header > :first-child {
+  grid-column: 1 / 3;
+}
+
+.library-playlist-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  align-items: center;
+  padding-right: var(--sp-3);
+  border-radius: var(--r-sm);
+}
+
+.library-playlist-row:hover,
+.library-playlist-row:focus-within {
+  background: var(--fill-1);
+}
+
+.library-row-open {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: var(--library-columns);
+  align-items: center;
+  gap: var(--sp-4);
+  padding: 6px var(--sp-3);
+  color: var(--text);
+  text-align: left;
+}
+
+.library-row-open > .album-art.small {
+  width: 48px;
+  height: 48px;
+}
+
+.library-liked-art {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: var(--r-xs);
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 45%, var(--canvas)));
+  color: var(--on-accent);
+}
+
+.library-row-title {
+  display: grid;
+  min-width: 0;
+}
+
+.library-row-title strong,
+.library-row-title small,
+.library-row-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.library-row-title strong {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+}
+
+.library-row-title small,
+.library-row-cell {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.library-card-play {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  opacity: 0;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.library-playlist-row:hover .library-card-play,
+.library-playlist-row:focus-within .library-card-play {
+  opacity: 1;
+}
+
+.library-card-play svg {
+  margin-left: 2px;
+}
+
+.library-load-more-row {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--sp-6);
+}
+
+/* Liked songs header tools. */
+.library-play-all {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.library-play-all:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent) 88%, var(--text));
+}

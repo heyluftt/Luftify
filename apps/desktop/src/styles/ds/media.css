@@ -1,0 +1,309 @@
+/* Covers, tiles and grids: the one way media is shown. */
+
+.album-art {
+  --cover-hue: 220;
+  position: relative;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border-radius: var(--r-cover);
+  /* A variable, so AlbumArt can lay the cover over it while it loads. */
+  --album-art-placeholder:
+    radial-gradient(circle at 70% 22%, hsl(var(--cover-hue) 55% 62% / .55), transparent 42%),
+    linear-gradient(150deg, hsl(var(--cover-hue) 34% 34%), hsl(calc(var(--cover-hue) + 40) 30% 14%));
+  background: var(--album-art-placeholder);
+  background-position: center;
+  background-size: cover;
+}
+
+.album-art::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #fff 7%, transparent);
+  content: "";
+  pointer-events: none;
+}
+
+.album-art.tiny {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-xs);
+}
+
+.album-art.small {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-xs);
+}
+
+.album-art.medium {
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.album-art.large {
+  width: 160px;
+  height: 160px;
+}
+
+.album-art.feature {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-cover);
+}
+
+/* ---------- Tiles ---------- */
+.ds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--tile-min, 164px), 1fr));
+  gap: var(--sp-2) var(--sp-3);
+}
+
+.ds-grid.is-dense {
+  --tile-min: 144px;
+}
+
+/* One row that scrolls sideways (home shelves). */
+.ds-shelf {
+  display: grid;
+  grid-auto-columns: minmax(var(--tile-min, 164px), calc((100% - 5 * var(--sp-3)) / 6));
+  grid-auto-flow: column;
+  gap: var(--sp-3);
+  margin: 0 calc(var(--sp-2) * -1);
+  padding: 0 var(--sp-2) var(--sp-2);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.ds-shelf::-webkit-scrollbar {
+  display: none;
+}
+
+.ds-shelf > * {
+  scroll-snap-align: start;
+}
+
+.ds-tile {
+  position: relative;
+  min-width: 0;
+  padding: var(--sp-2);
+  border-radius: var(--r-md);
+  color: var(--text);
+  container-type: inline-size;
+}
+
+.ds-tile-open {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  align-content: start;
+  gap: 10px;
+  color: inherit;
+  text-align: left;
+}
+
+.ds-tile:hover,
+.ds-tile:focus-within {
+  background: var(--fill-1);
+}
+
+.ds-tile-art {
+  position: relative;
+  display: block;
+}
+
+.ds-tile-art .album-art {
+  box-shadow: 0 6px 18px color-mix(in srgb, #000 22%, transparent);
+}
+
+.ds-tile.is-round .ds-tile-art .album-art {
+  border-radius: 50%;
+}
+
+.ds-tile-copy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.ds-tile-title {
+  overflow: hidden;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ds-tile-sub {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* The play button that rises on hover. */
+.ds-tile-play {
+  position: absolute;
+  top: calc(var(--sp-2) + 100cqw - 52px);
+  right: 16px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: var(--r-full);
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 8px 20px color-mix(in srgb, #000 36%, transparent);
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity var(--duration-normal) var(--ease-out),
+    transform var(--duration-normal) var(--ease-out),
+    background-color var(--duration-fast) ease;
+}
+
+.ds-tile:hover .ds-tile-play,
+.ds-tile:focus-within .ds-tile-play,
+.ds-tile-play.is-playing {
+  opacity: 1;
+  transform: none;
+}
+
+.ds-tile-play:hover {
+  transform: scale(1.05) !important;
+}
+
+.ds-tile-play svg {
+  margin-left: 2px;
+}
+
+.ds-tile-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: inline-flex;
+  min-height: 22px;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  border-radius: var(--r-full);
+  background: color-mix(in srgb, #000 58%, transparent);
+  color: #fff;
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  backdrop-filter: blur(8px);
+}
+
+/* A wide row tile (quick picks on home, compact lists). */
+.ds-row-tile {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-2);
+  padding-right: var(--sp-3);
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  background: var(--fill-1);
+  color: var(--text);
+}
+
+.ds-row-tile-open {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--sp-3);
+  color: inherit;
+  text-align: left;
+}
+
+.ds-row-tile-copy {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.ds-row-tile:hover {
+  background: var(--fill-2);
+}
+
+.ds-row-tile .album-art {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--r-sm) 0 0 var(--r-sm);
+}
+
+.ds-row-tile .album-art::after {
+  border-radius: 0;
+}
+
+.ds-row-tile strong {
+  overflow: hidden;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ds-row-tile small {
+  display: block;
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ds-row-tile .ds-tile-play {
+  position: static;
+  width: 36px;
+  height: 36px;
+  transform: none;
+}
+
+.ds-row-tile:hover .ds-tile-play,
+.ds-row-tile:focus-within .ds-tile-play {
+  opacity: 1;
+}
+
+/* Covers in a 2×2 grid (mixes, folders). */
+.ds-mosaic {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  overflow: hidden;
+  aspect-ratio: 1;
+  border-radius: var(--r-cover);
+}
+
+.ds-mosaic .album-art {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+.ds-mosaic .album-art::after {
+  display: none;
+}
+
+.ds-mosaic.is-single {
+  grid-template-columns: 1fr;
+}
+
+/* Liked songs cover. */
+.ds-liked-cover {
+  display: grid;
+  width: 100%;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: var(--r-cover);
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 45%, var(--canvas)));
+  color: var(--on-accent);
+}

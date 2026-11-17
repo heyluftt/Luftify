@@ -1,0 +1,145 @@
+/* The app's own select: a pill trigger and a floating option list. */
+
+.settings-select-trigger {
+  display: flex;
+  min-width: min(300px, 42%);
+  max-width: 48%;
+  min-height: var(--control-height);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-sm);
+  background: var(--fill-2);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  text-align: left;
+}
+
+.settings-select-trigger > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-select-trigger > svg {
+  flex-shrink: 0;
+  color: var(--text-2);
+}
+
+.settings-select-trigger:hover,
+.settings-select-trigger[aria-expanded="true"] {
+  background: var(--fill-3);
+}
+
+.settings-select-trigger:disabled {
+  opacity: .45;
+}
+
+.settings-select-trigger.is-compact {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  height: 30px;
+  min-height: 30px;
+  gap: 6px;
+  padding: 0 var(--sp-2);
+  border-radius: var(--r-xs);
+  font-size: var(--fs-xs);
+}
+
+.settings-select-trigger.is-compact > svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* Inside a toolbar pill that draws the frame itself. */
+.settings-select-trigger.is-inline {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: 100%;
+  min-height: 0;
+  gap: 6px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+}
+
+.settings-select-trigger.is-inline:hover,
+.settings-select-trigger.is-inline[aria-expanded="true"] {
+  background: transparent;
+}
+
+.settings-select-trigger.is-inline:focus-visible {
+  outline: 0;
+}
+
+.settings-select-trigger.is-inline > svg {
+  width: 14px;
+  height: 14px;
+}
+
+.settings-select-menu {
+  position: fixed;
+  z-index: 1000;
+  padding: 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--r-md);
+  background: var(--raised);
+  color: var(--text);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line);
+  animation: ds-fade-up var(--duration-fast) var(--ease-out) both;
+}
+
+.settings-select-option {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: 6px 10px;
+  border-radius: var(--r-xs);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.settings-select-option > span {
+  overflow-wrap: anywhere;
+}
+
+.settings-select-option > svg {
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.settings-select-option.is-active {
+  background: var(--fill-2);
+}
+
+.settings-select-option[aria-disabled="true"] {
+  opacity: .45;
+  cursor: default;
+}
+
+.settings-select-menu.is-compact {
+  padding: 4px;
+}
+
+.settings-select-menu.is-compact .settings-select-option {
+  min-height: 30px;
+  padding: 4px 8px;
+  font-size: var(--fs-xs);
+}
+
+@media (max-width: 760px) {
+  .setting-select .settings-select-trigger {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+}

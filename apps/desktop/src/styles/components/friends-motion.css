@@ -1,0 +1,70 @@
+/*
+ * Motion on the friends page and in profiles: cards arrive one after another
+ * and light up in their accent; an opened profile builds itself up. Entrances
+ * run once; nothing here loops except the listening pulse.
+ */
+
+/* ---------- Friend cards ---------- */
+.friends-grid > .friends-card {
+  --card-accent: var(--profile-accent, var(--role-a, var(--accent)));
+  animation: friends-card-in var(--duration-slow) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+  transition: background var(--duration-fast) ease, transform var(--duration-normal) var(--ease-spring), box-shadow var(--duration-normal) ease;
+}
+.friends-grid > .friends-card:hover {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--card-accent) 38%, transparent), 0 14px 34px -18px color-mix(in srgb, var(--card-accent) 70%, transparent);
+  transform: translateY(-3px);
+}
+.friends-card > .friends-card-banner { transition: transform var(--duration-slow) var(--ease-out), opacity var(--duration-slow) ease; }
+.friends-card:hover > .friends-card-banner { transform: scale(1.06); }
+.friends-card .role-avatar { transition: transform var(--duration-normal) var(--ease-spring); }
+.friends-card:hover .role-avatar { transform: scale(1.05); }
+
+/* Listening: the presence dot sends out a soft ring now and then. */
+.friends-card[data-listening="true"] .friends-avatar-presence > i::after {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--success) 70%, transparent);
+  content: "";
+  animation: presence-ping 2.6s ease-out infinite;
+}
+
+@keyframes friends-card-in {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+}
+@keyframes presence-ping {
+  0% { opacity: .9; transform: scale(.8); }
+  70%, 100% { opacity: 0; transform: scale(1.9); }
+}
+
+/* ---------- Profile dialog: banner settles, picture pops, details follow ---------- */
+.friend-profile:not([data-editing]) .friend-profile-cover > * { animation: profile-cover-in 900ms var(--ease-out) both; }
+.friend-profile:not([data-editing]) .friend-profile-hero > * { animation: profile-part-in var(--duration-slow) var(--ease-out) both; }
+.friend-profile:not([data-editing]) .friend-profile-hero > .friends-avatar-presence { animation: profile-avatar-in 620ms var(--ease-spring) both 60ms; }
+.friend-profile:not([data-editing]) .friend-profile-hero > :nth-child(2) { animation-delay: 120ms; }
+.friend-profile:not([data-editing]) .friend-profile-hero > :nth-child(3) { animation-delay: 170ms; }
+.friend-profile:not([data-editing]) .friend-profile-hero > :nth-child(4) { animation-delay: 220ms; }
+.friend-profile:not([data-editing]) .friend-profile-hero > :nth-child(n+5) { animation-delay: 260ms; }
+.friend-profile:not([data-editing]) .friend-profile-actions { animation: profile-part-in var(--duration-slow) var(--ease-out) both 280ms; }
+/* The music column follows, one card after the other. */
+.friend-profile:not([data-editing]) .friend-profile-sections > * { animation: profile-part-in var(--duration-slow) var(--ease-out) both 320ms; }
+.friend-profile:not([data-editing]) .friend-profile-sections > :nth-child(2) { animation-delay: 380ms; }
+.friend-profile:not([data-editing]) .friend-profile-sections > :nth-child(n+3) { animation-delay: 440ms; }
+/* "Listening now" is shown first (profile-sheet.css), so it also comes in first. */
+.friend-profile:not([data-editing]) .friend-profile-sections > .friend-now { animation-delay: 320ms; }
+.friend-profile:not([data-editing]) .friend-profile-sections:has(> .friend-now) > .profile-song { animation-delay: 380ms; }
+
+@keyframes profile-cover-in {
+  from { opacity: 0; transform: scale(1.08); }
+}
+@keyframes profile-part-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+@keyframes profile-avatar-in {
+  from { opacity: 0; transform: scale(.82) translateY(6px); }
+}
+
+/* ---------- Hero on the friends page ---------- */
+.friends-hero-avatar .role-avatar { transition: transform var(--duration-normal) var(--ease-spring); }
+.friends-hero-avatar:hover .role-avatar { transform: scale(1.04) rotate(-2deg); }

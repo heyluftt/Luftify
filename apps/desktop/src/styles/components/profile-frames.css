@@ -1,0 +1,45 @@
+/* Backplates and halos; the detailed material surface lives in profile-frame-art.css. */
+.role-avatar[data-frame] {
+  --frame: var(--profile-accent, var(--accent));
+  --frame-light: color-mix(in srgb, var(--frame) 36%, var(--profile-paper));
+  --frame-dark: color-mix(in srgb, var(--frame) 55%, var(--profile-night));
+  --frame-facet: oklch(from var(--frame) l c calc(h + 65));
+  --frame-facet-2: oklch(from var(--frame) calc(l + .08) c calc(h - 55));
+  --frame-inset: calc(-1 * var(--sp-1));
+  --frame-edge: var(--profile-frame-line);
+}
+.role-avatar:is([data-size="lg"], [data-size="xl"])[data-frame] {
+  --frame-inset: calc(-1 * var(--sp-1) - var(--profile-frame-line));
+  --frame-edge: calc(var(--profile-frame-line) + 1px);
+}
+.avatar-frame-fx { position: absolute; z-index: -1; inset: calc(-1 * var(--sp-4)); border-radius: 50%; pointer-events: none; }
+.role-avatar:is([data-size="lg"], [data-size="xl"]) .avatar-frame-fx { inset: calc(-1 * var(--sp-6)); }
+.role-avatar[data-frame]:not([data-frame="none"])::before {
+  inset: var(--frame-inset);
+  background: var(--frame-dark);
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--frame-edge)), black calc(100% - var(--frame-edge) + .5px));
+}
+.role-avatar[data-frame="accent"] .avatar-frame-fx { background: radial-gradient(closest-side, transparent 52%, color-mix(in srgb, var(--frame) 12%, transparent) 65%, transparent); }
+.role-avatar[data-frame="glow"] .avatar-frame-fx {
+  background: radial-gradient(closest-side, transparent 42%, color-mix(in srgb, var(--frame) 48%, transparent) 60%, color-mix(in srgb, var(--frame) 18%, transparent) 78%, transparent);
+  animation: frame-halo-charge 3s ease-in-out infinite;
+}
+.role-avatar[data-frame="prism"] .avatar-frame-fx {
+  background: conic-gradient(var(--frame), var(--frame-facet), var(--profile-paper), var(--frame), var(--frame-facet), var(--frame));
+  mask: radial-gradient(closest-side, transparent 45%, black 60%, transparent 85%);
+  opacity: .32; animation: role-spin 8s linear infinite;
+}
+.role-avatar[data-frame="pulse"] .avatar-frame-fx {
+  background: radial-gradient(closest-side, transparent 50%, color-mix(in srgb, var(--frame) 30%, transparent) 64%, transparent 80%);
+  animation: frame-halo-charge 1.8s ease-in-out infinite;
+}
+.role-avatar[data-frame="orbit"] .avatar-frame-fx {
+  background: radial-gradient(closest-side, transparent 50%, color-mix(in srgb, var(--frame) 18%, transparent) 65%, transparent);
+}
+.role-avatar[data-frame="aurum"] { --frame: var(--profile-gold); }
+.role-avatar[data-frame="aurum"] .avatar-frame-fx {
+  background: radial-gradient(closest-side, transparent 48%, color-mix(in srgb, var(--profile-gold) 24%, transparent) 64%, transparent);
+  animation: frame-halo-charge 4.2s ease-in-out infinite;
+}
+@keyframes frame-halo-charge { 0%, 100% { opacity: .45; transform: scale(.96); } 50% { opacity: 1; transform: scale(1.08); } }
+@media (prefers-reduced-motion: reduce) { .role-avatar[data-frame] .avatar-frame-fx { animation: none; } }

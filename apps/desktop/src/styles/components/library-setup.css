@@ -1,0 +1,53 @@
+/* First start: Luftify prepares the library (features/setup/LibrarySetup.tsx). */
+.library-setup-layer {
+  position: fixed; z-index: 120; inset: 0;
+  display: grid; place-items: center; padding: var(--sp-6);
+  background: color-mix(in srgb, var(--canvas) 72%, transparent);
+  backdrop-filter: blur(14px);
+  animation: library-setup-fade var(--duration-slow) var(--ease-out);
+}
+.library-setup {
+  display: grid; justify-items: center; gap: var(--sp-4);
+  width: min(460px, 100%); padding: var(--sp-8) var(--sp-6) var(--sp-6);
+  border-radius: var(--r-xl); background: var(--raised); color: var(--text); text-align: center;
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line); outline: none;
+  animation: library-setup-rise var(--duration-slow) var(--ease-spring);
+}
+.library-setup h2 { font-size: var(--fs-h2); }
+.library-setup > p { max-width: 34ch; color: var(--text-2); font-size: var(--fs-sm); line-height: 1.55; }
+
+/* Three rings of light breathing in turn around a bright core. */
+.library-setup-orb { position: relative; width: 84px; height: 84px; margin-bottom: var(--sp-2); }
+.library-setup-orb::after {
+  position: absolute; inset: 34%; border-radius: 50%; content: "";
+  background: radial-gradient(circle, var(--profile-paper), var(--accent) 70%);
+  box-shadow: 0 0 var(--sp-6) color-mix(in srgb, var(--accent) 70%, transparent);
+}
+.library-setup-orb > i {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  animation: library-setup-ring 2.4s var(--ease-out) infinite;
+}
+.library-setup-orb > i:nth-child(2) { animation-delay: .8s; }
+.library-setup-orb > i:nth-child(3) { animation-delay: 1.6s; }
+
+.library-setup-progress { width: 100%; height: 8px; overflow: hidden; border-radius: var(--r-full); background: var(--fill-2); }
+.library-setup-progress > span {
+  display: block; height: 100%; border-radius: inherit;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 70%, var(--profile-paper)), var(--accent));
+  transition: width var(--duration-slow) var(--ease-out);
+}
+.library-setup-step { display: grid; gap: 2px; min-height: 2.6em; color: var(--text-2); font-size: var(--fs-xs); }
+.library-setup-step strong { overflow: hidden; max-width: 36ch; color: var(--text); font-weight: var(--fw-medium); text-overflow: ellipsis; white-space: nowrap; }
+.library-setup .text-button { color: var(--text-2); font-size: var(--fs-xs); }
+.library-setup-confirm { display: grid; gap: var(--sp-3); width: 100%; padding: var(--sp-3); border-radius: var(--r-md); background: var(--fill-1); font-size: var(--fs-sm); }
+.library-setup-confirm > div { display: flex; justify-content: center; gap: var(--sp-2); }
+
+@keyframes library-setup-fade { from { opacity: 0; } }
+@keyframes library-setup-rise { from { opacity: 0; transform: translateY(12px) scale(.98); } }
+@keyframes library-setup-ring { from { opacity: .9; transform: scale(.45); } to { opacity: 0; transform: scale(1.15); } }
+@media (prefers-reduced-motion: reduce) {
+  .library-setup-layer, .library-setup, .library-setup-orb > i { animation: none; }
+  .library-setup-orb > i { opacity: .35; transform: scale(.9); }
+  .library-setup-progress > span { transition: none; }
+}

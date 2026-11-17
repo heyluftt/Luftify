@@ -1,0 +1,55 @@
+[package]
+name = "luft-desktop"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[lib]
+name = "luft_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+async-trait.workspace = true
+chrono.workspace = true
+base64.workspace = true
+futures-util.workspace = true
+luft-core = { path = "../../../crates/luft-core" }
+luft-infrastructure = { path = "../../../crates/luft-infrastructure" }
+luft-librespot = { path = "../../../crates/luft-librespot" }
+luft-listen-together = { path = "../../../crates/luft-listen-together" }
+luft-modules = { path = "../../../crates/luft-modules" }
+luft-setup = { path = "../../../crates/luft-setup" }
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+zeroize.workspace = true
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-single-instance = "2.4.2"
+tauri-plugin-updater = "2"
+thiserror.workspace = true
+tokio.workspace = true
+tokio-tungstenite.workspace = true
+tracing.workspace = true
+url.workspace = true
+uuid.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+# Already part of the build through Tauri; used for the WebView2 memory target (webview_memory.rs).
+webview2-com = "0.38"
+windows = { version = "0.61", features = [
+  "Win32_Foundation",
+  "Win32_Graphics_Gdi",
+  "Win32_Security_Cryptography",
+  "Win32_System_Com",
+  "Win32_System_SystemInformation",
+  "Win32_System_Threading",
+  "Win32_UI_Accessibility",
+  "Win32_UI_Input_KeyboardAndMouse",
+  "Win32_UI_Shell",
+  "Win32_UI_WindowsAndMessaging",
+] }

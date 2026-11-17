@@ -1,0 +1,55 @@
+@import "./calamus-surfaces.css";
+
+/*
+ * Theme „Calamus“ (the reed pen): ink on dark paper, like a notebook.
+ * Warm ink black, paper-white text, iron ink blue for actions and one
+ * vermilion rubric – as in old manuscripts – for what is new or playing.
+ * Angular throughout; structure comes from hairlines, not from surfaces.
+ */
+
+:root[data-theme="luft.calamus"] {
+  color-scheme: dark;
+  --calamus-paper: #eee9df;
+  --calamus-rubric: #e0613f;
+
+  --canvas: #171614;
+  --raised: #211f1c;
+  --sidebar-bg: var(--color-bg);
+  --on-accent: #0c1222;
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+  --text-3: #6b665c;
+
+  --fill-1: color-mix(in srgb, var(--calamus-paper) 3.5%, transparent);
+  --fill-2: color-mix(in srgb, var(--calamus-paper) 7%, transparent);
+  --fill-3: color-mix(in srgb, var(--calamus-paper) 11%, transparent);
+  --line: color-mix(in srgb, var(--calamus-paper) 10%, transparent);
+  --line-strong: color-mix(in srgb, var(--calamus-paper) 19%, transparent);
+  --canvas-edge: color-mix(in srgb, var(--calamus-paper) 9%, transparent);
+
+  --font-display: "Sitka Heading", "Sitka Text", Cambria, Georgia, serif;
+  --tracking-caps: .18em;
+
+  --r-xs: 0;
+  --r-sm: 2px;
+  --r-md: 2px;
+  --r-lg: 3px;
+  --r-xl: 4px;
+  --r-full: 2px;
+  --r-cover: 0;
+
+  --shadow-1: 0 10px 26px rgb(0 0 0 / 34%);
+  --shadow-2: 0 22px 56px rgb(0 0 0 / 50%);
+  --shadow-cover: 0 10px 28px rgb(0 0 0 / 45%);
+}
+
+/* Headings in a book face; the interface text stays sans. */
+:root[data-theme="luft.calamus"] :is(.page-heading h1, .home-welcome h1, .entity-hero-copy h1, .home-feature-copy h2, .settings-section-heading h2, .audio-panel-title h2) {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -.012em;
+}
+
+:root[data-theme="luft.calamus"] ::selection {
+  background: color-mix(in srgb, var(--calamus-rubric) 38%, transparent);
+  color: var(--calamus-paper);
+}

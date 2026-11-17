@@ -1,0 +1,31 @@
+/* Short responses for interaction; the scene keeps a slower, separate rhythm. */
+:root[data-theme="luft.aeris"] .nav-item {
+  transition: transform var(--duration-normal) var(--ease-out), background var(--duration-normal) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+:root[data-theme="luft.aeris"] .nav-item:hover:not(.active) {
+  background: var(--fill-1);
+  transform: translateX(calc(var(--sp-1) / 2));
+}
+
+:root[data-theme="luft.aeris"] .ds-tile:is(:hover, :focus-within) {
+  transform: translateY(calc(-1 * var(--sp-1) / 2));
+}
+:root[data-theme="luft.aeris"] .ds-row-tile:is(:hover, :focus-within) {
+  transform: translateX(calc(var(--sp-1) / 2));
+  background: var(--aeris-panel-hover);
+}
+
+:root[data-theme="luft.aeris"] .global-search {
+  transition: background var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out);
+}
+:root[data-theme="luft.aeris"] .global-search:is(:hover, :focus-visible) {
+  box-shadow: inset 0 0 0 1px var(--aeris-edge), var(--shadow-1);
+}
+
+:root[data-theme="luft.aeris"] :is(.primary-button, .play-button):active:not(:disabled) { transform: scale(.97); }
+:root[data-theme="luft.aeris"] .home-feature-art { animation: aeris-cover-arrive 650ms var(--ease-out) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme="luft.aeris"] :is(.nav-item, .ds-tile, .ds-row-tile, .primary-button, .play-button):is(:hover, :focus-within, :active) { transform: none; }
+  :root[data-theme="luft.aeris"] .home-feature-art { animation: none; }
+}

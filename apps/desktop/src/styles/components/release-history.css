@@ -1,0 +1,20 @@
+/* Version history: a quiet timeline, newest first (settings → updates). */
+.release-history {
+  display: grid; grid-template-rows: auto minmax(0, 1fr); width: min(560px, 100%); max-height: min(720px, calc(100vh - 2 * var(--sp-8)));
+  gap: var(--sp-4); padding: var(--sp-6) var(--sp-6) 0; border-radius: var(--r-xl); background: var(--raised);
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line); color: var(--text); outline: none;
+  animation: friend-profile-rise var(--duration-slow) var(--ease-spring);
+}
+.release-history > header { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); }
+.release-history > header h2 { font-size: var(--fs-h3); }
+.release-history-list { display: grid; gap: var(--sp-5); margin: 0; padding: 0 0 var(--sp-6); overflow-y: auto; list-style: none; }
+.release-history-list > li { position: relative; display: grid; gap: var(--sp-2); padding-left: var(--sp-6); }
+/* The line between versions and a dot per version. */
+.release-history-list > li::before { content: ""; position: absolute; top: 6px; left: 4px; width: 9px; height: 9px; border-radius: 50%; background: var(--fill-3); }
+.release-history-list > li:not(:last-child)::after { content: ""; position: absolute; top: 20px; bottom: calc(-1 * var(--sp-5) + 4px); left: 8px; width: 1px; background: var(--line); }
+.release-history-list > li[data-current]::before { background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+.release-history-list h3 { display: flex; align-items: center; gap: var(--sp-2); margin: 0; font-family: var(--font-mono); font-size: var(--fs-sm); font-weight: var(--fw-semibold); }
+.release-history-list h3 > span { padding: 1px var(--sp-2); border-radius: var(--r-full); background: var(--accent-soft); color: var(--accent); font-family: inherit; font-size: var(--fs-2xs); font-weight: var(--fw-medium); }
+.release-history-list ul { display: grid; gap: 6px; margin: 0; padding-left: var(--sp-4); color: var(--text-2); font-size: var(--fs-sm); line-height: 1.45; }
+.release-history-list ul > li::marker { color: var(--text-3); }
+.release-history-list > li[data-current] ul { color: var(--text); }

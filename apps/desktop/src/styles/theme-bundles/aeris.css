@@ -1,0 +1,10 @@
+@import "./aeris-tokens.css";
+@import "./aeris-surfaces.css";
+@import "./aeris-materials.css";
+@import "./aeris-social.css";
+@import "./aeris-interactions.css";
+@import "./aeris-atmosphere.css";
+@import "./aeris-wind.css";
+@import "./aeris-motion.css";
+
+/* Aeris is loaded on selection. No styling escapes its theme root. */

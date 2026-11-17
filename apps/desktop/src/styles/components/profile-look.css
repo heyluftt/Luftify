@@ -1,0 +1,77 @@
+/* "Aussehen" in the profile editor: one row per part, opened one at a time. */
+.look-sections { display: grid; gap: var(--sp-2); }
+
+.look-section { border-radius: var(--r-lg); background: var(--fill-1); box-shadow: inset 0 0 0 1px var(--line); transition: background var(--duration-fast) ease; }
+.look-section[data-open] { background: color-mix(in srgb, var(--fill-1) 70%, var(--fill-2)); }
+.look-section-head {
+  display: flex;
+  width: 100%;
+  min-height: 58px;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: inherit;
+  color: var(--text);
+  text-align: left;
+}
+.look-section-head:hover { background: var(--fill-1); }
+.look-section-copy { display: grid; flex: 1; gap: 2px; min-width: 0; }
+.look-section-copy strong { font-size: var(--fs-sm); font-weight: var(--fw-semibold); }
+.look-section-copy small { overflow: hidden; color: var(--text-2); font-size: var(--fs-xs); text-overflow: ellipsis; white-space: nowrap; }
+.look-section-preview { display: inline-flex; flex: 0 0 auto; align-items: center; max-width: 45%; }
+.look-section-chevron { flex: 0 0 auto; color: var(--text-3); transition: transform var(--duration-normal) var(--ease-out); }
+.look-section[data-open] .look-section-chevron { transform: rotate(180deg); color: var(--text); }
+.look-section-body { display: grid; gap: var(--sp-3); padding: 0 var(--sp-4) var(--sp-4); animation: own-profile-emojis-in var(--duration-fast) ease-out; }
+/* The row already names the part. */
+.look-section-body legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.look-section-swatch { display: block; width: 22px; height: 22px; border-radius: 50%; background: var(--profile-accent, var(--accent)); box-shadow: 0 0 0 2px var(--fill-1), 0 0 0 3px var(--line-strong); }
+.look-section-name { min-width: 0; overflow: hidden; }
+.look-section-name > strong { display: block; overflow: hidden; font-size: var(--fs-md); font-weight: var(--fw-bold); text-overflow: ellipsis; white-space: nowrap; }
+
+/* A smaller picker here: it only opens for an own colour. */
+.look-section-body .color-picker-field { height: 104px; }
+.look-color-field { display: grid; gap: var(--sp-3); }
+
+/* ---------- Name gradient ---------- */
+.look-name-field { display: grid; gap: var(--sp-3); }
+.look-name-field > .own-profile-toggle { background: var(--fill-1); }
+.look-gradients { display: flex; flex-wrap: wrap; gap: 8px; }
+.look-gradients > button { display: grid; width: 44px; height: 28px; place-items: center; padding: 3px; border-radius: var(--r-full); }
+.look-gradients > button > i { display: block; width: 100%; height: 100%; border-radius: inherit; background: linear-gradient(100deg, var(--from), var(--to)); }
+.look-gradients > button:hover:not(:disabled) { transform: translateY(-1px); }
+.look-gradients > button[aria-checked="true"] { box-shadow: 0 0 0 2px var(--text); }
+
+.look-gradient-ends { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.look-gradient-end {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 6px 12px 6px 6px;
+  border-radius: var(--r-full);
+  background: var(--fill-2);
+  color: var(--text);
+  font-size: var(--fs-xs);
+  text-align: left;
+}
+.look-gradient-end:hover:not(:disabled) { background: var(--fill-3); }
+.look-gradient-end[aria-expanded="true"] { box-shadow: 0 0 0 2px var(--text-2); }
+.look-gradient-end > i { width: 22px; height: 22px; flex: 0 0 auto; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--line-strong); }
+.look-gradient-end > span { display: grid; gap: 1px; font-family: var(--font-mono); }
+.look-gradient-end small { color: var(--text-2); font-family: var(--font-sans); font-size: var(--fs-2xs); }
+.look-gradient-sample { flex: 1 1 80px; height: 10px; min-width: 60px; border-radius: var(--r-full); background: linear-gradient(90deg, var(--from), var(--to)); }
+.look-gradient-editor { display: grid; justify-items: start; gap: var(--sp-2); }
+.look-gradient-editor > .color-picker { width: 100%; box-sizing: border-box; }
+
+/* ---------- Achievements in the profile ---------- */
+.profile-trophies { display: grid; justify-items: center; gap: 6px; margin-top: var(--sp-1); }
+.profile-trophies > small { color: var(--text-3); font-size: var(--fs-2xs); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-caps); text-transform: uppercase; }
+.profile-trophies ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.profile-trophies li { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; background: var(--fill-1); color: var(--text-3); opacity: .55; }
+.profile-trophies li[data-done] {
+  background: color-mix(in srgb, var(--role-a) 18%, var(--fill-1));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--role-a) 45%, transparent);
+  color: var(--role-a);
+  opacity: 1;
+}

@@ -1,0 +1,9 @@
+/* Theme „Dunkel“: palette on top of styles/ds/tokens.css. */
+
+:root[data-theme="luft.dark"] {
+  color-scheme: dark;
+  --canvas: #0c0f12;
+  --raised: #16191d;
+  --sidebar-bg: var(--color-bg);
+  --on-accent: #0b0e12;
+}

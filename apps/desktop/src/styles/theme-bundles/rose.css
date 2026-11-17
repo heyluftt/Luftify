@@ -1,0 +1,16 @@
+@import "./rose-atmosphere.css";
+
+/* Theme „Rose“: palette on top of styles/ds/tokens.css. */
+
+:root[data-theme="luft.rose"] {
+  color-scheme: dark;
+  --canvas: #170d14;
+  --raised: #2b1b24;
+  --sidebar-bg: var(--color-bg);
+  --on-accent: #2a0f1b;
+  --font-display: "Palatino Linotype", Palatino, "Iowan Old Style", "Book Antiqua", Georgia, serif;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-cover: 10px;
+}

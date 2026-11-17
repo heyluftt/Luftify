@@ -1,0 +1,114 @@
+/* Luft Violet: controls and surfaces. Lavender light on violet glass. */
+
+:root[data-theme="luft.violet"] ::selection {
+  background: color-mix(in srgb, var(--violet-iris) 45%, transparent);
+  color: var(--text);
+}
+
+:root[data-theme="luft.violet"] {
+  --scrollbar-thumb: color-mix(in srgb, var(--violet-lilac) 22%, transparent);
+}
+
+/* Headings fade from moonlight into lavender. */
+:root[data-theme="luft.violet"] :is(.page-heading h1, .home-welcome h1) {
+  background: linear-gradient(100deg, var(--text) 35%, var(--violet-lilac) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  padding-bottom: .12em;
+  margin-bottom: -.12em;
+  color: transparent;
+}
+
+/* Navigation: the active page glows softly, with a thin light at its edge. */
+:root[data-theme="luft.violet"] .nav-item.active {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--violet-iris) 20%, transparent), color-mix(in srgb, var(--violet-iris) 6%, transparent));
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+:root[data-theme="luft.violet"] .nav-item.active::before {
+  position: absolute;
+  top: 9px;
+  bottom: 9px;
+  left: 0;
+  width: 3px;
+  border-radius: var(--r-full);
+  background: linear-gradient(180deg, var(--violet-lilac), var(--violet-iris));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--violet-iris) 80%, transparent);
+  content: "";
+}
+:root[data-theme="luft.violet"] .nav-item.active svg {
+  color: var(--violet-lilac);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--violet-iris) 70%, transparent));
+}
+
+:root[data-theme="luft.violet"] .nav-fresh-dot {
+  background: var(--violet-orchid);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--violet-orchid) 75%, transparent);
+}
+
+/* Search: violet glass with a hairline of light. */
+:root[data-theme="luft.violet"] .global-search {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--violet-lilac) 10%, transparent), color-mix(in srgb, var(--violet-lilac) 6%, transparent));
+  box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 0 color-mix(in srgb, #fff 7%, transparent);
+}
+:root[data-theme="luft.violet"] .global-search:hover {
+  box-shadow: inset 0 0 0 1px var(--line-strong), 0 0 24px color-mix(in srgb, var(--violet-iris) 14%, transparent);
+}
+
+/* Primary actions: a lavender gradient with deep ink, glowing on hover. */
+:root[data-theme="luft.violet"] .primary-button {
+  background: linear-gradient(135deg, var(--violet-lilac), var(--violet-iris));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 22%);
+}
+:root[data-theme="luft.violet"] .primary-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--violet-lilac) 85%, #fff), var(--violet-iris));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 28%), 0 6px 22px color-mix(in srgb, var(--violet-iris) 40%, transparent);
+}
+
+:root[data-theme="luft.violet"] .play-button {
+  background: linear-gradient(140deg, #f4f1ff, var(--violet-lilac));
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 10%), 0 4px 18px color-mix(in srgb, var(--violet-iris) 38%, transparent);
+  color: var(--on-accent);
+}
+:root[data-theme="luft.violet"] .play-button:hover:not(:disabled) {
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 14%), 0 6px 26px color-mix(in srgb, var(--violet-iris) 55%, transparent);
+}
+
+/* Progress and volume: a band of lavender light. */
+:root[data-theme="luft.violet"] .smooth-progress-fill {
+  background: linear-gradient(90deg, var(--violet-iris), var(--violet-lilac));
+}
+:root[data-theme="luft.violet"] .smooth-progress:hover .smooth-progress-fill {
+  background: linear-gradient(90deg, var(--violet-iris), var(--violet-orchid));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--violet-iris) 60%, transparent);
+}
+:root[data-theme="luft.violet"] .volume-slider-control:hover input[type="range"]::-webkit-slider-runnable-track {
+  background:
+    linear-gradient(90deg, var(--violet-iris), var(--violet-lilac)) 0 0 / var(--volume) 100% no-repeat,
+    var(--fill-3);
+}
+
+/* What plays now carries the orchid light. */
+:root[data-theme="luft.violet"] :is(.home-live-bars span, .playerbar-collapsed-state.is-playing) {
+  background: var(--violet-orchid);
+}
+
+/* The player bar sits on the night floor with a faint horizon above it. */
+:root[data-theme="luft.violet"] .playerbar {
+  background:
+    linear-gradient(90deg, transparent, color-mix(in srgb, var(--violet-lilac) 16%, transparent), transparent) top / 100% 1px no-repeat,
+    radial-gradient(ellipse 40% 120% at 50% 0%, color-mix(in srgb, var(--violet-iris) 9%, transparent), transparent 70%),
+    var(--bg);
+}
+
+/* The big home card: glass with moonlight at its top edge. */
+:root[data-theme="luft.violet"] .home-feature {
+  background:
+    radial-gradient(ellipse 60% 80% at 100% 0%, color-mix(in srgb, var(--violet-lilac) 9%, transparent), transparent 60%),
+    linear-gradient(160deg, color-mix(in srgb, var(--violet-iris) 12%, transparent), color-mix(in srgb, var(--violet-lilac) 3%, transparent));
+  box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 0 color-mix(in srgb, #fff 6%, transparent), var(--shadow-1);
+}
+
+/* Floating layers: violet glass edges. */
+:root[data-theme="luft.violet"] :is(.app-notice, .notice-center-panel, .command-palette) {
+  box-shadow: var(--shadow-2), inset 0 0 0 1px var(--line-strong), inset 0 1px 0 color-mix(in srgb, #fff 6%, transparent);
+}

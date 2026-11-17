@@ -1,0 +1,288 @@
+/* Audio page: volume card, module options, diagnostics and save row. */
+
+.audio-control-page {
+  display: grid;
+  width: min(1120px, 100%);
+  gap: var(--sp-4);
+}
+
+.audio-control-page > .page-heading {
+  margin-bottom: var(--sp-4);
+}
+
+.audio-master-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+}
+
+/* ---------- Volume card ---------- */
+.audio-volume-card {
+  display: grid;
+  gap: var(--sp-5);
+  padding: var(--sp-6);
+  border-radius: var(--r-xl);
+  background: var(--fill-1);
+}
+
+.audio-volume-main {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-8);
+}
+
+.audio-volume-readout small {
+  display: block;
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+
+.audio-volume-readout strong {
+  display: block;
+  min-width: 3.2ch;
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-title);
+  line-height: 1.05;
+}
+
+.audio-volume-readout strong span {
+  margin-left: 2px;
+  color: var(--text-2);
+  font-size: .5em;
+}
+
+.audio-volume-card .volume-slider-control {
+  margin: 0;
+}
+
+.audio-volume-card .volume-slider-control input[type="range"] {
+  height: 24px;
+}
+
+.audio-volume-card .volume-slider-control input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+}
+
+.audio-volume-card .volume-slider-control input[type="range"]::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  margin-top: -5px;
+  opacity: 1;
+}
+
+.audio-compare {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3) var(--sp-5);
+  padding-top: var(--sp-4);
+  box-shadow: inset 0 1px 0 var(--line);
+}
+
+.audio-compare-copy {
+  display: inline-flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--text-2);
+}
+
+.audio-compare-copy strong {
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.audio-compare-copy small {
+  font-size: var(--fs-sm);
+}
+
+.audio-compare-copy small::before {
+  margin-right: var(--sp-2);
+  content: "·";
+}
+
+.audio-save-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+}
+
+.audio-save-state.is-saving {
+  color: var(--text-2);
+}
+
+.audio-save-state.is-error {
+  color: var(--danger);
+}
+
+/* ---------- Options ---------- */
+.audio-section {
+  margin-top: var(--sp-6);
+}
+
+.audio-preset-editor {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--sp-2);
+}
+
+.audio-preset {
+  display: grid;
+  gap: var(--sp-2);
+  padding: var(--sp-2);
+  border-radius: var(--r-lg);
+  background: var(--fill-1);
+}
+
+.audio-preset button {
+  min-height: 56px;
+  border-radius: var(--r-md);
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.audio-preset button span {
+  margin-left: 1px;
+  color: var(--text-2);
+  font-size: .6em;
+}
+
+.audio-preset button:hover {
+  background: var(--fill-2);
+}
+
+.audio-preset input,
+.audio-shortcut input {
+  width: 100%;
+  min-height: 32px;
+  padding: 0 var(--sp-3);
+  border: 0;
+  background: var(--fill-2);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.audio-preset input {
+  text-align: center;
+}
+
+.audio-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+.audio-shortcut {
+  display: grid;
+  gap: 6px;
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+
+.audio-shortcut input {
+  font-family: var(--font-mono);
+}
+
+/* ---------- Diagnostics ---------- */
+.audio-diagnostics-details {
+  margin-top: var(--sp-6);
+  border-radius: var(--r-lg);
+  background: var(--fill-1);
+}
+
+.audio-diagnostics-details summary {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  list-style: none;
+}
+
+.audio-diagnostics-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.audio-diagnostics-details summary:hover {
+  color: var(--text);
+}
+
+.audio-diagnostic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1px;
+  margin: 0;
+  padding: 0 var(--sp-4) var(--sp-4);
+}
+
+.audio-diagnostic-grid > div {
+  display: grid;
+  gap: 2px;
+  padding: var(--sp-2) 0;
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+
+.audio-diagnostic-grid dt {
+  color: var(--text-3);
+  font-size: var(--fs-2xs);
+}
+
+.audio-diagnostic-grid dd {
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Save row ---------- */
+.audio-save-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-top: var(--sp-6);
+}
+
+.audio-save-row small {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+@media (max-width: 860px) {
+  .audio-volume-main {
+    grid-template-columns: 1fr auto;
+  }
+
+  .audio-volume-main .volume-slider-control {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .audio-shortcuts {
+    grid-template-columns: 1fr;
+  }
+}
