@@ -51,21 +51,21 @@ function renderTrackList(
   );
 }
 
-describe("TrackList Wiedergabezahlen", () => {
-  it("zeigt echte Spotify-Werte deutsch formatiert", () => {
+describe("TrackList play counts", () => {
+  it("shows real Spotify counts in German formatting", () => {
     renderTrackList([{ ...TRACK, playCount: 222_793_148 }]);
 
     expect(screen.getByText("Wiedergaben")).toBeVisible();
     expect(screen.getByText("222.793.148")).toBeVisible();
   });
 
-  it("lässt die Spalte ohne gelieferten Spotify-Wert weg", () => {
+  it("leaves the column out without a Spotify count", () => {
     renderTrackList([TRACK]);
 
     expect(screen.queryByText("Wiedergaben")).not.toBeInTheDocument();
   });
 
-  it("hebt den aktuell laufenden Titel optional hervor", () => {
+  it("optionally highlights the track playing now", () => {
     usePlayerStore.getState().setPlayback({
       currentItem: TRACK,
       isPlaying: true,
@@ -109,7 +109,7 @@ describe("TrackList Wiedergabezahlen", () => {
       .not.toBeInTheDocument();
   });
 
-  it("scrollt bei einem Playlist-Sprung zur angeforderten Titelzeile", async () => {
+  it("scrolls to the requested track row on a playlist jump", async () => {
     const scrollIntoView = vi.fn();
     Object.defineProperty(HTMLElement.prototype, "scrollIntoView", {
       configurable: true,

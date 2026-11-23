@@ -30,7 +30,7 @@ function SearchTarget() {
 }
 
 describe("ArtistLinks", () => {
-  it("navigiert bei einer Artist-URI intern mit Summary-State", () => {
+  it("navigates internally with summary state for an artist URI", () => {
     render(
       <MemoryRouter initialEntries={["/"]}>
         <Routes>
@@ -57,7 +57,7 @@ describe("ArtistLinks", () => {
     expect(screen.getByText("spotify:artist:oc:OC")).toBeVisible();
   });
 
-  it("führt Artists ohne URI in die gefilterte interne Suche", () => {
+  it("sends artists without a URI to the filtered internal search", () => {
     render(
       <MemoryRouter initialEntries={["/"]}>
         <Routes>
@@ -79,7 +79,7 @@ describe("ArtistLinks", () => {
     expect(screen.getByText("?q=madein2k&type=artists")).toBeVisible();
   });
 
-  it("bewahrt Reihenfolge und Trennung mehrerer Artists", () => {
+  it("keeps order and separators of several artists", () => {
     render(
       <MemoryRouter>
         <ArtistLinks

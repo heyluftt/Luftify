@@ -58,7 +58,7 @@ function renderList(items: MediaItem[]) {
 }
 
 describe("QueueTrackList", () => {
-  it("zeigt ausschließlich Titel und Artist als Textmetadaten", () => {
+  it("shows only title and artist as text", () => {
     renderList([TRACK]);
 
     expect(screen.getByText("Titel Eins")).toBeVisible();
@@ -68,7 +68,7 @@ describe("QueueTrackList", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("entfernt bei doppelter URI genau die angeklickte Zeile über ihre uid", () => {
+  it("removes exactly the clicked row by its uid when a URI appears twice", () => {
     const onRemove = vi.fn();
     const items: QueueItem[] = [
       { item: TRACK, uid: "q1" },
@@ -86,7 +86,7 @@ describe("QueueTrackList", () => {
     expect(onRemove).toHaveBeenCalledWith(items[1]);
   });
 
-  it("bietet ohne uid bei doppelter URI kein mehrdeutiges Entfernen an", () => {
+  it("offers no ambiguous removal for a duplicate URI without uid", () => {
     render(
       <QueryClientProvider client={new QueryClient()}>
         <QueueTrackList
@@ -105,7 +105,7 @@ describe("QueueTrackList", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("verschiebt per Pointer statt per nativem Browser-Drag", () => {
+  it("reorders with pointer events instead of native browser drag", () => {
     const onReorder = vi.fn();
     const items = [TRACK, {
       ...TRACK,

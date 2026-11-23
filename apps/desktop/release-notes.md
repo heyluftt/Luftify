@@ -1,3 +1,7 @@
+# 0.1.38
+
+- Cover-Flug zuverlässiger
+
 # 0.1.37
 
 - Songs laden auch beim schnellen Skippen zuverlässig, statt minutenlang hängen zu bleiben

@@ -7,7 +7,7 @@ Desktop music player for Spotify Premium with its own interface and audio path. 
 - Gapless, click-free track changes
 - Synced lyrics and a music room with canvas videos
 - Listening statistics and recaps
-- Friends, chat and listen-together rooms via a small sync server (`apps/sync-server`)
+- Friends, chat and listen-together rooms via a small sync server (`apps/sync-server`), offline for now
 - Themes, some lit by the colors of the current cover
 
 ## Development

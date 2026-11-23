@@ -1,3 +1,7 @@
+# 0.1.38
+
+- Cover flight works more reliably
+
 # 0.1.37
 
 - Songs keep loading when skipping quickly instead of getting stuck for minutes

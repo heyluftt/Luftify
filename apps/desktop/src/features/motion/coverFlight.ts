@@ -4,7 +4,7 @@ import { motionLevel } from "./motionLevel";
  * Signature effect "Cover-Flug" (DESIGN.md): play on a card, and when the
  * song starts its cover flies in an arc into the player bar and lands there.
  * A click only remembers where the cover was; the flight starts when the
- * player bar actually shows the new song (PlayerBar → flyCoverTo).
+ * player bar actually shows the new song (PlayerBar → useCoverLanding).
  */
 
 /** A launch older than this (slow start, Spotify limit) just fades in normally. */
@@ -12,24 +12,45 @@ const LAUNCH_TTL_MS = 6_000;
 const FLIGHT_MS = 680;
 const LAND_MS = 420;
 
-const LAUNCHERS = ".ds-tile-play:not(.is-playing)";
-const ARTWORK = ".ds-tile-art > :first-child, .ds-row-tile-open > :first-child";
+/**
+ * Play buttons on cards, and where their cover is. Only cards: track rows
+ * and playlist pages start music all the time, a flight there would tire.
+ */
+const LAUNCHERS: Array<{ button: string; art: (button: Element) => HTMLElement | null | undefined }> = [
+  {
+    button: ".ds-tile-play:not(.is-playing)",
+    art: (button) => button.closest(".ds-tile, .ds-row-tile")
+      ?.querySelector<HTMLElement>(".ds-tile-art > :first-child, .ds-row-tile-open > :first-child"),
+  },
+  { button: ".mix-card-play", art: (button) => button.closest(".mix-card")?.querySelector<HTMLElement>(".mix-cover-grid") },
+];
 
 interface Launch {
   art: HTMLElement;
   at: number;
 }
 
-let launch: Launch | undefined;
-let running: (() => void) | undefined;
+interface Flight {
+  /** The player bar cover it lands on; a quick second song change moves it. */
+  target: HTMLElement;
+}
 
-/** Remembers the cover behind a card's play button. Installed once (main.tsx). */
+let launch: Launch | undefined;
+let flight: Flight | undefined;
+
+/** Remembers the cover behind a play button. Installed once (main.tsx). */
 export function trackCoverLaunches(): void {
   document.addEventListener("click", (event) => {
-    const button = (event.target as Element | null)?.closest?.(LAUNCHERS);
-    const card = button?.closest(".ds-tile, .ds-row-tile");
-    const art = card?.querySelector<HTMLElement>(ARTWORK);
-    launch = art ? { art, at: performance.now() } : undefined;
+    const clicked = event.target as Element | null;
+    // Any other click (a track row, the next card) replaces the launch.
+    launch = undefined;
+    for (const { button, art } of LAUNCHERS) {
+      const hit = clicked?.closest?.(button);
+      if (!hit) continue;
+      const cover = art(hit);
+      if (cover) launch = { art: cover, at: performance.now() };
+      return;
+    }
   }, true);
 }
 
@@ -49,15 +70,20 @@ function takeLaunch(): HTMLElement | undefined {
  * false when there is nothing to fly, so the caller keeps its own entrance.
  */
 export function flyCoverTo(target: HTMLElement): boolean {
-  running?.();
+  if (flight) {
+    // The song changed again mid-flight (e.g. the queue settled): the cover
+    // keeps flying and lands on the new player bar cover in the same place.
+    hideTarget(target);
+    flight.target = target;
+    return true;
+  }
   const source = takeLaunch();
   if (!source || motionLevel() !== "full" || typeof target.animate !== "function") return false;
-  // Its own entrance (styles/motion/lively.css) would skew the measurement
-  // and must not play after the landing either; the element is per song.
-  target.dataset.landing = "";
+  hideTarget(target);
   const from = source.getBoundingClientRect();
   const to = target.getBoundingClientRect();
   if (!to.width || !from.width) {
+    showTarget(target);
     delete target.dataset.landing;
     return false;
   }
@@ -83,33 +109,46 @@ export function flyCoverTo(target: HTMLElement): boolean {
   });
   carrier.append(ghost);
   document.body.append(carrier);
-  target.style.opacity = "0";
 
   const timing = { duration: FLIGHT_MS, fill: "forwards" as const };
-  const flight = [
+  const animations = [
     carrier.animate({ translate: ["0 0", `${dx}px 0`] }, { ...timing, easing: "cubic-bezier(.35, 0, .25, 1)" }),
     ghost.animate({ translate: ["0 0", `0 ${dy}px`] }, { ...timing, easing: "cubic-bezier(.5, -0.45, .7, 1)" }),
     ghost.animate({ scale: [1, scale] }, { ...timing, easing: "cubic-bezier(.4, 0, .2, 1)" }),
     ghost.animate({ rotate: ["0deg", "-10deg", "4deg"] }, { ...timing, easing: "ease-in-out" }),
   ];
 
-  let done = false;
+  const current: Flight = { target };
   const finish = (land: boolean) => {
-    if (done) return;
-    done = true;
-    running = undefined;
-    flight.forEach((animation) => animation.cancel());
+    if (flight !== current) return;
+    flight = undefined;
+    animations.forEach((animation) => animation.cancel());
     carrier.remove();
-    target.style.removeProperty("opacity");
-    if (land) {
+    const landing = current.target;
+    showTarget(landing);
+    if (land && landing.isConnected) {
       // It lands with a little squash and settles.
-      target.animate(
+      landing.animate(
         { scale: [.78, 1.12, .97, 1], rotate: ["4deg", "-2deg", "0deg", "0deg"] },
         { duration: LAND_MS, easing: "cubic-bezier(.3, .7, .4, 1)" },
       );
     }
   };
-  running = () => finish(false);
-  void flight[0]!.finished.then(() => finish(true), () => finish(false));
+  flight = current;
+  void animations[0]!.finished.then(() => finish(true), () => finish(false));
   return true;
+}
+
+/**
+ * Hidden while the copy flies. `data-landing` also keeps its own entrance
+ * (styles/motion/lively.css) from skewing the measurement or playing after
+ * the landing; the element exists once per song.
+ */
+function hideTarget(target: HTMLElement) {
+  target.dataset.landing = "";
+  target.style.opacity = "0";
+}
+
+function showTarget(target: HTMLElement) {
+  target.style.removeProperty("opacity");
 }
