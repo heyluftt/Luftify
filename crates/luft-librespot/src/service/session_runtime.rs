@@ -209,7 +209,7 @@ impl LibrespotService {
         snapshot.audio_started = false;
         snapshot.position_ms = position_ms;
         snapshot.position_updated_at = Instant::now();
-        snapshot.pending_seek_ms = None;
+        snapshot.pending_seek = None;
     }
 
     pub(super) async fn restore_recovered_playback(
@@ -268,7 +268,8 @@ impl LibrespotService {
                 snapshot.expected_item = Some(current_item);
             }
             snapshot.context_uri = recovery.context_uri.clone();
-            snapshot.pending_seek_ms = (position_ms > 0).then_some(position_ms);
+            // The load itself starts there (send_expected_track_load).
+            snapshot.pending_seek = (position_ms > 0).then_some(PendingSeek { generation, position_ms });
             info!(
                 adapter = "librespot",
                 phase = "session-recovery",
@@ -296,9 +297,12 @@ impl LibrespotService {
                     .await;
                 Ok(())
             }
-            Ok(false) => Ok(()),
+            Ok(false) => {
+                clear_pending_seek(&mut *self.shared.playback.write().await, generation);
+                Ok(())
+            }
             Err(error) => {
-                self.shared.playback.write().await.pending_seek_ms = None;
+                clear_pending_seek(&mut *self.shared.playback.write().await, generation);
                 Err(error)
             }
         }

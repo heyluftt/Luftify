@@ -1,6 +1,8 @@
 # 0.1.38
 
 - Cover-Flug zuverlässiger
+- Wiedergabe nach Verbindungsabbruch stabiler
+- Neuer Start: Willkommen, Anmeldung und Ladeanzeige
 
 # 0.1.37
 

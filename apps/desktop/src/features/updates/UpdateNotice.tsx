@@ -89,6 +89,8 @@ function useWhatsNew() {
   useEffect(() => {
     const version = BUNDLED_NOTES.version;
     if (!isTauri() || import.meta.env.DEV || !version || !BUNDLED_NOTES.lines.length || seenVersion() === version) return;
+    // A fresh install has nothing "new": remember the version and stay quiet.
+    if (seenVersion() === null) { markSeen(version); return; }
     const timer = window.setTimeout(() => { markSeen(version); setOpen(true); }, 2500);
     return () => window.clearTimeout(timer);
   }, []);

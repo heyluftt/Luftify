@@ -33,8 +33,7 @@ import { VioletNight } from "../features/theme/violet/VioletNight";
 import { NoticeCenter } from "../features/notices/NoticeCenter";
 import { themeArtworkRoute } from "../features/theme/themeArtworkRoute";
 import { isInteractiveKeyboardTarget } from "./keyboardTargets";
-import { FirstRunLibreLogin } from "../features/setup/FirstRunLibreLogin";
-import { LibrarySetup } from "../features/setup/LibrarySetup";
+import { StartFlow } from "../features/start/StartFlow";
 import { useSpotifyLinkPaste } from "../features/links/useSpotifyLinkPaste";
 import { t } from "../i18n";
 import {
@@ -255,8 +254,7 @@ export function AppShell() {
       <RecentPanel />
       <CommandPalette />
       <RecapStoryHost />
-      <FirstRunLibreLogin />
-      <LibrarySetup />
+      <StartFlow />
       {confirmClose && <CloseConfirmDialog onAnswer={answerClose} />}
     </div>
   );

@@ -41,6 +41,8 @@ export function useLibraryWarmup() {
   const liked = useLikedLibrary();
   const usage = usePlaylistUsage(Boolean(account));
   const [visible, setVisible] = useState(false);
+  /** Known whether this account gets the setup (first run) or a quiet refresh. */
+  const [decided, setDecided] = useState(false);
   const [phase, setPhase] = useState<SetupPhase>("idle");
   const [progress, setProgress] = useState<WarmupProgress>({ done: 0, total: 0 });
   const started = useRef<string | undefined>(undefined);
@@ -62,10 +64,11 @@ export function useLibraryWarmup() {
     abort.current = controller;
     const firstRun = !setUp(account) && !hadStoredLibrary.current;
     if (!firstRun) markSetUp(account);
+    if (firstRun) setVisible(true);
+    setDecided(true);
     const store = (uri: string, snapshot: PlaylistDetails) => client.setQueryData(["playlist-snapshot-cache", canonicalPlaylistUri(uri)], snapshot);
     const run = async () => {
       if (firstRun) {
-        setVisible(true);
         setPhase("library");
         // Liked songs load alongside; their first pages are what the library shows.
         await liked.remote.refetch().catch(() => undefined);
@@ -96,5 +99,5 @@ export function useLibraryWarmup() {
     if (account) markSetUp(account);
     setVisible(false);
   };
-  return { visible, phase, progress, skip };
+  return { visible, decided, phase, progress, skip };
 }

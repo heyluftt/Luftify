@@ -1,0 +1,284 @@
+/*
+ * The start (DESIGN.md, "Aufbau"). While `data-start` is on the root the app
+ * is only its outline; `data-start-<part>` lets one region appear
+ * (features/start). The welcome card and the loading indicator are one
+ * surface that changes shape; the indicator sits where the search bar is.
+ */
+
+/* ---------- The app as an outline ---------- */
+:root[data-start] :is(.sidebar, .content-shell, .playerbar) {
+  outline: 1px dashed transparent;
+  outline-offset: -6px;
+  pointer-events: none;
+  transition:
+    outline-color calc(500ms * var(--motion-scale)) ease,
+    background-color calc(500ms * var(--motion-scale)) ease,
+    border-color calc(500ms * var(--motion-scale)) ease;
+}
+
+:root[data-start]:not([data-start-nav]) .sidebar,
+:root[data-start]:not([data-start-main]) .content-shell,
+:root[data-start]:not([data-start-player]) .playerbar {
+  border-radius: var(--r-lg);
+  outline-color: var(--line-strong);
+}
+
+:root[data-start]:not([data-start-main]) .content-shell {
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+:root[data-start]:not([data-start-nav]) .sidebar > :is(.sidebar-header, .sidebar-nav, .sidebar-footer),
+:root[data-start]:not([data-start-library]) .sidebar-library,
+:root[data-start]:not([data-start-main]) .content-shell > *,
+:root[data-start]:not([data-start-player]) .playerbar > * {
+  opacity: 0;
+}
+
+/* ---------- Regions arriving ---------- */
+:root[data-start-nav] .sidebar > :is(.sidebar-header, .sidebar-footer),
+:root[data-start-nav] .sidebar-nav > .nav-item,
+:root[data-start-library] .sidebar-library-head,
+:root[data-start-library] .sidebar-library-tools,
+:root[data-start-library]:not([data-start-setup]) .sidebar-library-list > li:nth-child(-n + 14),
+:root[data-start-main] .page-scroll :is(.home-welcome, .page-heading, .home-feature, .ds-section-head, .ds-row-tile, .ds-tile, .mix-card) {
+  animation: start-pop calc(480ms * var(--motion-scale)) var(--ease-bounce) backwards;
+  animation-delay: calc(var(--start-order, 0) * 55ms * var(--motion-scale));
+}
+
+:root[data-start-main] .topbar,
+:root[data-start-player] .playerbar > * {
+  animation: start-rise calc(520ms * var(--motion-scale)) var(--ease-pop) backwards;
+}
+
+:root[data-start] :is(.nav-item, .sidebar-library-list > li, .ds-row-tile, .ds-tile, .mix-card):nth-child(2) { --start-order: 1; }
+:root[data-start] :is(.nav-item, .sidebar-library-list > li, .ds-row-tile, .ds-tile, .mix-card):nth-child(3) { --start-order: 2; }
+:root[data-start] :is(.nav-item, .sidebar-library-list > li, .ds-row-tile, .ds-tile, .mix-card):nth-child(4) { --start-order: 3; }
+:root[data-start] :is(.nav-item, .sidebar-library-list > li, .ds-row-tile, .ds-tile, .mix-card):nth-child(5) { --start-order: 4; }
+:root[data-start] :is(.nav-item, .sidebar-library-list > li, .ds-row-tile, .ds-tile, .mix-card):nth-child(6) { --start-order: 5; }
+:root[data-start] :is(.nav-item, .sidebar-library-list > li, .ds-row-tile, .ds-tile, .mix-card):nth-child(7) { --start-order: 6; }
+:root[data-start] :is(.nav-item, .sidebar-library-list > li, .ds-row-tile, .ds-tile, .mix-card):nth-child(8) { --start-order: 7; }
+:root[data-start] :is(.nav-item, .sidebar-library-list > li, .ds-row-tile, .ds-tile, .mix-card):nth-child(n + 9) { --start-order: 8; }
+:root[data-start] .sidebar-footer { --start-order: 8; }
+
+/* During the setup the rows come one by one (StartFlow sets how many). */
+:root[data-start-setup] .sidebar-library-list > li {
+  transition:
+    opacity calc(300ms * var(--motion-scale)) ease,
+    transform calc(460ms * var(--motion-scale)) var(--ease-bounce);
+}
+
+@keyframes start-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(.9);
+  }
+}
+
+@keyframes start-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* ---------- Welcome card and loading indicator ---------- */
+.start-layer {
+  position: fixed;
+  z-index: 900;
+  inset: var(--titlebar-height) 0 0;
+  pointer-events: none;
+  transition: background-color calc(600ms * var(--motion-scale)) ease;
+}
+
+.start-layer[data-form="card"] {
+  background: color-mix(in srgb, var(--bg) 38%, transparent);
+  pointer-events: auto;
+}
+
+.start-surface {
+  position: fixed;
+  top: calc(50% - 178px);
+  left: calc(50% - 200px);
+  overflow: hidden;
+  width: 400px;
+  height: 356px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xl);
+  background: var(--raised);
+  box-shadow: var(--shadow-2);
+  pointer-events: auto;
+  transition:
+    top calc(700ms * var(--motion-scale)) var(--ease-pop),
+    left calc(700ms * var(--motion-scale)) var(--ease-pop),
+    width calc(700ms * var(--motion-scale)) var(--ease-pop),
+    height calc(700ms * var(--motion-scale)) var(--ease-pop),
+    border-radius calc(700ms * var(--motion-scale)) ease,
+    box-shadow calc(700ms * var(--motion-scale)) ease,
+    opacity calc(320ms * var(--motion-scale)) ease,
+    scale calc(420ms * var(--motion-scale)) var(--ease-bounce);
+}
+
+.start-layer[data-form="pill"] .start-surface,
+.start-layer[data-form="none"] .start-surface {
+  top: var(--start-y, calc(var(--titlebar-height) + 16px));
+  left: var(--start-x, calc(50% - 210px));
+  width: var(--start-w, 420px);
+  height: var(--start-h, 40px);
+  border-radius: var(--r-full);
+  box-shadow: var(--shadow-1);
+}
+
+.start-layer[data-form="none"] .start-surface {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.start-welcome {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--sp-8) var(--sp-8) var(--sp-4);
+  text-align: center;
+  transition: opacity calc(240ms * var(--motion-scale)) ease;
+}
+
+.start-layer:not([data-form="card"]) .start-welcome {
+  opacity: 0;
+}
+
+.start-welcome .start-mark {
+  width: 60px;
+  height: 60px;
+  margin-bottom: var(--sp-4);
+}
+
+.start-mark {
+  display: block;
+  flex: none;
+}
+
+.start-mark > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.start-welcome h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 25px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-tight);
+  white-space: nowrap;
+}
+
+.start-welcome p {
+  margin: var(--sp-2) 0 0;
+  color: var(--text-2);
+  font-size: var(--fs-lg);
+}
+
+.start-sign-in {
+  min-height: 46px;
+  margin-top: var(--sp-6);
+  padding: 0 var(--sp-6);
+  border-radius: var(--r-full);
+  font-size: var(--fs-lg);
+  white-space: nowrap;
+  transition: scale calc(320ms * var(--motion-scale)) var(--ease-bounce);
+}
+
+.start-sign-in:not(:disabled):active {
+  scale: .94;
+}
+
+.start-welcome small {
+  margin-top: var(--sp-3);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.start-welcome .start-error {
+  color: var(--danger);
+}
+
+.start-later {
+  margin-top: auto;
+  color: var(--text-2);
+}
+
+/* Lies over the welcome while hidden: it must never take its clicks. */
+.start-pill {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  pointer-events: none;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-4);
+  font-size: var(--fs-md);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity calc(300ms * var(--motion-scale)) ease;
+}
+
+.start-layer[data-form="pill"] .start-pill {
+  opacity: 1;
+  transition-delay: calc(320ms * var(--motion-scale));
+}
+
+.start-pill .start-mark {
+  width: 20px;
+  height: 20px;
+}
+
+.start-pill strong {
+  font-weight: var(--fw-semibold);
+}
+
+.start-step {
+  overflow: hidden;
+  min-width: 0;
+  color: var(--text-2);
+  text-overflow: ellipsis;
+}
+
+.start-step em {
+  font-style: normal;
+}
+
+.start-percent {
+  margin-left: auto;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.start-fill {
+  position: absolute;
+  pointer-events: none;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  opacity: 0;
+  transition:
+    width calc(400ms * var(--motion-scale)) var(--ease-out),
+    opacity calc(300ms * var(--motion-scale)) ease;
+}
+
+.start-layer[data-form="pill"] .start-fill {
+  opacity: 1;
+}
+
+.start-skip {
+  position: fixed;
+  top: calc(var(--start-y, 60px) + var(--start-h, 40px) + var(--sp-2));
+  right: calc(100% - var(--start-x, 50%) - var(--start-w, 0px));
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  pointer-events: auto;
+}

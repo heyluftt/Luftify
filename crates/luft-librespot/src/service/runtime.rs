@@ -192,9 +192,6 @@ pub(super) async fn apply_player_event(
             );
             notify_playback(shared).await;
             schedule_experimental_canvas(shared, &audio_uri);
-            if apply_pending_seek(shared).await {
-                notify_playback(shared).await;
-            }
             let enrich_shared = Arc::clone(shared);
             let enrich_session = session.clone();
             let enrich_track_id = SpotifyUri::from_uri(&audio_uri).unwrap_or(track_id);
@@ -935,30 +932,20 @@ pub(super) async fn refresh_context_queue(
     }
 }
 
-pub(super) async fn apply_pending_seek(shared: &Shared) -> bool {
-    let Some(position_ms) = shared.playback.write().await.pending_seek_ms.take() else {
-        return false;
-    };
-    let position = u32::try_from(position_ms).unwrap_or(u32::MAX);
-    {
-        let session = shared.session.lock().await;
-        let Some(active) = session.as_ref() else {
-            return false;
-        };
-        if let Err(error) = active.spirc.set_position_ms(position) {
-            warn!(
-                error = %error,
-                position_ms,
-                adapter = "librespot",
-                "pending seek could not be applied"
-            );
-            return false;
-        }
+/// Where a load for `generation` should start instead of at 0 (a session
+/// recovery resuming mid-song). A seek sent after the load is not reliable:
+/// Spirc drops it while it does not know the track's duration yet.
+pub(super) fn take_pending_seek(snapshot: &mut PlaybackSnapshot, generation: u64) -> u32 {
+    match snapshot.pending_seek.take() {
+        Some(seek) if seek.generation == generation => u32::try_from(seek.position_ms).unwrap_or(0),
+        _ => 0,
     }
-    let mut snapshot = shared.playback.write().await;
-    snapshot.position_ms = position_ms;
-    snapshot.position_updated_at = Instant::now();
-    true
+}
+
+pub(super) fn clear_pending_seek(snapshot: &mut PlaybackSnapshot, generation: u64) {
+    if snapshot.pending_seek.is_some_and(|seek| seek.generation == generation) {
+        snapshot.pending_seek = None;
+    }
 }
 
 pub(super) fn commit_expected_item(snapshot: &mut PlaybackSnapshot, item: MediaItem) {
@@ -1126,8 +1113,10 @@ pub(super) fn apply_publish_loading_item(
     Some(disposition)
 }
 
-pub(super) fn single_track_load_request(uri: &str) -> LoadRequest {
-    LoadRequest::from_tracks(vec![uri.to_string()], single_track_load_options(uri))
+pub(super) fn single_track_load_request(uri: &str, seek_to_ms: u32) -> LoadRequest {
+    let mut options = single_track_load_options(uri);
+    options.seek_to = seek_to_ms;
+    LoadRequest::from_tracks(vec![uri.to_string()], options)
 }
 
 pub(super) fn single_track_load_options(uri: &str) -> LoadRequestOptions {
@@ -1183,7 +1172,8 @@ pub(super) async fn send_expected_track_load(
         generation,
         uri: uri.to_string(),
     });
-    if let Err(error) = active.spirc.load(single_track_load_request(uri)) {
+    let seek_to_ms = take_pending_seek(&mut snapshot, generation);
+    if let Err(error) = active.spirc.load(single_track_load_request(uri, seek_to_ms)) {
         snapshot
             .sent_player_loads
             .retain(|sent| sent.generation != generation || !same_item_uri(&sent.uri, uri));

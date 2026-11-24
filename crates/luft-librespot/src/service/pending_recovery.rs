@@ -6,7 +6,7 @@ pub(super) fn cancel_session_recovery(snapshot: &mut PlaybackSnapshot) {
     if snapshot.pending_session_recovery.take().is_some() {
         snapshot.load_intent_epoch = snapshot.load_intent_epoch.saturating_add(1);
         snapshot.play_generation = snapshot.play_generation.saturating_add(1);
-        snapshot.pending_seek_ms = None;
+        snapshot.pending_seek = None;
     }
 }
 

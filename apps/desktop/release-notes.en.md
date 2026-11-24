@@ -1,6 +1,8 @@
 # 0.1.38
 
-- Cover flight works more reliably
+- Cover flight more reliable
+- More stable playback after reconnects
+- New start: welcome, sign-in and loading indicator
 
 # 0.1.37
 

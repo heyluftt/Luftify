@@ -172,7 +172,7 @@ struct PlaybackSnapshot {
     pending_auto_advance: Option<PendingAutoAdvance>,
     pending_next_load: Option<PendingNextLoad>,
     is_saved: bool,
-    pending_seek_ms: Option<u64>,
+    pending_seek: Option<PendingSeek>,
     audio_started: bool,
     clock_track_uri: Option<String>,
     audio_lookahead_uri: Option<String>,
@@ -214,7 +214,7 @@ impl Default for PlaybackSnapshot {
             pending_auto_advance: None,
             pending_next_load: None,
             is_saved: false,
-            pending_seek_ms: None,
+            pending_seek: None,
             audio_started: false,
             clock_track_uri: None,
             audio_lookahead_uri: None,
@@ -237,6 +237,13 @@ impl PlaybackSnapshot {
 struct PlayerLoadIntent {
     generation: u64,
     uri: String,
+}
+
+/// A start position for the load of one generation (session recovery).
+#[derive(Debug, Clone, Copy)]
+struct PendingSeek {
+    generation: u64,
+    position_ms: u64,
 }
 
 #[derive(Debug, Clone)]
@@ -633,7 +640,7 @@ impl LibrespotService {
         snapshot.expected_player_baseline_request_id = None;
         snapshot.player_item_candidate = None;
         snapshot.pending_auto_advance = None;
-        snapshot.pending_seek_ms = None;
+        snapshot.pending_seek = None;
     }
 
     async fn release_handoff_hold(&self) {

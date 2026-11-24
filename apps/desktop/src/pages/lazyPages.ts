@@ -67,6 +67,11 @@ export function prefetchPages(): void {
   schedule(next);
 }
 
+/** Loads every page chunk at once; the start waits for it behind its indicator. */
+export function preloadAllPages(): Promise<void> {
+  return Promise.allSettled(PRELOAD_ORDER.map((page) => page.preload())).then(() => undefined);
+}
+
 function schedule(work: () => void) {
   if (typeof window.requestIdleCallback === "function") {
     window.requestIdleCallback(work, { timeout: 2_500 });

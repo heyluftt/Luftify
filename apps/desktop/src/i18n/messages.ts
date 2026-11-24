@@ -7,7 +7,7 @@ import { libraryUiDe, libraryUiEn } from "./libraryUi";
 import { accountsDe, accountsEn } from "./accounts";
 import { playlistPickerDe, playlistPickerEn } from "./playlistPicker";
 import { playlistManageDe, playlistManageEn } from "./playlistManage";
-import { librarySetupDe, librarySetupEn } from "./librarySetup";
+import { startFlowDe, startFlowEn } from "./startFlow";
 import { losslessDe, losslessEn } from "./lossless";
 import { chatDe, chatEn } from "./chat";
 import { spatialDe, spatialEn } from "./spatial";
@@ -81,7 +81,7 @@ export const de = {
   ...accountsDe,
   ...playlistPickerDe,
   ...playlistManageDe,
-  ...librarySetupDe,
+  ...startFlowDe,
   ...losslessDe,
   ...chatDe,
   ...libraryUiDe,
@@ -250,21 +250,7 @@ export const de = {
   "chip.starting": "Startet",
   "chip.loadingLocal": "Lokale Daten werden geladen",
   "chip.booting": "Wird gestartet",
-  "firstRun.eyebrow": "Einmalige Einrichtung",
-  "firstRun.title": "Mit Spotify anmelden",
-  "firstRun.description": "Luftify spielt über Librespot direkt in der App. Dafür ist ein Spotify-Premium-Konto nötig.",
-  "firstRun.libreTitle": "Librespot",
-  "firstRun.libreBody": "Spielt direkt in Luftify mit lokalem EQ, Raumklang und Lautstärkeschutz.",
-  "firstRun.libreFactOne": "Spotify Premium",
-  "firstRun.libreFactTwo": "Direkte Audioausgabe",
-  "firstRun.libreReady": "Kein Zusatzprogramm nötig",
-  "firstRun.signInTitle": "Einmal anmelden",
-  "firstRun.signInHint": "Die Anmeldung öffnet Spotify im Browser. Zugangsdaten bleiben lokal.",
-  "firstRun.signIn": "Bei Spotify anmelden",
-  "firstRun.loggingIn": "Anmeldung läuft …",
   "firstRun.later": "Später",
-  "firstRun.footer": "Deine Sitzung wird nur lokal gespeichert.",
-  "firstRun.error": "Die Anmeldung konnte nicht abgeschlossen werden. Bitte versuche es erneut.",
   "chip.demo": "Demo",
 
   "close.title": "Luftify schließen?",
@@ -483,7 +469,7 @@ export const en: { [K in keyof typeof de]: string } = {
   ...accountsEn,
   ...playlistPickerEn,
   ...playlistManageEn,
-  ...librarySetupEn,
+  ...startFlowEn,
   ...losslessEn,
   ...chatEn,
   ...libraryUiEn,
@@ -652,21 +638,7 @@ export const en: { [K in keyof typeof de]: string } = {
   "chip.starting": "Starting",
   "chip.loadingLocal": "Loading local data",
   "chip.booting": "Starting",
-  "firstRun.eyebrow": "One-time setup",
-  "firstRun.title": "Sign in to Spotify",
-  "firstRun.description": "Luftify plays through Librespot inside the app. A Spotify Premium account is required.",
-  "firstRun.libreTitle": "Librespot",
-  "firstRun.libreBody": "Plays directly in Luftify with local EQ, spatial audio and volume protection.",
-  "firstRun.libreFactOne": "Spotify Premium",
-  "firstRun.libreFactTwo": "Direct audio output",
-  "firstRun.libreReady": "No extra software needed",
-  "firstRun.signInTitle": "Sign in once",
-  "firstRun.signInHint": "Sign-in opens Spotify in your browser. Credentials stay on this device.",
-  "firstRun.signIn": "Sign in to Spotify",
-  "firstRun.loggingIn": "Signing in …",
   "firstRun.later": "Later",
-  "firstRun.footer": "Your session is stored locally only.",
-  "firstRun.error": "Sign-in could not be completed. Please try again.",
   "chip.demo": "Demo",
 
   "close.title": "Close Luftify?",

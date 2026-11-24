@@ -320,6 +320,20 @@ fn single_track_load_disables_spirc_shuffle_and_repeat() {
 }
 
 #[test]
+fn recovery_seek_starts_only_the_load_it_was_meant_for() {
+    let seek = PendingSeek { generation: 7, position_ms: 112_020 };
+    let mut snapshot = PlaybackSnapshot { pending_seek: Some(seek), ..PlaybackSnapshot::default() };
+    // Another load came first: it starts at 0 and the stale seek is gone.
+    assert_eq!(take_pending_seek(&mut snapshot, 8), 0);
+    assert!(snapshot.pending_seek.is_none());
+
+    snapshot.pending_seek = Some(seek);
+    let seek_to = take_pending_seek(&mut snapshot, 7);
+    assert_eq!(seek_to, 112_020);
+    assert_eq!(single_track_load_request(TRACK_B, seek_to).seek_to, 112_020);
+}
+
+#[test]
 fn accepted_playing_event_updates_audio_truth_before_enrichment() {
     let mut snapshot = PlaybackSnapshot {
         current_item: Some(loading_item(TRACK_A)),
