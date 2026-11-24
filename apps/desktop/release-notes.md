@@ -1,3 +1,7 @@
+# 0.1.39
+
+- Eigenes Installer-Fenster
+
 # 0.1.38
 
 - Cover-Flug zuverlässiger

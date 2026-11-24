@@ -1,0 +1,11 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "setup-default",
+  "description": "The setup window may be dragged, minimized and closed.",
+  "windows": ["main"],
+  "permissions": [
+    "core:window:allow-start-dragging",
+    "core:window:allow-minimize",
+    "core:window:allow-close"
+  ]
+}

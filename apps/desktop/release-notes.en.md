@@ -1,3 +1,7 @@
+# 0.1.39
+
+- Own setup window
+
 # 0.1.38
 
 - Cover flight more reliable

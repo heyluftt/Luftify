@@ -88,6 +88,25 @@ importers:
         specifier: ^3.2.4
         version: 3.2.7(jsdom@26.1.0)
 
+  apps/installer:
+    dependencies:
+      '@tauri-apps/api':
+        specifier: ^2.5.0
+        version: 2.11.1
+    devDependencies:
+      '@tauri-apps/cli':
+        specifier: ^2.5.0
+        version: 2.11.4
+      '@tauri-apps/cli-win32-x64-msvc':
+        specifier: 2.11.4
+        version: 2.11.4
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vite:
+        specifier: ^7.0.4
+        version: 7.3.6
+
   packages/protocol-types:
     devDependencies:
       typescript:
