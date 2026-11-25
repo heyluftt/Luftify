@@ -158,7 +158,7 @@ describe("Settings page", () => {
       mode: "waves",
       colorStrengthPercent: 200,
     }));
-    expect(screen.getByRole("radio", { name: /Kräftiger Puls/ })).toBeVisible();
+    expect(screen.getByRole("radio", { name: /Lichtkranz/ })).toBeVisible();
   });
 
   it("saves the optional audio visualizer independently of the ambient style", async () => {

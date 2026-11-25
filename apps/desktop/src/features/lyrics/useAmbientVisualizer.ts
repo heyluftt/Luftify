@@ -13,15 +13,16 @@ import type {
   VisualizerFrame,
 } from "../../types/tauri";
 import {
-  EMPTY_VISUALIZER_FRAME,
-  ambientVisualizerVars,
   applyVisualizerVars,
+  createVisualizerFollower,
   hasVisualizerSignal,
-  shapeVisualizerFrame,
-  smoothVisualizerFrame,
+  waveVisualizerVars,
 } from "./ambientVisualizer";
+import { createHaloMotion } from "./haloVisualizer";
 import { lyricsAmbientMetrics } from "./lyricsVisualSettings";
 import { prefersLessMotion } from "../motion/motionLevel";
+
+const POLL_MS = 16;
 
 export function useAmbientVisualizer({
   enabled,
@@ -75,13 +76,13 @@ export function useAmbientVisualizer({
       spreadPercent,
       colorStrengthPercent,
     });
+    const halo = createHaloMotion(metrics);
     let cancelled = false;
     let frameId = 0;
     let inFlight = false;
     let lastPollAt = 0;
-    let envelope = EMPTY_VISUALIZER_FRAME;
+    const follower = createVisualizerFollower();
     let latched = false;
-    let lastTs = performance.now();
 
     const apply = (frame: VisualizerFrame, now: number) => {
       if (!hasVisualizerSignal(frame) && !latched) {
@@ -91,7 +92,9 @@ export function useAmbientVisualizer({
         latched = true;
         setActive(true);
       }
-      const vars = ambientVisualizerVars(frame, metrics, mode, now);
+      const vars = mode === "waves"
+        ? waveVisualizerVars(frame, metrics, now)
+        : halo(frame, now);
       lastVarsRef.current = vars;
       applyVisualizerVars(element, vars);
     };
@@ -102,16 +105,11 @@ export function useAmbientVisualizer({
       }
       frameId = window.requestAnimationFrame(tick);
       if (document.hidden) {
-        lastTs = now;
         return;
       }
 
-      lastTs = now;
-
-      if (latched) {
-        apply(envelope, now);
-      }
-      if (inFlight || now - lastPollAt < 32) {
+      apply(follower.step(now), now);
+      if (inFlight || now - lastPollAt < POLL_MS) {
         return;
       }
       lastPollAt = now;
@@ -122,13 +120,7 @@ export function useAmbientVisualizer({
           if (cancelled || snapshot.source !== "live") {
             return;
           }
-          const dt = Math.min(0.08, Math.max(0.008, (performance.now() - now) / 1_000));
-          envelope = smoothVisualizerFrame(
-            envelope,
-            shapeVisualizerFrame(snapshot, sensitivityRef.current),
-            dt,
-          );
-          apply(envelope, performance.now());
+          follower.push(snapshot, sensitivityRef.current);
         })
         .catch(() => undefined)
         .finally(() => {

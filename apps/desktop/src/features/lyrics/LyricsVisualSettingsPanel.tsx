@@ -12,6 +12,7 @@ import {
   MAX_LYRICS_COLOR_STRENGTH_PERCENT,
   MAX_LYRICS_SPREAD_PERCENT,
   MAX_VISUALIZER_SENSITIVITY_PERCENT,
+  lyricsAmbientMetrics,
   normalizeLyricsVisualSettings,
 } from "./lyricsVisualSettings";
 
@@ -31,41 +32,31 @@ export function LyricsVisualSettingsPanel({
   const boost = Math.max(0, settings.colorStrengthPercent - 100) / 100;
   const perceivedStrength = Math.pow(strength, 0.82);
   const peakBoost = Math.pow(strength, 2.4);
+  const halo = mode === "pulse";
+  const metrics = lyricsAmbientMetrics(settings);
   const previewStyle = {
-    "--preview-blur": `${9 + spread * 15 + boost * (mode === "pulse" ? 2 : 4)}px`,
+    "--preview-blur": `${9 + spread * 15 + boost * (halo ? 2 : 4)}px`,
     "--preview-max-opacity": String(
-      perceivedStrength * 0.28
-        + peakBoost * 0.16
-        + boost * (mode === "pulse" ? 0.38 : 0.22),
+      halo
+        ? metrics.haloMaxOpacity
+        : perceivedStrength * 0.28 + peakBoost * 0.16 + boost * 0.22,
     ),
     "--preview-min-opacity": String(
-      perceivedStrength * 0.04
-        + peakBoost * 0.015
-        + boost * (mode === "pulse" ? 0.05 : 0.035),
+      halo
+        ? metrics.haloMinOpacity * 0.5
+        : perceivedStrength * 0.04 + peakBoost * 0.015 + boost * 0.035,
     ),
-    "--preview-pulse-duration": `${4.6 - boost * 1.5}s`,
-    "--preview-pulse-far-duration": `${7.43 - boost * 2.09}s`,
-    "--preview-pulse-near-duration": `${5.71 - boost * 1.78}s`,
-    "--preview-pulse-shift": `${1 + boost * 3}px`,
-    "--preview-pulse-shift-negative": `${-1 - boost * 3}px`,
-    "--preview-pulse-tilt": `${0.4 + boost * 2.8}deg`,
-    "--preview-pulse-tilt-negative": `${-0.4 - boost * 2.8}deg`,
     "--preview-ring-opacity": String(
-      perceivedStrength * 0.2
-        + peakBoost * 0.13
-        + boost * (mode === "pulse" ? 0.4 : 0.24),
+      halo
+        ? metrics.beamOpacity
+        : perceivedStrength * 0.2 + peakBoost * 0.13 + boost * 0.24,
     ),
     "--preview-saturation": String(
-      1.05 + strength * 1.25 + boost * (mode === "pulse" ? 2.15 : 1.3),
+      1.05 + strength * 1.25 + boost * (halo ? 2.15 : 1.3),
     ),
-    "--preview-scale-max": String(
-      1.13 + spread * 0.27 + boost * (mode === "pulse" ? 0.28 : 0.11),
-    ),
-    "--preview-scale-mid": String(
-      1.07 + spread * 0.15 + boost * (mode === "pulse" ? 0.1 : 0.05),
-    ),
+    "--preview-scale-max": String(1 + metrics.haloSwell * 1.5),
     "--preview-scale-min": String(
-      1.025 + spread * 0.075 + boost * (mode === "pulse" ? 0.035 : 0.025),
+      1.025 + spread * 0.075 + boost * (halo ? 0.035 : 0.025),
     ),
   } as React.CSSProperties;
   const update = (change: Partial<LyricsVisualSettings>) => {

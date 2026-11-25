@@ -211,6 +211,10 @@
   scrollbar-gutter: stable;
 }
 
+.sidebar-library-list:not(:hover, :focus-within)::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
 .sidebar-entry {
   display: flex;
   min-width: 0;

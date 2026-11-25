@@ -25,6 +25,7 @@
 @import "./pages/lyrics.css";
 @import "./pages/canvas-room.css";
 @import "./components/lyrics-artwork-ambient.css";
+@import "./components/lyrics-artwork-halo.css";
 @import "./components/lyrics-visual-settings.css";
 @import "./pages/queue.css";
 @import "./pages/insights.css";

@@ -27,11 +27,12 @@ export function usePlaybackClock(options: PlaybackClockOptions): PlaybackClockSt
   const [clock, setClock] = useState(() => initialPlaybackClock(options.positionMs, options.trackKey));
   const precise = useRef(clock);
   const lastTickAt = useRef(performance.now());
-  const resolutionMs = options.resolutionMs ?? 0;
+  const resolutionMs = useRef(0);
+  resolutionMs.current = options.resolutionMs ?? 0;
 
   const publish = (next: PlaybackClockState) => {
     precise.current = next;
-    setClock((current) => sameStep(current, next, resolutionMs) ? current : next);
+    setClock((current) => sameStep(current, next, resolutionMs.current) ? current : next);
   };
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export function usePlaybackClock(options: PlaybackClockOptions): PlaybackClockSt
       publish(advancePlaybackClock(precise.current, elapsedMs, options));
     }, PLAYBACK_CLOCK_TICK_MS);
     return () => window.clearInterval(timer);
-  }, [options.durationMs, options.playing, options.repeatMode, options.suspended, options.trackKey, resolutionMs]);
+  }, [options.durationMs, options.playing, options.repeatMode, options.suspended, options.trackKey]);
 
   return clock;
 }

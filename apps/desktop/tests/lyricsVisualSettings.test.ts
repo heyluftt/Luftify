@@ -86,19 +86,21 @@ describe("lyrics visual settings", () => {
       colorStrengthPercent: 200,
     });
 
-    expect(zeroStrength.maxOpacity).toBe(0);
-    expect(zeroStrength.ringOpacity).toBe(0);
+    expect(zeroStrength.haloMaxOpacity).toBe(0);
+    expect(zeroStrength.beamOpacity).toBe(0);
     // 100 % stays a soft glow; the range above 100 % is the explicit boost.
-    expect(strong.scaleMax).toBeGreaterThan(quiet.scaleMax);
-    expect(strong.maxOpacity).toBeGreaterThan(quiet.maxOpacity);
-    expect(strong.ringOpacity).toBeGreaterThan(quiet.ringOpacity);
+    expect(strong.haloReachPercent).toBeGreaterThan(quiet.haloReachPercent);
+    expect(strong.haloMaxOpacity).toBeGreaterThan(quiet.haloMaxOpacity);
+    expect(strong.haloMaxOpacity).toBeGreaterThan(strong.haloMinOpacity);
+    expect(strong.beamOpacity).toBeGreaterThan(quiet.beamOpacity);
     expect(strong.waveMaxOpacity).toBeGreaterThanOrEqual(0.65);
-    expect(boosted.maxOpacity).toBeLessThanOrEqual(1);
+    expect(boosted.haloMaxOpacity).toBeLessThanOrEqual(1);
+    expect(boosted.beamOpacity).toBeLessThanOrEqual(1);
     expect(strong.saturation).toBeGreaterThan(quiet.saturation);
     expect(boosted.saturation).toBeGreaterThan(strong.saturation);
-    expect(boosted.maxOpacity).toBeGreaterThan(strong.maxOpacity);
+    expect(boosted.haloSaturation).toBeGreaterThan(strong.haloSaturation);
     expect(boosted.waveMaxOpacity).toBeGreaterThan(strong.waveMaxOpacity);
-    expect(boosted.ringOpacity).toBeGreaterThan(strong.ringOpacity);
+    expect(boosted.beamWidthPx).toBeGreaterThan(strong.beamWidthPx);
     expect(strong.blurPx).toBeLessThanOrEqual(60);
   });
 });

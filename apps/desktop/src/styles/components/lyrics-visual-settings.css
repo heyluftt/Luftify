@@ -92,47 +92,60 @@
   font-size: 9px;
 }
 
-.lyrics-visual-preview[data-mode="pulse"] .lyrics-visual-preview-aura.is-secondary {
-  display: block;
-  width: 66px;
-  height: 54px;
-  aspect-ratio: auto;
+.lyrics-visual-preview[data-mode="pulse"] .lyrics-visual-preview-aura {
+  width: 64px;
+  border-radius: 22px;
   background:
-    radial-gradient(circle at 28% 32%, color-mix(in srgb, var(--color-primary) 76%, transparent), transparent 45%),
-    radial-gradient(circle at 72% 68%, color-mix(in srgb, var(--color-accent) 66%, transparent), transparent 48%);
-  filter:
-    blur(calc(var(--preview-blur) * .82))
-    saturate(var(--preview-saturation));
+    conic-gradient(
+      var(--color-primary),
+      var(--color-accent),
+      color-mix(in srgb, var(--color-primary) 55%, var(--color-accent)),
+      var(--color-accent),
+      var(--color-primary)
+    );
+}
+
+.lyrics-visual-preview[data-mode="pulse"] .lyrics-visual-preview-ring {
+  width: 54px;
+  padding: 2px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: none;
+  filter: none;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+
+.lyrics-visual-preview[data-mode="pulse"] .lyrics-visual-preview-ring::before {
+  position: absolute;
+  inset: -25%;
+  content: "";
+  background:
+    conic-gradient(
+      transparent 0 52%,
+      var(--color-primary) 80%,
+      color-mix(in srgb, var(--color-primary) 35%, #fff) 90%,
+      transparent 93%
+    );
+  rotate: 150deg;
 }
 
 .lyrics-visual-preview[data-enabled="true"][data-mode="pulse"] .lyrics-visual-preview-aura:first-of-type {
-  animation:
-    lyrics-settings-pulse-color-preview
-    var(--preview-pulse-duration)
-    -.31s
-    cubic-bezier(.2, .72, .2, 1)
-    infinite
-    alternate;
-}
-
-.lyrics-visual-preview[data-enabled="true"][data-mode="pulse"] .lyrics-visual-preview-aura.is-secondary {
-  animation:
-    lyrics-settings-pulse-far-preview
-    var(--preview-pulse-far-duration)
-    -2.43s
-    cubic-bezier(.2, .72, .2, 1)
-    infinite
-    alternate;
+  opacity: var(--preview-max-opacity);
+  animation: lyrics-settings-halo-turn 12s linear infinite;
 }
 
 .lyrics-visual-preview[data-enabled="true"][data-mode="pulse"] .lyrics-visual-preview-ring {
-  animation:
-    lyrics-settings-pulse-near-preview
-    var(--preview-pulse-near-duration)
-    -1.17s
-    cubic-bezier(.2, .72, .2, 1)
-    infinite
-    alternate-reverse;
+  opacity: var(--preview-ring-opacity);
+}
+
+.lyrics-visual-preview[data-enabled="true"][data-mode="pulse"] .lyrics-visual-preview-ring::before {
+  animation: lyrics-settings-halo-turn 6s linear infinite;
 }
 
 .lyrics-visual-preview[data-mode="waves"] .lyrics-visual-preview-aura {
@@ -202,27 +215,12 @@
 
 .lyrics-visual-preview[data-enabled="true"][data-visualizer="true"][data-mode="pulse"] .lyrics-visual-preview-aura:first-of-type {
   animation:
-    lyrics-settings-visualizer-bloom-preview
-    1.15s
-    cubic-bezier(.12, .86, .18, 1)
-    infinite;
+    lyrics-settings-halo-turn 12s linear infinite,
+    lyrics-settings-halo-beat 1.15s cubic-bezier(.12, .86, .18, 1) infinite;
 }
 
-.lyrics-visual-preview[data-enabled="true"][data-visualizer="true"][data-mode="pulse"] .lyrics-visual-preview-aura.is-secondary {
-  animation:
-    lyrics-settings-visualizer-halo-preview
-    1.15s
-    .08s
-    cubic-bezier(.16, .8, .22, 1)
-    infinite;
-}
-
-.lyrics-visual-preview[data-enabled="true"][data-visualizer="true"][data-mode="pulse"] .lyrics-visual-preview-ring {
-  animation:
-    lyrics-settings-visualizer-halo-preview
-    1.15s
-    cubic-bezier(.1, .9, .16, 1)
-    infinite;
+.lyrics-visual-preview[data-enabled="true"][data-visualizer="true"][data-mode="pulse"] .lyrics-visual-preview-ring::before {
+  animation-duration: 2.3s;
 }
 
 .lyrics-visual-preview[data-enabled="true"][data-visualizer="true"][data-mode="waves"] .lyrics-visual-preview-aura:first-of-type {
@@ -338,8 +336,30 @@
 
 .lyrics-visual-mode-option[data-mode="pulse"] .lyrics-visual-mode-swatch b {
   inset: 8px 14px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px color-mix(in srgb, var(--color-primary) 34%, transparent);
+  border: 2px solid transparent;
+  border-radius: 9px;
+  background:
+    conic-gradient(
+      from 200deg,
+      transparent 0 40%,
+      var(--color-primary) 72%,
+      color-mix(in srgb, var(--color-primary) 40%, #fff) 88%,
+      transparent 92%
+    )
+    border-box;
+  -webkit-mask:
+    linear-gradient(#000 0 0) padding-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) padding-box exclude,
+    linear-gradient(#000 0 0);
+}
+
+.lyrics-visual-mode-option[data-mode="pulse"] .lyrics-visual-mode-swatch i {
+  box-shadow:
+    0 0 14px color-mix(in srgb, var(--color-primary) 55%, transparent),
+    0 4px 12px rgb(0 0 0 / 24%);
 }
 
 .lyrics-visual-mode-option[data-mode="waves"] .lyrics-visual-mode-swatch b {
@@ -403,198 +423,22 @@
   text-align: right;
 }
 
-@keyframes lyrics-settings-pulse-color-preview {
-  0% {
-    opacity: calc(var(--preview-max-opacity) * .18);
-    transform: translate3d(0, 0, 0) rotate(0) scale(var(--preview-scale-min));
+@keyframes lyrics-settings-halo-turn {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes lyrics-settings-halo-beat {
+  0%,
+  100% {
+    opacity: var(--preview-min-opacity);
+    scale: 1;
   }
 
   14% {
     opacity: var(--preview-max-opacity);
-    transform:
-      translate3d(
-        var(--preview-pulse-shift-negative),
-        var(--preview-pulse-shift),
-        0
-      )
-      rotate(var(--preview-pulse-tilt-negative))
-      scale(var(--preview-scale-max));
-  }
-
-  33% {
-    opacity: calc(var(--preview-max-opacity) * .32);
-    transform:
-      translate3d(
-        var(--preview-pulse-shift),
-        var(--preview-pulse-shift),
-        0
-      )
-      rotate(var(--preview-pulse-tilt))
-      scale(var(--preview-scale-mid));
-  }
-
-  51% {
-    opacity: calc(var(--preview-max-opacity) * .76);
-    transform:
-      translate3d(
-        var(--preview-pulse-shift),
-        var(--preview-pulse-shift-negative),
-        0
-      )
-      rotate(var(--preview-pulse-tilt))
-      scale(var(--preview-scale-max));
-  }
-
-  68% {
-    opacity: calc(var(--preview-max-opacity) * .14);
-    transform: translate3d(0, 0, 0) rotate(0) scale(var(--preview-scale-min));
-  }
-
-  84% {
-    opacity: calc(var(--preview-max-opacity) * .9);
-    transform:
-      translate3d(
-        var(--preview-pulse-shift-negative),
-        var(--preview-pulse-shift-negative),
-        0
-      )
-      rotate(var(--preview-pulse-tilt-negative))
-      scale(var(--preview-scale-max));
-  }
-
-  100% {
-    opacity: calc(var(--preview-max-opacity) * .27);
-    transform:
-      translate3d(var(--preview-pulse-shift), 0, 0)
-      rotate(var(--preview-pulse-tilt))
-      scale(var(--preview-scale-mid));
-  }
-}
-
-@keyframes lyrics-settings-pulse-near-preview {
-  0% {
-    opacity: calc(var(--preview-ring-opacity) * .12);
-    transform:
-      translate3d(
-        var(--preview-pulse-shift),
-        var(--preview-pulse-shift-negative),
-        0
-      )
-      rotate(var(--preview-pulse-tilt))
-      scale(.72);
-  }
-
-  19% {
-    opacity: calc(var(--preview-ring-opacity) * .88);
-    transform:
-      translate3d(
-        var(--preview-pulse-shift-negative),
-        var(--preview-pulse-shift),
-        0
-      )
-      rotate(var(--preview-pulse-tilt-negative))
-      scale(.94);
-  }
-
-  41% {
-    opacity: calc(var(--preview-ring-opacity) * .27);
-    transform: translate3d(0, 0, 0) rotate(0) scale(1.13);
-  }
-
-  57% {
-    opacity: var(--preview-ring-opacity);
-    transform:
-      translate3d(
-        var(--preview-pulse-shift),
-        var(--preview-pulse-shift),
-        0
-      )
-      rotate(var(--preview-pulse-tilt))
-      scale(1.02);
-  }
-
-  76% {
-    opacity: calc(var(--preview-ring-opacity) * .18);
-    transform: translate3d(0, 0, 0) rotate(0) scale(1.22);
-  }
-
-  91% {
-    opacity: calc(var(--preview-ring-opacity) * .64);
-    transform:
-      translate3d(
-        var(--preview-pulse-shift-negative),
-        var(--preview-pulse-shift-negative),
-        0
-      )
-      rotate(var(--preview-pulse-tilt-negative))
-      scale(1.08);
-  }
-
-  100% {
-    opacity: calc(var(--preview-ring-opacity) * .3);
-    transform:
-      translate3d(var(--preview-pulse-shift), 0, 0)
-      rotate(var(--preview-pulse-tilt))
-      scale(.91);
-  }
-}
-
-@keyframes lyrics-settings-pulse-far-preview {
-  0% {
-    opacity: calc(var(--preview-ring-opacity) * .14);
-    transform:
-      translate3d(var(--preview-pulse-shift-negative), 0, 0)
-      rotate(var(--preview-pulse-tilt-negative))
-      scale(.7);
-  }
-
-  27% {
-    opacity: calc(var(--preview-ring-opacity) * .86);
-    transform:
-      translate3d(
-        var(--preview-pulse-shift),
-        var(--preview-pulse-shift-negative),
-        0
-      )
-      rotate(var(--preview-pulse-tilt))
-      scale(1.02);
-  }
-
-  48% {
-    opacity: calc(var(--preview-ring-opacity) * .22);
-    transform: translate3d(0, 0, 0) rotate(0) scale(1.18);
-  }
-
-  71% {
-    opacity: var(--preview-ring-opacity);
-    transform:
-      translate3d(
-        var(--preview-pulse-shift-negative),
-        var(--preview-pulse-shift),
-        0
-      )
-      rotate(var(--preview-pulse-tilt-negative))
-      scale(1.07);
-  }
-
-  89% {
-    opacity: calc(var(--preview-ring-opacity) * .31);
-    transform:
-      translate3d(
-        var(--preview-pulse-shift),
-        var(--preview-pulse-shift),
-        0
-      )
-      rotate(var(--preview-pulse-tilt))
-      scale(1.28);
-  }
-
-  100% {
-    opacity: calc(var(--preview-ring-opacity) * .18);
-    transform:
-      translate3d(0, var(--preview-pulse-shift-negative), 0)
-      rotate(0)
-      scale(.86);
+    scale: var(--preview-scale-max);
   }
 }
 
@@ -633,40 +477,6 @@
   to {
     opacity: calc(var(--preview-max-opacity) * .68);
     transform: translate3d(-12px, 4px, 0) rotate(-5deg) scale(1.12, .9);
-  }
-}
-
-@keyframes lyrics-settings-visualizer-bloom-preview {
-  0%, 46%, 100% {
-    opacity: calc(var(--preview-min-opacity) * .35);
-    transform: scale(var(--preview-scale-min));
-  }
-
-  9%, 55% {
-    opacity: var(--preview-max-opacity);
-    transform: scale(calc(var(--preview-scale-max) * 1.14));
-  }
-
-  18%, 64% {
-    opacity: calc(var(--preview-max-opacity) * .22);
-    transform: scale(var(--preview-scale-mid));
-  }
-}
-
-@keyframes lyrics-settings-visualizer-halo-preview {
-  0%, 46%, 100% {
-    opacity: calc(var(--preview-ring-opacity) * .12);
-    transform: scale(.78);
-  }
-
-  10%, 56% {
-    opacity: var(--preview-ring-opacity);
-    transform: scale(1.08);
-  }
-
-  20%, 66% {
-    opacity: calc(var(--preview-ring-opacity) * .2);
-    transform: scale(.92);
   }
 }
 

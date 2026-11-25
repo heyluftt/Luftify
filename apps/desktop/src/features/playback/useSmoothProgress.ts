@@ -46,6 +46,15 @@ export function resolveVisualProgress(
   return { visualMs: Math.max(0, visual), startMs, origin };
 }
 
+/** Where a position that came in a moment ago stands now. */
+export function liveProgressMs(
+  sample: { positionMs: number; at: number; running: boolean },
+  now: number,
+): number {
+  const positionMs = Math.max(0, sample.positionMs);
+  return sample.running ? positionMs + Math.max(0, now - sample.at) : positionMs;
+}
+
 /** Fastest and slowest step of a pixel-stepped bar. */
 const PIXEL_STEP_MIN_MS = 100;
 const PIXEL_STEP_MAX_MS = 1_000;
@@ -75,15 +84,18 @@ export function useSmoothProgress(
     pixelStep?: boolean;
   },
 ): void {
-  const latest = useRef(input);
-  latest.current = input;
+  const latest = useRef({ ...input, at: performance.now() });
+  const moved = latest.current.positionMs !== input.positionMs
+    || latest.current.running !== input.running
+    || latest.current.trackKey !== input.trackKey;
+  latest.current = { ...input, at: moved ? performance.now() : latest.current.at };
 
   useEffect(() => {
     const node = element.current;
     if (!node) return;
 
     let origin = performance.now();
-    let startMs = Math.max(0, latest.current.positionMs);
+    let startMs = liveProgressMs(latest.current, origin);
     applyProgressTransform(node, startMs, latest.current.durationMs);
 
     if (!latest.current.running || latest.current.durationMs <= 0) {
@@ -107,7 +119,7 @@ export function useSmoothProgress(
         startMs,
         origin,
         now,
-        latest.current.positionMs,
+        liveProgressMs(latest.current, now),
         latest.current.durationMs,
       );
       startMs = next.startMs;
@@ -120,8 +132,8 @@ export function useSmoothProgress(
 
     const onVisibility = () => {
       if (document.visibilityState !== "visible") return;
-      startMs = Math.max(0, latest.current.positionMs);
       origin = performance.now();
+      startMs = liveProgressMs(latest.current, origin);
       applyProgressTransform(node, startMs, latest.current.durationMs);
     };
 

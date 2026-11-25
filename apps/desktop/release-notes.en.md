@@ -1,3 +1,10 @@
+# 0.1.40
+
+- Halo replaces Strong pulse
+- Visualizer reacts more clearly
+- Progress bar no longer jumps
+- Library: scrollbar only on hover
+
 # 0.1.39
 
 - Own setup window

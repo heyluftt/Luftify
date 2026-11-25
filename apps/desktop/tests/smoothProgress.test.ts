@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { renderHook } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   advancePlaybackClock,
   isPlaybackClockLive,
@@ -8,6 +9,7 @@ import {
   applyProgressTransform,
   progressRatio,
   resolveVisualProgress,
+  useSmoothProgress,
 } from "../src/features/playback/useSmoothProgress";
 
 describe("playback clock liveness", () => {
@@ -55,5 +57,45 @@ describe("smooth collapsed progress", () => {
 
     const live = resolveVisualProgress(10_000, 1_000, 1_120, 10_000, 180_000);
     expect(live.visualMs).toBe(10_120);
+  });
+});
+
+describe("smooth progress with a position that comes once a second", () => {
+  afterEach(() => vi.useRealTimers());
+
+  it("runs evenly instead of stalling and stepping back", () => {
+    vi.useFakeTimers();
+    const durationMs = 115_000;
+    const node = document.createElement("span");
+    const shownMs = () => Number(/scaleX\(([0-9.e-]+)\)/.exec(node.style.transform)?.[1]) * durationMs;
+    const startedAt = performance.now();
+    const clockMs = () => 43_030 + Math.floor((performance.now() - startedAt) / 100) * 100;
+    let positionMs = clockMs();
+    const { rerender } = renderHook(
+      (position: number) => useSmoothProgress({ current: node }, {
+        positionMs: position,
+        durationMs,
+        running: true,
+        trackKey: "track",
+      }),
+      { initialProps: positionMs },
+    );
+
+    let last = shownMs();
+    const steps: number[] = [];
+    for (let frame = 0; frame < 180; frame += 1) {
+      vi.advanceTimersByTime(16);
+      const clock = clockMs();
+      if (Math.floor(clock / 1_000) !== Math.floor(positionMs / 1_000)) {
+        positionMs = clock;
+        rerender(positionMs);
+      }
+      steps.push(shownMs() - last);
+      last = shownMs();
+    }
+
+    expect(Math.min(...steps)).toBeGreaterThanOrEqual(0);
+    expect(Math.max(...steps)).toBeLessThan(40);
+    expect(last - 43_030).toBeGreaterThan(2_700);
   });
 });

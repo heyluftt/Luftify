@@ -1,5 +1,4 @@
 import type {
-  LyricsVisualMode,
   VisualizerAnalysis,
   VisualizerFrame,
 } from "../../types/tauri";
@@ -63,20 +62,18 @@ export function shapeVisualizerFrame(
   sensitivityPercent: number,
 ): VisualizerFrame {
   const sensitivity = clampVisualizer(sensitivityPercent / 100);
-  const gate = 0.13 * (1 - sensitivity);
-  const gamma = 1.42 - sensitivity * 0.8;
-  const gain = 0.78 + sensitivity * 0.5;
-  const shape = (value: number, extra = 1) => {
-    const gated = Math.max(0, value - gate) / Math.max(0.001, 1 - gate);
-    return clampVisualizer(gated ** gamma * gain * extra);
-  };
+  const gate = 0.06 * (1 - sensitivity);
+  const gamma = 1.5 - sensitivity * 0.8;
+  // Lifts small hits; the rest between hits stays near zero at any setting.
+  const hit = (value: number) =>
+    clampVisualizer((clampVisualizer(value) - gate) / (1 - gate)) ** gamma;
 
   return {
-    energy: shape(frame.energy, 0.96),
-    bass: shape(frame.bass, 1.06),
-    mid: shape(frame.mid, 0.98),
-    high: shape(frame.high, 1.02),
-    beat: shape(frame.beat, 1.12),
+    energy: clampVisualizer(frame.energy),
+    bass: hit(frame.bass),
+    mid: hit(frame.mid),
+    high: hit(frame.high),
+    beat: hit(frame.beat),
   };
 }
 
@@ -87,11 +84,33 @@ export function smoothVisualizerFrame(
 ): VisualizerFrame {
   const dt = Math.max(0, seconds);
   return {
-    energy: smoothBand(current.energy, target.energy, dt, 0.038, 0.15),
-    bass: smoothBand(current.bass, target.bass, dt, 0.016, 0.078),
-    mid: smoothBand(current.mid, target.mid, dt, 0.04, 0.13),
-    high: smoothBand(current.high, target.high, dt, 0.026, 0.1),
-    beat: smoothBand(current.beat, target.beat, dt, 0.01, 0.058),
+    energy: smoothBand(current.energy, target.energy, dt, 0.06, 0.18),
+    bass: smoothBand(current.bass, target.bass, dt, 0.012, 0.04),
+    mid: smoothBand(current.mid, target.mid, dt, 0.012, 0.04),
+    high: smoothBand(current.high, target.high, dt, 0.01, 0.035),
+    beat: smoothBand(current.beat, target.beat, dt, 0.01, 0.035),
+  };
+}
+
+/** Polled frames come in slower than the screen draws; this fills the gaps. */
+export function createVisualizerFollower(): {
+  push: (frame: VisualizerFrame, sensitivityPercent: number) => void;
+  step: (nowMs: number) => VisualizerFrame;
+} {
+  let target = EMPTY_VISUALIZER_FRAME;
+  let current = EMPTY_VISUALIZER_FRAME;
+  let last: number | undefined;
+
+  return {
+    push(frame, sensitivityPercent) {
+      target = shapeVisualizerFrame(frame, sensitivityPercent);
+    },
+    step(nowMs) {
+      const seconds = last === undefined ? 0 : Math.min(0.1, Math.max(0, (nowMs - last) / 1_000));
+      last = nowMs;
+      current = smoothVisualizerFrame(current, target, seconds);
+      return current;
+    },
   };
 }
 
@@ -108,79 +127,23 @@ export function applyVisualizerVars(
   }
 }
 
-export function ambientVisualizerVars(
+export function waveVisualizerVars(
   frame: VisualizerFrame,
   metrics: LyricsAmbientMetrics,
-  mode: LyricsVisualMode,
   nowMs: number,
 ): Record<string, string> {
   const t = nowMs / 1_000;
-  const punch = visualHit(frame.bass * 0.56 + frame.beat * 0.64);
-  const body = visualHit(frame.bass * 0.84 + frame.energy * 0.18);
-  const transient = visualHit(frame.beat * 0.9 + frame.bass * 0.2);
-  const wash = visualHit(frame.energy * 0.68 + frame.mid * 0.16 + body * 0.22);
+  const kick = Math.max(frame.bass, frame.beat);
+  const punch = visualHit(kick);
+  const body = visualHit(kick * 0.84 + frame.energy * 0.1);
+  const transient = punch;
+  const wash = visualHit(frame.energy * 0.26 + frame.mid * 0.5 + body * 0.25);
   const restDrift = 0.14 + (1 - punch) * 0.26;
   const drift = (amount: number, speed: number, phase: number) =>
     Math.sin(t * speed + phase) * amount * restDrift;
-
-  if (mode === "waves") {
-    return waveVars(frame, metrics, punch, body, wash, transient, drift);
-  }
-
-  const pulseScale = bloomScale(metrics.scaleMin, metrics.scaleMax, 0.28, punch);
-  const shift = metrics.pulseShiftPercent * (0.45 + punch * 0.2);
-  const tilt = metrics.pulseTiltDegrees * (0.4 + punch * 0.25);
-
-  return {
-    "--lyrics-viz-pulse-opacity": String(
-      bloomOpacity(metrics.pulseFloorOpacity, metrics.maxOpacity, body),
-    ),
-    "--lyrics-viz-pulse-transform": transform(
-      drift(shift, 0.48, 0.2),
-      drift(shift, 0.36, 1.7),
-      drift(tilt, 0.3, 0.9),
-      pulseScale,
-    ),
-    "--lyrics-viz-pulse-brightness": String(
-      metrics.pulseBrightness * (1 + transient * 0.58 + body * 0.16),
-    ),
-    "--lyrics-viz-pulse-saturation": String(
-      metrics.pulseSaturation * (1 + punch * 0.52),
-    ),
-    "--lyrics-viz-pulse-blur": `${metrics.pulseBlurPx * (1 - punch * 0.34)}px`,
-    "--lyrics-viz-near-opacity": String(
-      bloomOpacity(metrics.ringMinOpacity, metrics.ringOpacity, transient),
-    ),
-    "--lyrics-viz-near-transform": transform(
-      drift(shift * 0.55, 0.58, 2.1),
-      drift(shift * 0.55, 0.42, 0.4),
-      drift(tilt * 0.7, 0.28, 2.4),
-      0.86 + punch * 0.52,
-    ),
-    "--lyrics-viz-far-opacity": String(
-      bloomOpacity(metrics.outerRingMinOpacity, metrics.outerRingOpacity, wash),
-    ),
-    "--lyrics-viz-far-transform": transform(
-      drift(shift * 0.7, 0.26, 1.1),
-      drift(shift * 0.7, 0.22, 2.8),
-      drift(tilt * 0.5, 0.2, 0.6),
-      0.8 + wash * 0.58,
-    ),
-  };
-}
-
-function waveVars(
-  frame: VisualizerFrame,
-  metrics: LyricsAmbientMetrics,
-  punch: number,
-  body: number,
-  wash: number,
-  transient: number,
-  drift: (amount: number, speed: number, phase: number) => number,
-): Record<string, string> {
-  const bassMotion = visualHit(frame.bass * 0.9 + frame.beat * 0.28);
-  const midMotion = visualHit(frame.mid * 0.78 + frame.energy * 0.16 + frame.beat * 0.08);
-  const highMotion = visualHit(frame.high * 0.72 + frame.beat * 0.3);
+  const bassMotion = punch;
+  const midMotion = visualHit(frame.mid * 0.86 + frame.energy * 0.08);
+  const highMotion = visualHit(frame.high * 0.8 + kick * 0.2);
 
   return {
     "--lyrics-viz-pulse-opacity": String(
@@ -345,7 +308,7 @@ function smoothBand(
   return clampVisualizer(current + (target - current) * amount);
 }
 
-function visualHit(value: number): number {
+export function visualHit(value: number): number {
   const gated = Math.max(0, clampVisualizer(value) - 0.05) / 0.95;
   return gated ** 0.7;
 }

@@ -61,7 +61,7 @@ pub(crate) struct DeviceSink {
     converted: Vec<f32>,
     /// Frames of each buffer still queued in Rodio, oldest first.
     queued: VecDeque<usize>,
-    /// Learns how far the speaker lags behind the analysed audio.
+    /// Told after every write how long the queued audio still plays.
     latency: VisualizerControl,
     fade: Arc<Fade>,
     /// A cut whose rest of the queue is not dropped yet.
@@ -243,6 +243,7 @@ impl Sink for DeviceSink {
         self.sink.play();
         // A resume plays the kept queue; its silence was the pause.
         self.last_write = None;
+        self.report_latency();
         Ok(())
     }
 

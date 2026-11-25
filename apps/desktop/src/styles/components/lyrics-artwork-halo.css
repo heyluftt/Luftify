@@ -1,0 +1,221 @@
+.lyrics-artwork-ambient.mode-pulse {
+  --lyrics-halo-a: var(--color-primary);
+  --lyrics-halo-b: var(--color-accent);
+  --lyrics-halo-c: color-mix(in srgb, var(--color-primary) 55%, var(--color-accent));
+}
+
+.lyrics-cover-artwork .lyrics-artwork-ambient,
+.has-song-video .lyrics-artwork-ambient {
+  --lyrics-artwork-radius: clamp(20px, 1.8vw, 28px);
+}
+
+.lyrics-artwork-halo-layers {
+  display: contents;
+}
+
+.lyrics-artwork-halo {
+  position: absolute;
+  inset: calc(var(--lyrics-halo-reach) * -1);
+  overflow: hidden;
+  container-type: size;
+  border-radius: 50%;
+  opacity:
+    calc(
+      var(--lyrics-halo-rest-opacity)
+      * var(--lyrics-ambient-theme-opacity)
+    );
+  filter:
+    blur(var(--lyrics-halo-blur))
+    saturate(var(--lyrics-halo-saturation));
+  mask-image:
+    radial-gradient(
+      closest-side,
+      #000 38%,
+      rgb(0 0 0 / 58%) 64%,
+      rgb(0 0 0 / 18%) 84%,
+      transparent 100%
+    );
+  transition: opacity var(--duration-slow) ease;
+}
+
+.lyrics-artwork-beam {
+  position: absolute;
+  inset: calc(var(--beam-reach) * -1);
+  opacity: 0;
+  filter: drop-shadow(0 0 8px var(--beam-color));
+  transition: opacity var(--duration-slow) ease;
+}
+
+.lyrics-artwork-beam.beam-near {
+  --beam-color: var(--lyrics-halo-a);
+  --beam-reach: 7px;
+  --beam-width: var(--lyrics-beam-width);
+}
+
+.lyrics-artwork-beam.beam-far {
+  --beam-color: var(--lyrics-halo-c);
+  --beam-reach: var(--lyrics-beam-far-reach);
+  --beam-width: calc(var(--lyrics-beam-width) * .6);
+}
+
+.lyrics-artwork-beam span {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  padding: var(--beam-width);
+  border-radius:
+    calc(
+      var(--lyrics-artwork-radius, var(--r-lg))
+      + var(--beam-reach)
+    );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+
+/* Square and larger than the diagonal, so turning never shows a corner. */
+.lyrics-artwork-halo i,
+.lyrics-artwork-beam i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 145cqmax;
+  height: 145cqmax;
+  translate: -50% -50%;
+  animation: lyrics-halo-turn var(--lyrics-halo-turn-time) linear infinite paused;
+}
+
+.lyrics-artwork-halo i {
+  background:
+    conic-gradient(
+      var(--lyrics-halo-a),
+      var(--lyrics-halo-b),
+      var(--lyrics-halo-c),
+      var(--lyrics-halo-b),
+      var(--lyrics-halo-a)
+    );
+}
+
+.lyrics-artwork-beam i {
+  background:
+    conic-gradient(
+      transparent 0 52%,
+      var(--beam-color) 80%,
+      color-mix(in srgb, var(--beam-color) 35%, #fff) 90%,
+      transparent 93%
+    );
+  animation-duration: var(--lyrics-beam-turn-time);
+}
+
+.lyrics-artwork-beam.beam-far i {
+  animation-duration: calc(var(--lyrics-beam-turn-time) * 1.45);
+  animation-delay: -2.6s;
+  animation-direction: reverse;
+}
+
+.lyrics-artwork-ambient.is-playing .lyrics-artwork-halo {
+  opacity:
+    calc(
+      var(--lyrics-halo-min-opacity)
+      * var(--lyrics-ambient-theme-opacity)
+    );
+  animation: lyrics-halo-breathe 4.8s ease-in-out infinite alternate;
+}
+
+.lyrics-artwork-ambient.is-playing .lyrics-artwork-beam.beam-near {
+  opacity:
+    calc(
+      var(--lyrics-beam-opacity)
+      * .85
+      * var(--lyrics-ambient-theme-opacity)
+    );
+}
+
+.lyrics-artwork-ambient.is-playing .lyrics-artwork-beam.beam-far {
+  opacity:
+    calc(
+      var(--lyrics-beam-opacity)
+      * .5
+      * var(--lyrics-ambient-theme-opacity)
+    );
+}
+
+.lyrics-artwork-ambient.is-playing .lyrics-artwork-halo i,
+.lyrics-artwork-ambient.is-playing .lyrics-artwork-beam i {
+  animation-play-state: running;
+}
+
+.lyrics-artwork-ambient.is-visualizer .lyrics-artwork-halo,
+.lyrics-artwork-ambient.is-visualizer .lyrics-artwork-halo i,
+.lyrics-artwork-ambient.is-visualizer .lyrics-artwork-beam.beam-near,
+.lyrics-artwork-ambient.is-visualizer .lyrics-artwork-beam.beam-far,
+.lyrics-artwork-ambient.is-visualizer .lyrics-artwork-beam i {
+  animation: none;
+  transition: none;
+}
+
+.lyrics-artwork-ambient.is-visualizer .lyrics-artwork-halo {
+  opacity:
+    calc(
+      var(--lyrics-viz-halo-opacity)
+      * var(--lyrics-ambient-theme-opacity)
+    );
+  scale: var(--lyrics-viz-halo-scale);
+}
+
+.lyrics-artwork-ambient.is-visualizer .lyrics-artwork-halo i {
+  rotate: var(--lyrics-viz-halo-turn);
+}
+
+.lyrics-artwork-ambient.is-visualizer .lyrics-artwork-beam.beam-near {
+  --beam-width: var(--lyrics-viz-near-width);
+
+  opacity:
+    calc(
+      var(--lyrics-viz-near-opacity)
+      * var(--lyrics-ambient-theme-opacity)
+    );
+}
+
+.lyrics-artwork-ambient.is-visualizer .lyrics-artwork-beam.beam-near i {
+  rotate: var(--lyrics-viz-near-turn);
+}
+
+.lyrics-artwork-ambient.is-visualizer .lyrics-artwork-beam.beam-far {
+  --beam-width: var(--lyrics-viz-far-width);
+
+  opacity:
+    calc(
+      var(--lyrics-viz-far-opacity)
+      * var(--lyrics-ambient-theme-opacity)
+    );
+}
+
+.lyrics-artwork-ambient.is-visualizer .lyrics-artwork-beam.beam-far i {
+  rotate: var(--lyrics-viz-far-turn);
+}
+
+@keyframes lyrics-halo-turn {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes lyrics-halo-breathe {
+  to {
+    opacity:
+      calc(
+        (
+          var(--lyrics-halo-min-opacity)
+          + (var(--lyrics-halo-max-opacity) - var(--lyrics-halo-min-opacity)) * .6
+        )
+        * var(--lyrics-ambient-theme-opacity)
+      );
+    scale: calc(1 + var(--lyrics-halo-swell) * .5);
+  }
+}

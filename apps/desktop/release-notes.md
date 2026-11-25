@@ -1,3 +1,10 @@
+# 0.1.40
+
+- Lichtkranz statt Kräftiger Puls
+- Visualizer reagiert deutlicher
+- Fortschrittsbalken springt nicht mehr
+- Bibliothek: Scrollbalken nur beim Überfahren
+
 # 0.1.39
 
 - Eigenes Installer-Fenster

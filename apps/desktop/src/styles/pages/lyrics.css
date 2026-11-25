@@ -239,6 +239,7 @@
 }
 
 .lyrics-track-copy {
+  position: relative;
   width: 100%;
   max-width: 306px;
   min-width: 0;

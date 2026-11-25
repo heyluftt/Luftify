@@ -3,12 +3,7 @@ import { useEffect, useState, type CSSProperties } from "react";
 import { desktopApi } from "../../services/desktopApi";
 import { extractCoverPalette, type CoverPalette } from "./coverPalette";
 
-/**
- * Cover colors as CSS variables for artwork-lit surfaces. Shares the cover
- * query cache with AlbumArt, so no extra request is made. Without a palette
- * the CSS falls back to theme tokens.
- */
-export function useCoverTint(coverUri: string | undefined): CSSProperties | undefined {
+export function useArtworkPalette(coverUri: string | undefined): CoverPalette | undefined {
   const remote = coverUri?.startsWith("https://") ? coverUri : undefined;
   const direct = coverUri?.startsWith("data:image/") ? coverUri : undefined;
   const cover = useQuery({
@@ -33,6 +28,16 @@ export function useCoverTint(coverUri: string | undefined): CSSProperties | unde
     return () => { cancelled = true; };
   }, [source, coverUri]);
 
+  return palette;
+}
+
+/**
+ * Cover colors as CSS variables for artwork-lit surfaces. Shares the cover
+ * query cache with AlbumArt, so no extra request is made. Without a palette
+ * the CSS falls back to theme tokens.
+ */
+export function useCoverTint(coverUri: string | undefined): CSSProperties | undefined {
+  const palette = useArtworkPalette(coverUri);
   if (!palette) return undefined;
   // Light uses the UI-tuned variants (readable on any surface); the record
   // label keeps the cover's actual colors.

@@ -1,12 +1,7 @@
 import { useEffect, type RefObject } from "react";
 import { desktopApi } from "../../../services/desktopApi";
 import { usePlayerStore } from "../../../stores/playerStore";
-import type { VisualizerFrame } from "../../../types/tauri";
-import {
-  EMPTY_VISUALIZER_FRAME,
-  shapeVisualizerFrame,
-  smoothVisualizerFrame,
-} from "../../lyrics/ambientVisualizer";
+import { shapeVisualizerFrame } from "../../lyrics/ambientVisualizer";
 import { useAbyssMusic } from "./abyssMusic";
 
 /** The latest levels, read each frame by the particle canvas. */
@@ -15,6 +10,9 @@ export const abyssLevels = { pulse: 0, energy: 0 };
 /** About 15 updates a second: enough for light swelling with the music. */
 const STEP_MS = 66;
 const SENSITIVITY = 60;
+/** Hits are shorter than a step, so the pulse is held and fades. */
+const PULSE_FADE_SECONDS = 0.22;
+const ENERGY_SECONDS = 0.2;
 
 /**
  * Writes `--abyss-pulse` (beat and bass) and `--abyss-energy` onto the scene
@@ -30,9 +28,9 @@ export function useAbyssPulse(target: RefObject<HTMLElement | null>, active: boo
     if (!active || !element) return;
     // Every write restyles the whole scene, so only noticeable changes go out.
     let written = { pulse: -1, energy: -1 };
-    const write = (frame: VisualizerFrame) => {
-      abyssLevels.pulse = Math.max(frame.beat, frame.bass);
-      abyssLevels.energy = frame.energy;
+    const write = (pulse: number, energy: number) => {
+      abyssLevels.pulse = pulse;
+      abyssLevels.energy = energy;
       if (Math.abs(abyssLevels.pulse - written.pulse) < 0.02 && Math.abs(abyssLevels.energy - written.energy) < 0.02) return;
       written = { ...abyssLevels };
       element.style.setProperty("--abyss-pulse", abyssLevels.pulse.toFixed(2));
@@ -40,11 +38,12 @@ export function useAbyssPulse(target: RefObject<HTMLElement | null>, active: boo
     };
     const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
     if (!enabled || !playing || reduced) {
-      write(EMPTY_VISUALIZER_FRAME);
+      write(0, 0);
       return;
     }
     let cancelled = false;
-    let envelope = EMPTY_VISUALIZER_FRAME;
+    let pulse = 0;
+    let energy = 0;
     let last = performance.now();
     const step = async () => {
       // Nothing to see while hidden or minimised (windowActivity.ts).
@@ -52,18 +51,19 @@ export function useAbyssPulse(target: RefObject<HTMLElement | null>, active: boo
       const now = performance.now();
       const seconds = Math.min(0.2, (now - last) / 1000);
       last = now;
-      let target: VisualizerFrame = EMPTY_VISUALIZER_FRAME;
       const snapshot = await desktopApi.visualizerFrame().catch(() => undefined);
       if (cancelled) return;
-      if (snapshot?.source === "live") target = shapeVisualizerFrame(snapshot, SENSITIVITY);
-      envelope = smoothVisualizerFrame(envelope, target, seconds);
-      write(envelope);
+      const frame = snapshot?.source === "live" ? shapeVisualizerFrame(snapshot, SENSITIVITY) : undefined;
+      const hit = frame ? Math.max(frame.beat, frame.bass) : 0;
+      pulse = Math.max(hit, pulse * Math.exp(-seconds / PULSE_FADE_SECONDS));
+      energy += ((frame?.energy ?? 0) - energy) * (1 - Math.exp(-seconds / ENERGY_SECONDS));
+      write(pulse, energy);
     };
     const timer = window.setInterval(() => void step(), STEP_MS);
     return () => {
       cancelled = true;
       window.clearInterval(timer);
-      write(EMPTY_VISUALIZER_FRAME);
+      write(0, 0);
     };
   }, [active, enabled, playing, target]);
 }

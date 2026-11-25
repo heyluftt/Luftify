@@ -38,6 +38,7 @@ export function PlayerBar() {
   const roomLockedTitle = t("listen.controlLocked");
   const settings = useAudioControlSettings();
   const [audioOpen, setAudioOpen] = useState(false);
+  const [progressHover, setProgressHover] = useState(false);
   const audioPopover = useRef<HTMLDivElement>(null);
   const recentOpen = useUiStore((store) => store.recentOpen);
   const setRecentOpen = useUiStore((store) => store.setRecentOpen);
@@ -82,7 +83,8 @@ export function PlayerBar() {
     suspended: seekActive || !connected || !isPlaybackClockLive(playback?.clockReady),
     ...(playback?.currentItem?.uri ? { trackKey: playback.currentItem.uri } : {}),
     // The bar shows mm:ss and animates its fill itself: one render a second.
-    resolutionMs: 1_000,
+    // The thumb shows under the pointer and moves with every tick.
+    resolutionMs: progressHover ? 0 : 1_000,
   });
   const position = clock.positionMs;
   const item = playback?.currentItem;
@@ -221,7 +223,11 @@ export function PlayerBar() {
             <button type="button" className={playback.repeatMode !== "off" ? "icon-button active player-command-button transport-toggle" : "icon-button player-command-button transport-toggle"} data-repeat={playback.repeatMode} aria-label={repeatModeLabel(playback.repeatMode)} title={repeatModeLabel(playback.repeatMode)} aria-pressed={playback.repeatMode !== "off"} aria-busy={pending.repeat !== null} disabled={!connected || !repeat.enabled || pending.repeat !== null} onClick={() => run({ command: "setRepeat", repeatMode: nextRepeatMode(playback.repeatMode) })}>{playback.repeatMode === "one" ? <Repeat1 size={17} /> : <Repeat size={17} />}</button>
           )}
         </div>
-        <div className="progress-row">
+        <div
+          className="progress-row"
+          onPointerEnter={() => setProgressHover(true)}
+          onPointerLeave={() => setProgressHover(false)}
+        >
           <time>{formatTime(position)}</time>
           <SmoothProgressTrack
             positionMs={position}

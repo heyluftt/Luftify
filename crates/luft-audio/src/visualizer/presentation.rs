@@ -1,8 +1,8 @@
 //! Presentation clock: the analyser sees audio when it is queued for the
 //! device, which is up to half a second before it is heard. Frames are kept
-//! with their analysis time; readers get the frame that is audible *now*,
+//! with the time they are heard; readers get the frame that is audible *now*,
 //! and the beat is extrapolated to that moment.
-use std::{collections::VecDeque, time::Instant};
+use std::collections::VecDeque;
 
 use super::{VisualizerFrame, beat::BeatState};
 
@@ -14,9 +14,11 @@ const STALE_MICROS: u64 = 400_000;
 const PULSE_SECONDS: f64 = 0.11;
 /// Below this confidence the tracker's beat is not trusted at all.
 const MIN_TRUSTED_CONFIDENCE: f64 = 0.25;
+/// The tracker's grid often misses what the drums really play, so it only
+/// adds a faint pulse under the hits that were heard.
+const TRACKER_SHARE: f32 = 0.25;
 
 pub(super) struct Presentation {
-    origin: Instant,
     frames: VecDeque<(u64, VisualizerFrame)>,
     beat: Option<(u64, BeatState)>,
 }
@@ -24,17 +26,17 @@ pub(super) struct Presentation {
 impl Presentation {
     pub(super) fn new() -> Self {
         Self {
-            origin: Instant::now(),
-            frames: VecDeque::with_capacity(128),
+            frames: VecDeque::with_capacity(256),
             beat: None,
         }
     }
 
-    pub(super) fn now_micros(&self) -> u64 {
-        u64::try_from(self.origin.elapsed().as_micros()).unwrap_or(u64::MAX)
-    }
-
+    /// `at` is when the frame is heard.
     pub(super) fn publish(&mut self, at: u64, frame: VisualizerFrame, beat: BeatState) {
+        // After a resync the clock may step back.
+        while self.frames.back().is_some_and(|(stamp, _)| *stamp >= at) {
+            self.frames.pop_back();
+        }
         self.frames.push_back((at, frame));
         while self
             .frames
@@ -51,21 +53,20 @@ impl Presentation {
         self.beat = None;
     }
 
-    /// The frame audible at `now`, given how long queued audio takes to play.
-    pub(super) fn audible(&self, now: u64, latency: u64) -> VisualizerFrame {
+    /// The frame audible at `now`.
+    pub(super) fn audible(&self, now: u64) -> VisualizerFrame {
         let Some(&(newest, _)) = self.frames.back() else {
             return VisualizerFrame::default();
         };
-        if now.saturating_sub(newest) > latency + STALE_MICROS {
+        if now.saturating_sub(newest) > STALE_MICROS {
             return VisualizerFrame::default();
         }
-        let heard = now.saturating_sub(latency);
+        let heard = now;
         let mut frame = self
             .frames
             .iter()
             .rev()
             .find(|(stamp, _)| *stamp <= heard)
-            .or_else(|| self.frames.front())
             .map(|(_, frame)| *frame)
             .unwrap_or_default();
 
@@ -82,8 +83,7 @@ impl Presentation {
             let trust = (((beat.confidence - MIN_TRUSTED_CONFIDENCE)
                 / (0.7 - MIN_TRUSTED_CONFIDENCE))
                 .clamp(0.0, 1.0)) as f32;
-            // Locked: the pulse sits on the beat. Unsure: the onset heuristic.
-            frame.beat = frame.beat * (1.0 - trust) + pulse * trust;
+            frame.beat = frame.beat.max(pulse * trust * TRACKER_SHARE);
         }
         frame
     }
@@ -110,10 +110,10 @@ mod tests {
                 BeatState::default(),
             );
         }
-        // 450 ms of audio queued: at 450 ms the speaker plays what was analysed at 0 ms.
-        let heard = presentation.audible(450_000, 450_000);
+        // Analysed ahead of time: readers get the frame whose time has come.
+        let heard = presentation.audible(10_000);
         assert!(heard.energy.abs() < 1.0e-6);
-        let later = presentation.audible(450_000, 200_000);
+        let later = presentation.audible(260_000);
         assert!((later.energy - 0.5).abs() < 1.0e-6);
     }
 
@@ -125,18 +125,18 @@ mod tests {
             period_seconds: 0.5,
             confidence: 0.9,
         };
-        // The analyser saw a beat at 1.0 s; 300 ms of audio are queued.
-        presentation.publish(1_000_000, frame(0.5), beat);
-        let before = presentation.audible(1_200_000, 300_000).beat;
-        let on_beat = presentation.audible(1_300_000, 300_000).beat;
-        assert!(on_beat > 0.95, "on the beat: {on_beat}");
-        assert!(before < 0.2, "before the beat: {before}");
+        // The beat the analyser just saw is heard at 1.3 s.
+        presentation.publish(1_300_000, frame(0.5), beat);
+        let before = presentation.audible(1_200_000).beat;
+        let on_beat = presentation.audible(1_300_000).beat;
+        assert!(on_beat > 0.2, "on the beat: {on_beat}");
+        assert!(before < 0.05, "before the beat: {before}");
     }
 
     #[test]
     fn a_stopped_stream_goes_quiet() {
         let mut presentation = Presentation::new();
         presentation.publish(0, frame(0.8), BeatState::default());
-        assert!(presentation.audible(2_000_000, 100_000).energy.abs() < 1.0e-6);
+        assert!(presentation.audible(2_000_000).energy.abs() < 1.0e-6);
     }
 }
