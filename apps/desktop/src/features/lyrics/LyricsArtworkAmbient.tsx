@@ -7,7 +7,10 @@ import {
   normalizeLyricsVisualSettings,
 } from "./lyricsVisualSettings";
 import { LyricsHalo } from "./LyricsHalo";
-import { useAmbientVisualizer } from "./useAmbientVisualizer";
+import { useAmbientVisualizer, type VisualizerFrameSink } from "./useAmbientVisualizer";
+import { useActiveTheme } from "../theme/useActiveTheme";
+import { PixelAmbient } from "../theme/pixelpop/ambient/PixelAmbient";
+import { ModularAmbient } from "../theme/modular/ambient/ModularAmbient";
 
 interface LyricsArtworkAmbientProps {
   image: string | undefined;
@@ -27,6 +30,11 @@ export function LyricsArtworkAmbient({
   const normalized = normalizeLyricsVisualSettings(settings);
   const waves = normalized.mode === "waves";
   const ambientRef = useRef<HTMLDivElement>(null);
+  const theme = useActiveTheme();
+  const pixel = theme === "luft.pixelpop";
+  const modular = theme === "luft.modular";
+  const selfDrawn = pixel || modular;
+  const frames: VisualizerFrameSink = useRef(undefined);
   const visualizerActive = useAmbientVisualizer({
     enabled: normalized.enabled && normalized.visualizerEnabled,
     playing,
@@ -35,6 +43,7 @@ export function LyricsArtworkAmbient({
     colorStrengthPercent: normalized.colorStrengthPercent,
     sensitivityPercent: normalized.visualizerSensitivityPercent,
     target: ambientRef,
+    ...(selfDrawn ? { frameSink: frames } : {}),
   });
 
   return (
@@ -50,11 +59,15 @@ export function LyricsArtworkAmbient({
       {normalized.enabled && (
         <div
           ref={ambientRef}
-          className={`lyrics-artwork-ambient mode-${normalized.mode}${playing ? " is-playing" : ""}${visualizerActive ? " is-visualizer" : ""}`}
+          className={`lyrics-artwork-ambient mode-${normalized.mode}${playing ? " is-playing" : ""}${visualizerActive ? " is-visualizer" : ""}${pixel ? " is-pixel" : ""}${modular ? " is-modular" : ""}`}
           style={ambientStyle(normalized)}
           aria-hidden="true"
         >
-          {waves ? (
+          {pixel ? (
+            <PixelAmbient image={image} playing={playing} settings={normalized} sink={frames} />
+          ) : modular ? (
+            <ModularAmbient playing={playing} settings={normalized} sink={frames} />
+          ) : waves ? (
             <>
               <div className="lyrics-artwork-pulse">
                 <div className="lyrics-artwork-ambient-source">

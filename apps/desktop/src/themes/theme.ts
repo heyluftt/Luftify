@@ -1,7 +1,11 @@
 import { z } from "zod";
 import { loadThemeStyles } from "./themeStyles";
 import { aerisTheme } from "./aerisTheme";
+import { pixelpopTheme } from "./pixelpopTheme";
+import { modularTheme } from "./modularTheme";
 export { aerisTheme } from "./aerisTheme";
+export { pixelpopTheme } from "./pixelpopTheme";
+export { modularTheme } from "./modularTheme";
 
 const color = z.string().regex(/^#[\da-f]{6}$/i);
 
@@ -45,6 +49,8 @@ export const themeModes = [
   "calamus",
   "abyss",
   "aeris",
+  "pixelpop",
+  "modular",
 ] as const;
 
 export type ThemeMode = (typeof themeModes)[number];
@@ -62,6 +68,8 @@ const themeModeAliases: Record<string, ThemeMode> = {
   "luft.bernstein": "dark",
   "luft.abyss": "abyss",
   "luft.aeris": "aeris",
+  "luft.pixelpop": "pixelpop",
+  "luft.modular": "modular",
   "luft.rose": "rose",
   "luft.polaris": "polaris",
   "luft.prisma": "prisma",
@@ -342,6 +350,8 @@ export const registeredThemes = {
   calamus: calamusTheme,
   abyss: abyssTheme,
   aeris: aerisTheme,
+  pixelpop: pixelpopTheme,
+  modular: modularTheme,
 } as const;
 
 export function normalizeThemeMode(mode: string): ThemeMode {
@@ -423,6 +433,12 @@ function applyThemeManifest(mode: ThemeMode): void {
       return;
     case "aeris":
       applyTheme(aerisTheme);
+      return;
+    case "pixelpop":
+      applyTheme(pixelpopTheme);
+      return;
+    case "modular":
+      applyTheme(modularTheme);
   }
 }
 

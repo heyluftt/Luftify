@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { applyTheme, applyThemeMode, abyssTheme, aerisTheme, atelierTheme, calamusTheme, darkTheme, lightTheme, luftTheme, polarisTheme, prismaTheme, redlineTheme, roseTheme, themeSchema } from "../src/themes/theme";
+import { applyTheme, applyThemeMode, abyssTheme, aerisTheme, atelierTheme, calamusTheme, darkTheme, lightTheme, luftTheme, modularTheme, pixelpopTheme, polarisTheme, prismaTheme, redlineTheme, roseTheme, themeSchema } from "../src/themes/theme";
 
 describe("theme validation", () => {
   it("loads Aeris by its persisted id and retains readable daylight contrast", async () => {
@@ -10,6 +10,24 @@ describe("theme validation", () => {
     expect(contrast(colors.textPrimary, colors.surface)).toBeGreaterThanOrEqual(6);
     expect(contrast(colors.textMuted, colors.surface)).toBeGreaterThanOrEqual(4.5);
   });
+  it("loads Pixelpop by its persisted id with readable pixel text", async () => {
+    await applyThemeMode("luft.pixelpop");
+    expect(document.documentElement.dataset.theme).toBe(pixelpopTheme.id);
+    const { colors } = pixelpopTheme;
+    expect(contrast(colors.textPrimary, colors.surface)).toBeGreaterThanOrEqual(7);
+    expect(contrast(colors.textMuted, colors.surface)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(colors.primary, colors.background)).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("loads Modular by its persisted id with readable panel text", async () => {
+    await applyThemeMode("luft.modular");
+    expect(document.documentElement.dataset.theme).toBe(modularTheme.id);
+    const { colors } = modularTheme;
+    expect(contrast(colors.textPrimary, colors.surface)).toBeGreaterThanOrEqual(7);
+    expect(contrast(colors.textMuted, colors.surface)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(colors.primary, colors.background)).toBeGreaterThanOrEqual(4.5);
+  });
+
   it("rejects script-like color values", () => {
     expect(() => themeSchema.parse({ ...darkTheme, colors: { ...darkTheme.colors, primary: "url(javascript:alert(1))" } })).toThrow();
   });

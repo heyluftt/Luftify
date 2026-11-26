@@ -1,0 +1,12 @@
+/* lyrics view: equalizer and mosaic (features/theme/pixelpop/ambient) */
+:root[data-theme="luft.pixelpop"] .lyrics-artwork-ambient.is-pixel {
+  border-radius: 0;
+}
+
+.pixel-ambient {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  image-rendering: pixelated;
+}

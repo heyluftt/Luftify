@@ -1,3 +1,10 @@
+# 0.1.41
+
+- Neues Theme: Pixelpop
+- Pixelpop: Equalizer und Mosaik in der Songtextansicht
+- Neues Theme: Modular
+- Modular: Oszilloskop und Pegel in der Songtextansicht
+
 # 0.1.40
 
 - Lichtkranz statt Kräftiger Puls

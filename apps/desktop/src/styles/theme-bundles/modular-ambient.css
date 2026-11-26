@@ -1,0 +1,11 @@
+/* lyrics view: oscilloscope and level meters (features/theme/modular/ambient) */
+:root[data-theme="luft.modular"] .lyrics-artwork-ambient.is-modular {
+  border-radius: 0;
+}
+
+.modular-ambient {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}

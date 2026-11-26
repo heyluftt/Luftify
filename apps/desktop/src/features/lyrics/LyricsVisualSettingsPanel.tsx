@@ -8,6 +8,8 @@ import {
 
 import { t } from "../../i18n";
 import type { LyricsVisualSettings } from "../../types/tauri";
+import { useActiveTheme } from "../theme/useActiveTheme";
+import { ambientModeLabels } from "./ambientModeLabels";
 import {
   MAX_LYRICS_COLOR_STRENGTH_PERCENT,
   MAX_LYRICS_SPREAD_PERCENT,
@@ -27,6 +29,7 @@ export function LyricsVisualSettingsPanel({
 }: LyricsVisualSettingsPanelProps) {
   const settings = normalizeLyricsVisualSettings(value);
   const mode = settings.mode ?? "pulse";
+  const labels = ambientModeLabels(useActiveTheme());
   const spread = settings.spreadPercent / 100;
   const strength = Math.min(settings.colorStrengthPercent, 100) / 100;
   const boost = Math.max(0, settings.colorStrengthPercent - 100) / 100;
@@ -86,11 +89,11 @@ export function LyricsVisualSettingsPanel({
           {settings.enabled
             ? settings.visualizerEnabled
               ? mode === "waves"
-                ? t("settings.lyricsView.wavesFollow")
-                : t("settings.lyricsView.pulseFollow")
+                ? t(labels.wavesFollow)
+                : t(labels.pulseFollow)
               : mode === "waves"
-                ? t("settings.lyricsView.wavesOn")
-                : t("settings.lyricsView.pulseOn")
+                ? t(labels.wavesOn)
+                : t(labels.pulseOn)
             : t("settings.lyricsView.still")}
         </small>
       </div>
@@ -119,7 +122,7 @@ export function LyricsVisualSettingsPanel({
           </span>
           <span>
             <strong>{t("settings.lyricsView.visualizer")}</strong>
-            <small>{t("settings.lyricsView.visualizerHint")}</small>
+            <small>{t(labels.hint)}</small>
           </span>
           <span className="switch">
             <input
@@ -141,13 +144,13 @@ export function LyricsVisualSettingsPanel({
           <div className="lyrics-visual-mode-options">
             <AmbientModeOption
               checked={mode === "pulse"}
-              label={t("settings.lyricsView.pulse")}
+              label={t(labels.pulse)}
               mode="pulse"
               onChange={(nextMode) => update({ mode: nextMode })}
             />
             <AmbientModeOption
               checked={mode === "waves"}
-              label={t("settings.lyricsView.waves")}
+              label={t(labels.waves)}
               mode="waves"
               onChange={(nextMode) => update({ mode: nextMode })}
             />

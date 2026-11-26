@@ -1,5 +1,7 @@
 import { useEffect, useId, useState } from "react";
 import { AerisBrandMark } from "../../features/theme/aeris/AerisBrandMark";
+import { PixelpopBrandMark } from "../../features/theme/pixelpop/PixelpopBrandMark";
+import { ModularBrandMark } from "../../features/theme/modular/ModularBrandMark";
 import { ClassicMarks } from "./brand/ClassicMarks";
 import { CelestialMarks } from "./brand/CelestialMarks";
 import { MaterialMarks } from "./brand/MaterialMarks";
@@ -44,6 +46,8 @@ export function SidebarBrandMark() {
       <MaterialMarks paint={paint} />
       <OrganicMarks paint={paint} />
       <AerisBrandMark paint={paint} />
+      <PixelpopBrandMark />
+      <ModularBrandMark />
     </svg>
   );
 }

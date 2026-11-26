@@ -1,0 +1,226 @@
+/* ---------- Modules ---------- */
+:root[data-theme="luft.modular"] .sidebar {
+  margin: 0 var(--shell-gap) var(--shell-gap) var(--shell-gap);
+  border-radius: var(--r-lg);
+  background:
+    var(--md-screw) left 3px top 3px / 12px 12px no-repeat,
+    var(--md-screw) right 3px top 3px / 12px 12px no-repeat,
+    var(--md-screw) left 3px bottom 3px / 12px 12px no-repeat,
+    var(--md-screw) right 3px bottom 3px / 12px 12px no-repeat,
+    var(--md-face);
+  box-shadow: var(--md-module-edge);
+}
+
+:root[data-theme="luft.modular"] .content-shell {
+  border-radius: var(--r-lg);
+  box-shadow: var(--md-module-edge);
+}
+
+:root[data-theme="luft.modular"] :is(.eyebrow, .feature-kicker, .count-label, .sidebar-library-title, .ds-chip, .source-chip, .status-badge, .track-header) {
+  font-family: var(--md-label);
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+/* ---------- Navigation: every entry has a jack, the active one gets the cable ---------- */
+:root[data-theme="luft.modular"] .sidebar-nav .nav-item::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  border-radius: 50%;
+  background: var(--md-jack);
+}
+
+:root[data-theme="luft.modular"] .sidebar-nav :is(.nav-fresh-dot, .nav-friends-count) {
+  margin-right: 26px;
+}
+
+:root[data-theme="luft.modular"] .nav-item.active {
+  background: var(--fill-1);
+}
+
+:root[data-theme="luft.modular"] .nav-glide {
+  background: var(--fill-1);
+}
+
+:root[data-theme="luft.modular"] .app-frame.sidebar-collapsed .sidebar-nav .nav-item::after {
+  display: none;
+}
+
+:root[data-theme="luft.modular"] :is(.sidebar-library-head, .sidebar-footer) {
+  box-shadow: 0 -1px 0 var(--line);
+}
+
+:root[data-theme="luft.modular"] .sidebar-entry:hover {
+  background: var(--fill-2);
+}
+
+:root[data-theme="luft.modular"] .sidebar-entry.active {
+  background: var(--fill-3);
+}
+
+:root[data-theme="luft.modular"] .sidebar-entry-copy small {
+  font-family: var(--md-label);
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+/* The playing playlist: its LED keeps time. */
+:root[data-theme="luft.modular"] .sidebar-entry.is-playing .album-art {
+  box-shadow: 0 0 0 1px var(--md-black), 0 0 0 2px color-mix(in srgb, var(--md-led) calc(40% + var(--md-bass, 0) * 60%), transparent), 0 0 calc(var(--md-bass, 0) * 12px) var(--md-led);
+}
+
+/* ---------- Headings ---------- */
+:root[data-theme="luft.modular"] :is(.page-heading h1, .home-welcome h1, .entity-hero-copy h1, .home-feature-copy h2) {
+  font-weight: 600;
+  letter-spacing: -.015em;
+}
+
+:root[data-theme="luft.modular"] .section-title h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--md-mute);
+  font-family: var(--md-label);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+:root[data-theme="luft.modular"] .section-title h2::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--md-led);
+  box-shadow: 0 0 6px var(--md-led);
+}
+
+/* ---------- Cards: modules in the rack, a LED instead of a lift ---------- */
+:root[data-theme="luft.modular"] :is(.ds-tile, .ds-row-tile, .mix-card) {
+  background: var(--md-panel-2);
+  box-shadow: inset 0 0 0 1px var(--line), 0 1px 0 var(--md-black);
+}
+
+:root[data-theme="luft.modular"] :is(.ds-tile, .ds-row-tile, .mix-card):is(:hover, :focus-within) {
+  background: var(--md-hover);
+  box-shadow: inset 0 0 0 1px var(--line-strong), 0 1px 0 var(--md-black);
+  translate: none;
+  rotate: none;
+}
+
+:root[data-theme="luft.modular"] :is(.ds-tile, .ds-row-tile, .mix-card):active {
+  scale: .985;
+}
+
+:root[data-theme="luft.modular"] :is(.ds-tile, .ds-row-tile)::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--md-led-off);
+  pointer-events: none;
+  transition: background-color 120ms ease, box-shadow 120ms ease;
+}
+
+:root[data-theme="luft.modular"] :is(.ds-tile, .ds-row-tile):is(:hover, :focus-within)::after {
+  background: var(--md-led);
+  box-shadow: 0 0 8px var(--md-led);
+}
+
+:root[data-theme="luft.modular"] .ds-tile-art .album-art,
+:root[data-theme="luft.modular"] .ds-tile:hover .ds-tile-art .album-art {
+  box-shadow: 0 0 0 1px var(--md-black);
+}
+
+:root[data-theme="luft.modular"] :is(.ds-tile-play, .mix-card-play, .play-fab) {
+  border-radius: 50%;
+  background: var(--md-knob);
+  color: var(--md-rack);
+  box-shadow: 0 0 0 2px var(--md-bezel), 0 0 0 3px var(--md-led), 0 0 14px color-mix(in srgb, var(--md-led) 45%, transparent), 0 4px 8px rgb(0 0 0 / 60%);
+}
+
+/* ---------- Rows ---------- */
+:root[data-theme="luft.modular"] .track-row:hover {
+  background: var(--fill-2);
+}
+
+/* ---------- Buttons ---------- */
+:root[data-theme="luft.modular"] .primary-button {
+  background: var(--md-led);
+  color: var(--on-accent);
+  box-shadow: 0 2px 0 var(--md-led-deep), inset 0 1px 0 rgb(255 255 255 / 25%);
+}
+
+:root[data-theme="luft.modular"] .primary-button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--md-led) 85%, var(--md-led-glint));
+}
+
+:root[data-theme="luft.modular"] .secondary-button {
+  background: var(--md-key);
+  color: var(--text);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%), 0 2px 0 var(--md-black);
+}
+
+:root[data-theme="luft.modular"] :is(.primary-button, .secondary-button):active:not(:disabled) {
+  translate: 0 1px;
+  box-shadow: none;
+}
+
+:root[data-theme="luft.modular"] :is(.ds-chip[aria-pressed="true"], .ds-chip.active) {
+  background: var(--fill-3);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-led) 60%, transparent);
+  color: var(--text);
+}
+
+/* ---------- Fields read like small displays ---------- */
+:root[data-theme="luft.modular"] :is(.global-search, .search-field, .ds-field) {
+  background: var(--md-oled);
+  box-shadow: inset 0 0 0 1px var(--md-line), inset 0 2px 6px var(--md-black);
+}
+
+:root[data-theme="luft.modular"] :is(input, textarea) {
+  caret-color: var(--md-led);
+}
+
+:root[data-theme="luft.modular"] .global-search kbd {
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+/* The open playlist gets a jack too, for when no main entry is active. */
+:root[data-theme="luft.modular"] .sidebar-library-list .sidebar-entry.active {
+  position: relative;
+  padding-right: 26px;
+}
+
+:root[data-theme="luft.modular"] .sidebar-library-list .sidebar-entry.active::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  border-radius: 50%;
+  background: var(--md-jack);
+}
+
+:root[data-theme="luft.modular"] .app-frame.sidebar-collapsed .sidebar-library-list .sidebar-entry.active {
+  padding-right: 0;
+}
+
+:root[data-theme="luft.modular"] .app-frame.sidebar-collapsed .sidebar-library-list .sidebar-entry.active::after {
+  display: none;
+}

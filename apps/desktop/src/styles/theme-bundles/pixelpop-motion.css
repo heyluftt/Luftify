@@ -1,0 +1,51 @@
+/* page slide is replaced by the block dissolve */
+:root[data-theme="luft.pixelpop"] .page-scroll .page:not(.lyrics-page) {
+  animation-name: none;
+}
+
+/* the page change is the entrance, so cards and rows just stand there */
+:root[data-theme="luft.pixelpop"] .page-scroll[data-entering] :is(.ds-tile, .ds-row-tile, .home-feature, .recap-tile, .track-row, .mix-card),
+:root[data-theme="luft.pixelpop"] .page-scroll :is(.recap-featured, .recap-year, .recap-weeks li, .insights-content, .insights-rank-list li) {
+  animation: none;
+}
+
+/* covers go from coarse to sharp */
+:root[data-theme="luft.pixelpop"] .page-scroll[data-entering] :is(.ds-tile, .ds-row-tile, .mix-card) .album-art {
+  animation: pp-mosaic calc(280ms * var(--motion-scale)) steps(1) backwards;
+}
+
+:root[data-theme="luft.pixelpop"] .player-cover-link .album-art:not([data-landing]) {
+  animation: pp-cover-in calc(480ms * var(--motion-scale)) steps(1) backwards;
+}
+
+:root[data-theme="luft.pixelpop"] .track-copy > :is(.track-title-link, strong) {
+  animation: pp-type calc(420ms * var(--motion-scale)) steps(14) backwards;
+}
+
+:root[data-theme="luft.pixelpop"] .nav-item:hover svg {
+  transform: translateY(-2px);
+}
+
+:root[data-theme="luft.pixelpop"] .nav-item:active svg {
+  transform: translateY(1px);
+}
+
+@keyframes pp-mosaic {
+  0% { filter: url(#pp-px-8); }
+  40% { filter: url(#pp-px-4); }
+  75% { filter: url(#pp-px-2); }
+  100% { filter: none; }
+}
+
+@keyframes pp-cover-in {
+  0% { filter: url(#pp-px-16); }
+  30% { filter: url(#pp-px-8); }
+  60% { filter: url(#pp-px-4); }
+  85% { filter: url(#pp-px-2); }
+  100% { filter: none; }
+}
+
+@keyframes pp-type {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}

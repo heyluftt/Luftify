@@ -2,7 +2,8 @@
 :root:is(
   [data-theme="luft.light"], [data-theme="luft.atelier"], [data-theme="luft.violet"],
   [data-theme="luft.redline"], [data-theme="luft.abyss"], [data-theme="luft.rose"],
-  [data-theme="luft.polaris"], [data-theme="luft.prisma"], [data-theme="luft.calamus"], [data-theme="luft.aeris"]
+  [data-theme="luft.polaris"], [data-theme="luft.prisma"], [data-theme="luft.calamus"], [data-theme="luft.aeris"],
+  [data-theme="luft.pixelpop"], [data-theme="luft.modular"]
 ) .brand-mark-dark {
   display: none;
 }
@@ -16,7 +17,9 @@
 :root[data-theme="luft.polaris"] .brand-mark-polaris,
 :root[data-theme="luft.prisma"] .brand-mark-prisma,
 :root[data-theme="luft.calamus"] .brand-mark-calamus,
-:root[data-theme="luft.aeris"] .brand-mark-aeris {
+:root[data-theme="luft.aeris"] .brand-mark-aeris,
+:root[data-theme="luft.pixelpop"] .brand-mark-pixelpop,
+:root[data-theme="luft.modular"] .brand-mark-modular {
   display: inline;
 }
 

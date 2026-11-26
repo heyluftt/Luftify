@@ -1,0 +1,32 @@
+:root[data-theme="luft.pixelpop"] :is(.ds-menu, .ds-popover, .track-actions-menu, .settings-select-menu, .audio-quick-settings) {
+  border: 0;
+  background: var(--pp-panel);
+  box-shadow: inset 0 0 0 2px var(--pp-line), var(--shadow-2);
+}
+
+:root[data-theme="luft.pixelpop"] :is(.ds-dialog, .close-confirm, .command-palette, .queue-panel) {
+  border: 0;
+  background: var(--pp-ink);
+  box-shadow: inset 0 0 0 2px var(--pp-line), var(--pp-drop-xl);
+}
+
+:root[data-theme="luft.pixelpop"] :is(.ds-menu-item, .track-actions-menu-list button):hover {
+  background: var(--pp-panel-2);
+}
+
+:root[data-theme="luft.pixelpop"] :is(.ds-menu-item, .track-actions-menu-list button):hover svg {
+  color: var(--pp-coral);
+}
+
+:root[data-theme="luft.pixelpop"] :is(.ds-backdrop, .close-confirm-backdrop) {
+  background: var(--overlay);
+  backdrop-filter: none;
+}
+
+:root[data-theme="luft.pixelpop"] .skeleton {
+  background: var(--pp-panel);
+}
+
+:root[data-theme="luft.pixelpop"] .theme-option.active {
+  box-shadow: inset 0 0 0 2px var(--pp-coral), var(--pp-drop);
+}

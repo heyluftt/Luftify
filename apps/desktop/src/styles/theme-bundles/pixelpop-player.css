@@ -1,0 +1,122 @@
+:root[data-theme="luft.pixelpop"] .playerbar {
+  background:
+    repeating-linear-gradient(90deg, var(--pp-line) 0 8px, transparent 8px 12px) top / 100% 2px no-repeat,
+    var(--pp-deep);
+}
+
+:root[data-theme="luft.pixelpop"] .player-cover-link .album-art {
+  box-shadow: 0 0 0 2px var(--pp-panel-2), var(--pp-drop);
+}
+
+:root[data-theme="luft.pixelpop"] .track-copy > :is(.track-title-link, strong) {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+:root[data-theme="luft.pixelpop"] .play-button {
+  border-radius: var(--r-sm);
+  background: var(--pp-coral);
+  color: var(--pp-deep);
+  box-shadow: 3px 3px 0 var(--pp-black);
+}
+
+:root[data-theme="luft.pixelpop"] .play-button:hover:not(:disabled) {
+  background: var(--pp-coral-hi);
+  transform: none;
+}
+
+:root[data-theme="luft.pixelpop"] .play-button:not(:disabled):active {
+  box-shadow: 1px 1px 0 var(--pp-black);
+  transform: translate(2px, 2px);
+}
+
+:root[data-theme="luft.pixelpop"] .transport-buttons .icon-button:not(:disabled):active {
+  transform: translate(1px, 1px);
+}
+
+:root[data-theme="luft.pixelpop"] .progress-row time {
+  font-family: var(--pp-label);
+  font-size: 10.5px;
+}
+
+/* ---------- Progress in blocks ---------- */
+/* gaps painted on top, fill keeps moving smoothly */
+:root[data-theme="luft.pixelpop"] :is(.smooth-progress-rail, .smooth-progress-fill) {
+  height: 8px;
+  border-radius: 0;
+}
+
+:root[data-theme="luft.pixelpop"] .smooth-progress-rail {
+  background: var(--pp-panel-2);
+}
+
+:root[data-theme="luft.pixelpop"] .smooth-progress-fill {
+  background: var(--pp-coral);
+}
+
+:root[data-theme="luft.pixelpop"] .smooth-progress:hover .smooth-progress-fill {
+  background: var(--pp-sun);
+}
+
+:root[data-theme="luft.pixelpop"] .smooth-progress::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: repeating-linear-gradient(90deg, transparent 0 8px, var(--pp-gap) 8px 10px);
+  pointer-events: none;
+}
+
+:root[data-theme="luft.pixelpop"] .smooth-progress input[type="range"]::-webkit-slider-thumb {
+  width: 8px;
+  height: 16px;
+  margin-top: -6px;
+  border-radius: 0;
+  background: var(--pp-cream);
+  box-shadow: 2px 2px 0 var(--pp-black);
+}
+
+:root[data-theme="luft.pixelpop"] :is(.playerbar-collapsed-progress-track, .playerbar-collapsed-progress) {
+  border-radius: 0;
+}
+
+:root[data-theme="luft.pixelpop"] .playerbar-collapsed-progress {
+  background: var(--pp-coral);
+}
+
+:root[data-theme="luft.pixelpop"] .command-palette .smooth-progress {
+  --pp-gap: var(--pp-ink);
+}
+
+/* ---------- Volume ---------- */
+:root[data-theme="luft.pixelpop"] .volume-slider-control input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 0;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, var(--pp-gap) 6px 8px),
+    linear-gradient(90deg, var(--pp-cream) var(--volume), var(--pp-panel-2) var(--volume));
+}
+
+:root[data-theme="luft.pixelpop"] .volume-slider-control:hover input[type="range"]::-webkit-slider-runnable-track {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, var(--pp-gap) 6px 8px),
+    linear-gradient(90deg, var(--pp-coral) var(--volume), var(--pp-panel-2) var(--volume));
+}
+
+:root[data-theme="luft.pixelpop"] .volume-slider-control input[type="range"]::-webkit-slider-thumb {
+  width: 6px;
+  height: 14px;
+  margin-top: -4px;
+  border-radius: 0;
+  background: var(--pp-cream);
+  box-shadow: 2px 2px 0 var(--pp-black);
+}
+
+:root[data-theme="luft.pixelpop"] :is(.connection-light, .playerbar-collapsed-state) {
+  border-radius: 0;
+}
+
+:root[data-theme="luft.pixelpop"] .connection-light:not(.offline) {
+  background: var(--pp-lime);
+}

@@ -1,3 +1,10 @@
+# 0.1.41
+
+- New theme: Pixelpop
+- Pixelpop: equalizer and mosaic in the lyrics view
+- New theme: Modular
+- Modular: oscilloscope and level meters in the lyrics view
+
 # 0.1.40
 
 - Halo replaces Strong pulse

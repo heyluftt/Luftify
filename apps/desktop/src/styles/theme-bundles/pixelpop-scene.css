@@ -1,0 +1,51 @@
+:root[data-theme="luft.pixelpop"] .pixelpop-scene {
+  background:
+    conic-gradient(from 90deg at 2px 2px, transparent 25%, color-mix(in srgb, var(--pp-cream) 4%, transparent) 0) 0 0 / 16px 16px,
+    var(--canvas);
+}
+
+.pixelpop-sky {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  image-rendering: pixelated;
+  opacity: .8;
+}
+
+.pixelpop-logo {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  max-width: 80%;
+  translate: -50% -50%;
+  image-rendering: pixelated;
+}
+
+.pixelpop-filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.pixelpop-dissolve {
+  position: fixed;
+  z-index: 15;
+  pointer-events: none;
+  image-rendering: pixelated;
+}
+
+.pixelpop-dissolve.is-window {
+  z-index: 950;
+}
+
+:root[data-theme="luft.pixelpop"] .brand-mark-pixelpop {
+  animation: pp-hop 1.2s steps(1) infinite;
+}
+
+:root[data-theme="luft.pixelpop"] .brand-orbit-aura {
+  display: none;
+}
+
+@keyframes pp-hop {
+  50% { transform: translateY(-4px); }
+}

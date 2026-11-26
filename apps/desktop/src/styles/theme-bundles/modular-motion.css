@@ -1,0 +1,61 @@
+/* The page change is the cable being re-patched plus a signal along the module's
+   top edge; content itself stands there at once. */
+:root[data-theme="luft.modular"] .page-scroll .page:not(.lyrics-page) {
+  animation-name: none;
+}
+
+:root[data-theme="luft.modular"] .page-scroll[data-entering] :is(.ds-tile, .ds-row-tile, .home-feature, .recap-tile, .track-row, .mix-card),
+:root[data-theme="luft.modular"] .page-scroll :is(.recap-featured, .recap-year, .recap-weeks li, .insights-content, .insights-rank-list li) {
+  animation: none;
+}
+
+:root[data-theme="luft.modular"] .content-shell::after {
+  content: "";
+  position: absolute;
+  z-index: 6;
+  top: 0;
+  left: 6px;
+  right: 6px;
+  height: 2px;
+  border-radius: var(--r-xs);
+  background: linear-gradient(90deg, transparent, var(--md-led) 18%, var(--md-led-glint) 50%, var(--md-led) 82%, transparent);
+  box-shadow: 0 0 10px var(--md-led);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+:root[data-theme="luft.modular"][data-md-signal] .content-shell::after {
+  animation: md-signal calc(460ms * var(--motion-scale)) cubic-bezier(.3, .7, .2, 1) both;
+}
+
+@keyframes md-signal {
+  0% { opacity: 1; transform: scaleX(0); }
+  60% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1); }
+}
+
+/* Switching to Modular: the modules power up one after another. */
+:root[data-theme="luft.modular"][data-md-power] :is(.sidebar, .content-shell, .playerbar) {
+  animation: md-power-on calc(520ms * var(--motion-scale)) linear both;
+}
+
+:root[data-theme="luft.modular"][data-md-power] .content-shell { animation-delay: calc(90ms * var(--motion-scale)); }
+:root[data-theme="luft.modular"][data-md-power] .playerbar { animation-delay: calc(180ms * var(--motion-scale)); }
+
+@keyframes md-power-on {
+  0% { filter: brightness(.2); }
+  22% { filter: brightness(.95); }
+  30% { filter: brightness(.4); }
+  52% { filter: brightness(1.08); }
+  100% { filter: none; }
+}
+
+:root[data-theme="luft.modular"] .player-cover-link .album-art:not([data-landing]) {
+  animation-name: md-cover-in;
+}
+
+@keyframes md-cover-in {
+  from { opacity: 0; filter: brightness(1.8) saturate(.2); }
+}

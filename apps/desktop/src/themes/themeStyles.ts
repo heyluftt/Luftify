@@ -17,6 +17,8 @@ const STYLES: Record<ThemeMode, () => Promise<unknown>> = {
   calamus: () => import("../styles/theme-bundles/calamus.css"),
   abyss: () => import("../styles/theme-bundles/abyss.css"),
   aeris: () => import("../styles/theme-bundles/aeris.css"),
+  pixelpop: () => import("../styles/theme-bundles/pixelpop.css"),
+  modular: () => import("../styles/theme-bundles/modular.css"),
 };
 
 const loaded = new Set<ThemeMode>();

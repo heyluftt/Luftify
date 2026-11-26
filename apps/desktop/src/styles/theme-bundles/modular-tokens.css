@@ -1,0 +1,76 @@
+/* Modular: anodised modules with screws, silk-screen labels, LEDs and one patch cable */
+:root[data-theme="luft.modular"] {
+  color-scheme: dark;
+  --md-rack: var(--color-bg);
+  --md-panel: var(--color-surface);
+  --md-panel-2: var(--color-surface-elevated);
+  --md-line: #2c2f34;
+  --md-edge: rgb(255 255 255 / 6%);
+  --md-mute: var(--color-muted);
+  --md-led: var(--color-primary);
+  --md-led-off: #1c2a22;
+  --md-oled: #050607;
+  --md-oled-ink: #d8f3e4;
+  --md-oled-dim: #7f9a8b;
+  --md-led-deep: #0b3d21;
+  --md-led-glint: #e7fff1;
+  --md-black: #000;
+  --md-void: #030303;
+  --md-bezel: #0a0a0b;
+  --md-hover: #23262b;
+  --md-tick: #3a3d43;
+  --md-knob: radial-gradient(circle at 40% 35%, #f2f1ec, #a9a8a2 75%);
+  --md-key: linear-gradient(#2a2c30, #1d1f22);
+  --md-cap: linear-gradient(90deg, #9c9ea3, #f0efea 50%, #9c9ea3);
+  --md-yellow: #f4c542;
+  --md-red: #f0544f;
+  --md-label: "Barlow Condensed", "Barlow", "Segoe UI", sans-serif;
+  --md-screw: radial-gradient(circle, #121315 0 1.4px, #4a4e55 1.8px 3.4px, transparent 3.8px);
+  --md-jack: radial-gradient(circle, #030303 0 3.3px, #a3a6ab 3.7px 5px, #55585e 5.4px 6.6px, #26282c 7px 7.6px, transparent 8px);
+  --md-face: linear-gradient(180deg, #1c1e22, #141518);
+  --md-module-edge: inset 0 1px 0 rgb(255 255 255 / 7%), inset 0 0 0 1px rgb(255 255 255 / 3.5%), 0 2px 0 #000;
+
+  --bg: var(--md-rack);
+  --sidebar-bg: var(--md-rack);
+  --canvas: var(--md-panel);
+  --canvas-edge: var(--md-edge);
+  --raised: var(--md-panel-2);
+  --overlay: rgb(5 5 6 / 72%);
+  --on-accent: #062312;
+  --accent-text: var(--md-led);
+  --accent-soft: color-mix(in srgb, var(--md-led) 14%, transparent);
+  --text-3: #64676d;
+  --success: var(--md-led);
+  --warning: var(--md-yellow);
+  --danger: var(--md-red);
+
+  --fill-1: rgb(255 255 255 / 3%);
+  --fill-2: rgb(255 255 255 / 5.5%);
+  --fill-3: rgb(255 255 255 / 9%);
+  --line: rgb(255 255 255 / 7%);
+  --line-strong: rgb(255 255 255 / 12%);
+  --scrollbar-thumb: #34373c;
+
+  --font-sans: "Barlow", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Barlow", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Martian Mono", "Cascadia Mono", ui-monospace, monospace;
+  --fs-md: 14.5px;
+  --fs-lg: 16px;
+  --tracking-tight: -.01em;
+  --tracking-title: -.015em;
+  --tracking-caps: .16em;
+
+  --r-xs: 2px;
+  --r-sm: 3px;
+  --r-md: 3px;
+  --r-lg: 4px;
+  --r-xl: 6px;
+  --r-cover: 2px;
+  --shadow-1: 0 2px 0 #000, 0 8px 20px rgb(0 0 0 / 35%);
+  --shadow-2: 0 3px 0 #000, 0 18px 40px rgb(0 0 0 / 50%);
+  --shadow-cover: 0 0 0 1px #000, 0 10px 24px rgb(0 0 0 / 45%);
+
+  /* hardware: firm, no bounce */
+  --ease-bounce: cubic-bezier(.2, .9, .25, 1);
+  --ease-pop: cubic-bezier(.2, .9, .25, 1);
+}

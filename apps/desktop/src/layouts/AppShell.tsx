@@ -26,6 +26,8 @@ import { volumeCoordinator } from "../features/playback/VolumeCommandCoordinator
 import { PolarisSky } from "../features/theme/PolarisSky";
 import { AbyssScene } from "../features/theme/abyss/AbyssScene";
 import { AerisScene } from "../features/theme/aeris/AerisScene";
+import { PixelpopScene } from "../features/theme/pixelpop/PixelpopScene";
+import { ModularScene } from "../features/theme/modular/ModularScene";
 import { RedlineEmbers } from "../features/theme/RedlineEmbers";
 import { PrismaAtmosphere } from "../features/theme/PrismaAtmosphere";
 import { RoseNocturne } from "../features/theme/RoseNocturne";
@@ -221,6 +223,8 @@ export function AppShell() {
       <RoseNocturne />
       <AbyssScene />
       <AerisScene />
+      <PixelpopScene />
+      <ModularScene />
       <VioletNight />
       <WindowTitleBar />
       <Sidebar />

@@ -1,7 +1,11 @@
-import { Check, Feather, Gauge, Gem, Leaf, ListMusic, Moon, Palette, Sparkles, Star, Sun, Waves, Wind, Zap, type LucideIcon } from "lucide-react";
+import { Cable, Check, Feather, Gamepad2, Gauge, Gem, Leaf, ListMusic, Moon, Palette, Sparkles, Star, Sun, Waves, Wind, Zap, type LucideIcon } from "lucide-react";
 import { t, type MessageKey } from "../../i18n";
 import { useAbyssMusic } from "../theme/abyss/abyssMusic";
 import { AerisPreview } from "../theme/aeris/AerisPreview";
+import { usePixelpopMusic } from "../theme/pixelpop/pixelpopMusic";
+import { PixelpopPreview } from "../theme/pixelpop/PixelpopPreview";
+import { useModularMusic } from "../theme/modular/modularMusic";
+import { ModularPreview } from "../theme/modular/ModularPreview";
 import { useMotionChoice, type MotionChoice } from "../motion/motionLevel";
 import { SectionHeading, SelectRow, SettingsGroup, ToggleRow } from "./SettingsPrimitives";
 
@@ -17,6 +21,8 @@ const themes: Array<[string, MessageKey, LucideIcon]> = [
   ["calamus", "settings.theme.calamus", Feather],
   ["abyss", "settings.theme.abyss", Waves],
   ["aeris", "settings.theme.aeris", Wind],
+  ["pixelpop", "settings.theme.pixelpop", Gamepad2],
+  ["modular", "settings.theme.modular", Cable],
 ];
 
 export function AppearanceSettings({
@@ -36,13 +42,15 @@ export function AppearanceSettings({
       <div className="theme-options">
         {themes.map(([id, labelKey, Icon]) => (
           <button type="button" key={id} data-theme-option={id} aria-pressed={selected === id} className={selected === id ? "theme-option active" : "theme-option"} onClick={() => onSelect(id)}>
-            {id === "aeris" ? <AerisPreview /> : <span className="theme-preview" aria-hidden="true"><i /><i /><i /></span>}
+            {id === "aeris" ? <AerisPreview /> : id === "pixelpop" ? <PixelpopPreview /> : id === "modular" ? <ModularPreview /> : <span className="theme-preview" aria-hidden="true"><i /><i /><i /></span>}
             <span className="theme-option-copy"><Icon /><strong>{t(labelKey)}</strong></span>
             {selected === id && <span className="theme-selected-label"><Check />{t("settings.theme.active")}</span>}
           </button>
         ))}
       </div>
       {selected === "abyss" && <AbyssMusicToggle />}
+      {selected === "pixelpop" && <PixelpopMusicToggle />}
+      {selected === "modular" && <ModularMusicToggle />}
       <SettingsGroup title={t("settings.lists.title")}>
         <div className="settings-list">
           <ToggleRow
@@ -63,6 +71,20 @@ function AbyssMusicToggle() {
   const { enabled, set } = useAbyssMusic();
   return <div className="settings-list theme-extra">
     <ToggleRow icon={Waves} label={t("settings.theme.abyssMusic")} checked={enabled} onChange={set} />
+  </div>;
+}
+
+function PixelpopMusicToggle() {
+  const { enabled, set } = usePixelpopMusic();
+  return <div className="settings-list theme-extra">
+    <ToggleRow icon={Gamepad2} label={t("settings.theme.pixelpopMusic")} checked={enabled} onChange={set} />
+  </div>;
+}
+
+function ModularMusicToggle() {
+  const { enabled, set } = useModularMusic();
+  return <div className="settings-list theme-extra">
+    <ToggleRow icon={Cable} label={t("settings.theme.modularMusic")} checked={enabled} onChange={set} />
   </div>;
 }
 

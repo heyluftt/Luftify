@@ -8,7 +8,7 @@
   position: relative;
 }
 
-.app-frame > :is(.rose-chamber, .redline-atmosphere, .prisma-atmosphere, .polaris-sky, .abyss-scene, .aeris-scene, .violet-night) {
+.app-frame > :is(.rose-chamber, .redline-atmosphere, .prisma-atmosphere, .polaris-sky, .abyss-scene, .aeris-scene, .violet-night, .pixelpop-scene, .modular-scene) {
   position: absolute;
   z-index: 0;
   inset: 0;
@@ -20,7 +20,7 @@
   pointer-events: none;
 }
 
-.app-frame:has(> :is(.rose-chamber, .redline-atmosphere, .prisma-atmosphere, .polaris-sky, .abyss-scene, .aeris-scene, .violet-night)) > .content-shell {
+.app-frame:has(> :is(.rose-chamber, .redline-atmosphere, .prisma-atmosphere, .polaris-sky, .abyss-scene, .aeris-scene, .violet-night, .pixelpop-scene, .modular-scene)) > .content-shell {
   z-index: 1;
   background: transparent;
 }

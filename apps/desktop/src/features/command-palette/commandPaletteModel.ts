@@ -43,6 +43,8 @@ const THEME_COMMANDS: Array<{ id: ThemeMode; nameKey: MessageKey; keywords: stri
   { id: "prisma", nameKey: "settings.theme.prisma", keywords: ["prisma", "cover", "farbe", "dynamisch", "matt", "pigment"] },
   { id: "abyss", nameKey: "settings.theme.abyss", keywords: ["tiefsee", "meer", "ozean", "qualle", "quallen", "unterwasser", "deep", "sea", "abyss", "leuchten"] },
   { id: "aeris", nameKey: "settings.theme.aeris", keywords: ["aeris", "wind", "luft", "air", "brise", "breeze", "wolken", "hell", "sky"] },
+  { id: "pixelpop", nameKey: "settings.theme.pixelpop", keywords: ["pixelpop", "pixel", "retro", "8-bit", "8bit", "konsole", "console", "spiel", "game", "arcade"] },
+  { id: "modular", nameKey: "settings.theme.modular", keywords: ["modular", "synth", "synthesizer", "kabel", "cable", "patch", "eurorack", "led", "oszilloskop"] },
   { id: "calamus", nameKey: "settings.theme.calamus", keywords: ["calamus", "kladde", "rohr", "feder", "tinte", "schlicht", "latein", "standard", "default"] },
 ];
 

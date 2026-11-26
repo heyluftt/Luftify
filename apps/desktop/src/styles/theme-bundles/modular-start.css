@@ -1,0 +1,50 @@
+/* „Aufbau“ in Modular: dark modules that power up as their part arrives; the
+   cable is plugged in once everything is there (ModularScene). */
+:root[data-theme="luft.modular"][data-start] :is(.sidebar, .content-shell, .playerbar) {
+  outline-width: 1px;
+  outline-offset: -5px;
+}
+
+:root[data-theme="luft.modular"][data-start]:not([data-start-nav]) .sidebar,
+:root[data-theme="luft.modular"][data-start]:not([data-start-main]) .content-shell,
+:root[data-theme="luft.modular"][data-start]:not([data-start-player]) .playerbar {
+  outline-color: var(--md-line);
+  filter: brightness(.45);
+}
+
+:root[data-theme="luft.modular"][data-start-nav] .sidebar,
+:root[data-theme="luft.modular"][data-start-main] .content-shell,
+:root[data-theme="luft.modular"][data-start-player] .playerbar {
+  animation: md-power-on calc(520ms * var(--motion-scale)) linear both;
+}
+
+:root[data-theme="luft.modular"] .start-surface {
+  border: 0;
+  background: var(--md-face);
+  box-shadow: var(--md-module-edge), var(--shadow-2);
+}
+
+:root[data-theme="luft.modular"] .start-layer:is([data-form="pill"], [data-form="none"]) .start-surface {
+  border-radius: var(--r-sm);
+  background: var(--md-oled);
+  box-shadow: inset 0 0 0 1px var(--md-line), var(--shadow-1);
+}
+
+:root[data-theme="luft.modular"] .start-pill strong {
+  color: var(--md-oled-ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+:root[data-theme="luft.modular"] :is(.start-step, .start-percent) {
+  color: var(--md-oled-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+:root[data-theme="luft.modular"] .start-fill {
+  height: 2px;
+  background: var(--md-led);
+  box-shadow: 0 0 8px var(--md-led);
+}

@@ -3,6 +3,7 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  type MutableRefObject,
   type RefObject,
 } from "react";
 
@@ -24,6 +25,9 @@ import { prefersLessMotion } from "../motion/motionLevel";
 
 const POLL_MS = 16;
 
+/** The latest smoothed frame and when it was shown, for ambients that draw themselves. */
+export type VisualizerFrameSink = MutableRefObject<{ frame: VisualizerFrame; at: number } | undefined>;
+
 export function useAmbientVisualizer({
   enabled,
   playing,
@@ -32,6 +36,7 @@ export function useAmbientVisualizer({
   colorStrengthPercent,
   sensitivityPercent,
   target,
+  frameSink,
 }: {
   enabled: boolean;
   playing: boolean;
@@ -40,6 +45,7 @@ export function useAmbientVisualizer({
   colorStrengthPercent: number;
   sensitivityPercent: number;
   target: RefObject<HTMLElement | null>;
+  frameSink?: VisualizerFrameSink;
 }): boolean {
   const [active, setActive] = useState(false);
   const trackUri = usePlayerStore((store) => store.playback?.currentItem?.uri);
@@ -92,6 +98,10 @@ export function useAmbientVisualizer({
         latched = true;
         setActive(true);
       }
+      if (frameSink) {
+        frameSink.current = { frame, at: now };
+        return;
+      }
       const vars = mode === "waves"
         ? waveVisualizerVars(frame, metrics, now)
         : halo(frame, now);
@@ -134,11 +144,13 @@ export function useAmbientVisualizer({
       cancelled = true;
       window.cancelAnimationFrame(frameId);
       lastVarsRef.current = {};
+      if (frameSink) frameSink.current = undefined;
       setActive(false);
     };
   }, [
     colorStrengthPercent,
     enabled,
+    frameSink,
     mode,
     playing,
     sensitivityPercent,
